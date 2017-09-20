@@ -2,13 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/textView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="방명록 페이지"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:layout_marginTop="200dp"
-        />
+        android:layout_height="305dp">
+        <com.kkard.seoulroad.Circleindicator_C.LoopViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+        <me.relex.circleindicator.CircleIndicator
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:id="@+id/indicator">
+        </me.relex.circleindicator.CircleIndicator>
+    </RelativeLayout>
 </LinearLayout>
