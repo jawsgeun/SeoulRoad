@@ -22,8 +22,23 @@
         <activity android:name="com.kkard.seoulroad.FragmentActivity"
             android:theme="@style/MainTheme"
             />
+        <activity android:name=".Plant.QRCamera"/>
+        <activity android:name=".Plant.CaptureActivityAnyOrientation"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
         <activity android:name="com.kkard.seoulroad.RegistActivity"/>
         <activity android:name="com.kkard.seoulroad.MyMenu.NoticeActivity"/>
         </application>
+
+    <!--permission-->
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
 </manifest>

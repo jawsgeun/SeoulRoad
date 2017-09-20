@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/qrcbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="식물 페이지"
+        android:text="Camera On!!"
         android:textSize="30sp"
         android:gravity="center"
         android:layout_marginTop="200dp"
