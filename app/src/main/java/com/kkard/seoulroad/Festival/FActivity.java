@@ -14,17 +14,22 @@ import com.kkard.seoulroad.R;
 
 import java.util.ArrayList;
 
+import me.nlmartian.silkcal.DatePickerController;
+import me.nlmartian.silkcal.DayPickerView;
+import me.nlmartian.silkcal.SimpleMonthAdapter;
+
 
 /**
  * Created by SuGeun on 2017-08-21.
  */
 
-public class FActivity extends Fragment{
+public class FActivity extends Fragment implements DatePickerController {
 
     Context context;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
+    private DayPickerView_C calendarView;
 
     @Nullable
     @Override
@@ -36,6 +41,10 @@ public class FActivity extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getContext();
+
+        calendarView = (DayPickerView_C) getView().findViewById(R.id.calendar_view);
+        calendarView.setController(FActivity.this);
+
         recyclerView = (RecyclerView)getView().findViewById(R.id.recycle_view);
         recyclerView.setHasFixedSize(true);
 
@@ -50,6 +59,21 @@ public class FActivity extends Fragment{
 
         adapter = new RecyclerAdapter(context,items);
         recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public int getMaxYear() {
+        return 0;
+    }
+
+    @Override
+    public void onDayOfMonthSelected(int year, int month, int day) {
+
+    }
+
+    @Override
+    public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays) {
 
     }
 }

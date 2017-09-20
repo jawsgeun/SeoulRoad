@@ -3,13 +3,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <CalendarView
+    <!--<CalendarView-->
+        <!--android:id="@+id/calendar_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:minDate="05/20/2017"-->
+        <!--android:maxDate="12/31/2017"-->
+        <!--/>-->
+    <com.kkard.seoulroad.Festival.DayPickerView_C
+        xmlns:calendar="http://schemas.android.com/apk/com.kkard.seoulroad"
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minDate="05/20/2017"
-        android:maxDate="12/31/2017"
-        />
+        android:layout_height="245dp"
+        android:background="@android:color/white"
+        calendar:drawRoundRect="false"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_view"
         android:layout_width="match_parent"
