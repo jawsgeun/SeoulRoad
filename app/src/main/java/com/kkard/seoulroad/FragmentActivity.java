@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
 
-//테스트//
+
 public class FragmentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
