@@ -73,16 +73,24 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!checkEmail(email.getText().toString())){
+                String idContent = email.getText().toString().trim();
+                String passContent = pass.getText().toString().trim();
+
+                if(idContent.getBytes().length <= 0 ){//빈값이 넘어올때의 처리
+                    Toast.makeText(getApplicationContext(), "아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
+                }else if( passContent.getBytes().length <= 0){
+                    Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
+                }
+                else if(!checkEmail(idContent)){
                     Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
-                    switch (checkPass(pass.getText().toString())){
+                    switch (checkPass(passContent)){
                         case 0: // 통과
                             startActivity(new Intent(LoginActivity.this, FragmentActivity.class));
                             finish();
                             break;
                         case 1: // 숫자형식 ㄴㄴ
-                            Toast.makeText(getApplicationContext(), "비밀번호는 4자리 숫자입니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "올바른 비밀번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show();
                             break;
                         case 2: // 4자리 ㄴㄴ
                             Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
