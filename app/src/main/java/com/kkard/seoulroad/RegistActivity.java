@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.kkard.seoulroad.LoginActivity.checkEmail;
-import static com.kkard.seoulroad.LoginActivity.checkPass;
 
 /**
  * Created by SuGeun on 2017-08-08.
@@ -134,6 +133,7 @@ public class RegistActivity extends AppCompatActivity{
                 String emailContent = email.getText().toString().trim();
                 String passContent = password.getText().toString().trim();
                 String passConfContent = passConf.getText().toString().trim();
+
                 if(nameContent.getBytes().length <= 0 ){//빈값이 넘어올때의 처리
                     Toast.makeText(getApplicationContext(), "이름를 입력하세요.",Toast.LENGTH_SHORT).show();
                 }else if( emailContent.getBytes().length <= 0) {
@@ -146,22 +146,30 @@ public class RegistActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else if(!passConf.getText().toString().equals(password.getText().toString())){ // 비밀번호 확인 다를시
                     Toast.makeText(getApplicationContext(),"비밀번호가 일치하지 않습니다",Toast.LENGTH_SHORT).show();
-                }else{
-                switch (checkPass(passContent)){
-                    case 0: // 통과
-                        Toast.makeText(getApplicationContext(),"가입되었습니다",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegistActivity.this,LoginActivity.class));
-                        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-                        finish();
-                        break;
-                    case 1: // 숫자형식 ㄴㄴ
-                        Toast.makeText(getApplicationContext(), "올바른 비밀번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2: // 4자리 ㄴㄴ
-                        Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
-                        break;
+                }else if(passContent.length()!=4){
+                    Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), "가입되었습니다", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(RegistActivity.this, LoginActivity.class));
+                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+                    finish();
                 }
-            }
+//                else{
+//                switch (checkPass(passContent)){
+//                    case 0: // 통과
+//                        Toast.makeText(getApplicationContext(),"가입되었습니다",Toast.LENGTH_SHORT).show();
+//                        startActivity(new Intent(RegistActivity.this,LoginActivity.class));
+//                        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+//                        finish();
+//                        break;
+//                    case 1: // 숫자형식 ㄴㄴ
+//                        Toast.makeText(getApplicationContext(), "올바른 비밀번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case 2: // 4자리 ㄴㄴ
+//                        Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
             }
         });
 

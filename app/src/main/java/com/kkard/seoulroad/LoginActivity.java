@@ -81,22 +81,13 @@ public class LoginActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
                 }else if( passContent.getBytes().length <= 0){
                     Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
-                }
-                else if(!checkEmail(idContent)){
+                }else if(!checkEmail(idContent)){
                     Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }else if(passContent.length()!=4){
+                    Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
                 }else{
-                    switch (checkPass(passContent)){
-                        case 0: // 통과
-                            startActivity(new Intent(LoginActivity.this, FragmentActivity.class));
-                            finish();
-                            break;
-                        case 1: // 숫자형식 ㄴㄴ
-                            Toast.makeText(getApplicationContext(), "올바른 비밀번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2: // 4자리 ㄴㄴ
-                            Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    startActivity(new Intent(LoginActivity.this, FragmentActivity.class));
+                    finish();
                 }
             }
         });
@@ -110,27 +101,27 @@ public class LoginActivity extends Activity {
                 }
             }
         });
-        email.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!emailFlag) {
-                    email.setText("");
-                    emailFlag=true;
-                }
-                return false;
-            }
-        });
-        pass.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!passFlag){
-                    pass.setText("");
-                    pass.setInputType(0x00000081); // 숫자 비밀번호 방식(***)으로 변경
-                    passFlag=true;
-                }
-                return false;
-            }
-        });
+//        email.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if(!emailFlag) {
+//                    email.setText("");
+//                    emailFlag=true;
+//                }
+//                return false;
+//            }
+//        });
+//        pass.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if(!passFlag){
+//                    pass.setText("");
+//                    pass.setInputType(0x00000081); // 숫자 비밀번호 방식(***)으로 변경
+//                    passFlag=true;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     @Override
@@ -157,17 +148,17 @@ public class LoginActivity extends Activity {
         boolean isNormal = m.matches();
         return isNormal;
     }
-    /////////////// 비밀번호 포맷 체크 (숫자 4자리)///////////////
-    public static int checkPass(String s) {
-        if(s.length()==4) {
-            try {
-                Double.parseDouble(s);
-                return 0; // 정상
-            } catch (NumberFormatException e) {
-                return 1; // 숫자 형식 아님
-            }
-        }else{
-            return 2; // 4 자리가 아님
-        }
-    }
+//    /////////////// 비밀번호 포맷 체크 (숫자 4자리)///////////////
+//    public static int checkPass(String s) {
+//        if(s.length()==4) {
+//            try {
+//                Double.parseDouble(s);
+//                return 0; // 정상
+//            } catch (NumberFormatException e) {
+//                return 1; // 숫자 형식 아님
+//            }
+//        }else{
+//            return 2; // 4 자리가 아님
+//        }
+//    }
 }
