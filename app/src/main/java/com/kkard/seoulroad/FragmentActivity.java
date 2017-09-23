@@ -25,6 +25,14 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
     private ImageView Mymenu;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(FragmentActivity.this,LoginActivity.class));
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);

@@ -43,7 +43,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_tmp);
+        setContentView(R.layout.activity_login);
 ///////////////////// 뷰 객체 초기화 //////////////////
         email = (EditText) findViewById(R.id.emailInput);
         pass = (EditText) findViewById(R.id.passwordInput);
@@ -67,6 +67,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, RegistActivity.class));
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                 finish();
             }
         });
@@ -109,18 +110,6 @@ public class LoginActivity extends Activity {
                 }
             }
         });
-//        email.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                email.setText("");
-//            }
-//        });
-//        pass.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                pass.setText("");
-//            }
-//    });
         email.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

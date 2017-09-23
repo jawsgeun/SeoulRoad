@@ -17,6 +17,18 @@
         android:layout_height="245dp"
         android:background="@android:color/white"
         calendar:drawRoundRect="false"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/fest_list_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="TODAY"
+            android:textSize="30sp"
+            android:gravity="center|bottom"
+            />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_view"
         android:layout_width="match_parent"
