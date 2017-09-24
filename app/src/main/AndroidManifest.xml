@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kkard.seoulroad" >
+    package="com.kkard.seoulroad">
 
     <application
         android:allowBackup="true"
@@ -9,36 +9,47 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="com.kkard.seoulroad.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+        <activity
+            android:name="com.kkard.seoulroad.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.kkard.seoulroad.LoginActivity"/>
-        <activity android:name="com.kkard.seoulroad.FragmentActivity"
-            android:theme="@style/MainTheme"
-            />
-        <activity android:name=".Plant.QRCamera"/>
-        <activity android:name=".Plant.CaptureActivityAnyOrientation"
+        <activity
+            android:name="com.kkard.seoulroad.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.kkard.seoulroad.FragmentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainTheme" />
+        <activity
+            android:name=".Plant.QRCamera"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Plant.CaptureActivityAnyOrientation"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            />
-        <activity android:name="com.kkard.seoulroad.RegistActivity"/>
-        <activity android:name="com.kkard.seoulroad.MyMenu.NoticeActivity"/>
-        </application>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.kkard.seoulroad.RegistActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.kkard.seoulroad.MyMenu.NoticeActivity"
+            android:screenOrientation="portrait" />
+    </application>
 
     <!--permission-->
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
 </manifest>

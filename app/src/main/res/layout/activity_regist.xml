@@ -115,4 +115,57 @@
         android:background="@color/colorPrimaryBtn"
         />
 
+    <TextView
+        android:id="@+id/checkPassC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="7dp"
+        android:text="비밀번호가 일치하지 않습니다"
+        android:textColor="#FF0000"
+        app:layout_constraintLeft_toLeftOf="@+id/joinPassConf"
+        app:layout_constraintTop_toBottomOf="@+id/joinPassConf" />
+
+    <TextView
+        android:id="@+id/checkPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="비밀번호는 4자리 입니다"
+        android:textColor="#FF0000"
+        app:layout_constraintBottom_toTopOf="@+id/joinPassConf"
+        app:layout_constraintLeft_toLeftOf="@+id/joinPass"
+        app:layout_constraintTop_toBottomOf="@+id/joinPass"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/checkEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="아이디를 이메일 형식으로 입력해주세요"
+        android:textColor="#FF0000"
+        app:layout_constraintBottom_toTopOf="@+id/joinPass"
+        app:layout_constraintLeft_toLeftOf="@+id/joinEmail"
+        app:layout_constraintTop_toBottomOf="@+id/joinEmail"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/checkName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="이름이 올바르지 않습니다"
+        android:textColor="#FF0000"
+        app:layout_constraintBottom_toTopOf="@+id/joinEmail"
+        app:layout_constraintLeft_toLeftOf="@+id/joinName"
+        app:layout_constraintTop_toBottomOf="@+id/joinName"
+        app:layout_constraintVertical_bias="1.0" />
+
 </android.support.constraint.ConstraintLayout>
