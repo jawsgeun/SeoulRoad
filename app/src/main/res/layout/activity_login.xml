@@ -59,7 +59,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="12dp"
         android:checked="false"
-        android:text="자동 로그인"
+        android:text="아이디 저장"
         android:textColor="@android:color/white"
         android:textColorLink="@android:color/transparent"
         app:layout_constraintLeft_toLeftOf="@+id/passwordInput"

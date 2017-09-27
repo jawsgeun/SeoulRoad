@@ -23,13 +23,21 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
     private ViewPager viewPager;
     private DrawerLayout drawer;
     private ImageView Mymenu;
+    ///////////////Back 버튼 2번 종료 관련 변수////////////
+    private final long FINISH_INTERVAL_TIME = 2000; //2초안에 Back 버튼 누르면 종료
+    private long   backPressedTime = 0;
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(FragmentActivity.this,LoginActivity.class));
-        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-        finish();
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        }else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "종료를 원하시면 뒤로 버튼을 한 번 더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.kkard.seoulroad;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -34,11 +35,11 @@ public class LoginActivity extends Activity {
     TextView joinBtn;
     ConstraintLayout backLayout;
     CheckBox autoLogin;
+    SharedPreferences sh;
 
     /////////////////////// 변수 선언 //////////////////////
-    boolean emailFlag= false; // 처음으로 이메일 입력창 누르는지
-    boolean passFlag= false; // 처음으로 비번 입력창 누르는지
-    boolean anyPlay=false; // 이메일이나 비번을 입력중인지
+    private boolean isAuto; // 자동로그인 체크박스
+    private boolean autoExist; // 자동로그인 설정 여부
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +53,17 @@ public class LoginActivity extends Activity {
         backLayout = (ConstraintLayout) findViewById(R.id.backGround);
         autoLogin = (CheckBox)findViewById(R.id.autoLogin);
 //////////////////////////////////////////////////////////////
+        sh = getPreferences(MODE_PRIVATE);
+        String userId = sh.getString("UserAutoId","None"); // 자동 저장 되어 있는 ID 가져오기
+        if(userId.equals("None")){ // 자동 저장이 되어있지 않을 경우
+            autoExist = false;
+            isAuto=false;
+        }else{
+            autoExist = true;
+            autoLogin.setChecked(true);
+            isAuto =true;
+            email.setText(userId);
+        }
 
         backLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -76,6 +88,16 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 String idContent = email.getText().toString().trim();
                 String passContent = pass.getText().toString().trim();
+                                                                        //  첫 저장  -> 입력
+                    if(isAuto == (!autoExist)) {                        //  isAuto = true  isExist = false
+                        SharedPreferences.Editor editor = sh.edit();    //  저장되어있는상태 -> 입력 x
+                        if (isAuto) {                                   //  isAuto = true  isExist = true
+                            editor.putString("UserAutoId", idContent);  //  저장 해제 -> 삭제
+                        } else {                                        //  isAuto = false   isExist = true
+                            editor.remove("UserAutoId");                //  저장하지않음 -> 아무것도 안함
+                        }                                               //  isAuto = false   isExist = false
+                        editor.apply();
+                    }
 
                 if(idContent.getBytes().length <= 0 ){//빈값이 넘어올때의 처리
                     Toast.makeText(getApplicationContext(), "아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
@@ -95,9 +117,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(),"자동 로그인 활성화",Toast.LENGTH_SHORT).show();
+                    isAuto = true;
                 }else{
-                    Toast.makeText(getApplicationContext(),"자동 로그인 비활성화",Toast.LENGTH_SHORT).show();
+                    isAuto= false;
                 }
             }
         });
