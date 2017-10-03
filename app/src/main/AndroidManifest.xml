@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/GreenStatus">
         <activity
             android:name="com.kkard.seoulroad.SplashActivity"
             android:screenOrientation="portrait"
@@ -21,11 +21,12 @@
         </activity>
         <activity
             android:name="com.kkard.seoulroad.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name="com.kkard.seoulroad.FragmentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MainTheme" />
+            android:theme="@style/WhiteStatus" />
         <activity
             android:name=".Plant.QRCamera"
             android:screenOrientation="portrait" />

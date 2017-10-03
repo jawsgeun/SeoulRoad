@@ -2,7 +2,6 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,7 +22,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="11dp"
             android:scaleType="fitXY"
-            android:src="@drawable/logo"
+            android:src="@drawable/logo_green"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
