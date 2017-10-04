@@ -50,12 +50,6 @@ public class FActivity extends Fragment implements DatePickerController {
         recyclerView = (RecyclerView)getView().findViewById(R.id.fest_recycle_view);
         recyclerView.setHasFixedSize(true);
 
-//        ArrayList items = new ArrayList<ListItem>();
-//
-//        items.add(new ListItem(R.drawable.abc));
-//        items.add(new ListItem(R.drawable.listview_off));
-//        items.add(new ListItem(R.drawable.listview_on));
-
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 

@@ -1,10 +1,12 @@
 package com.kkard.seoulroad.MyMenu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ExpandableListView;
 
+import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class NoticeActivity extends Activity{
     ExpandableListView expandableListView;
     ExpandableAdapter adapter;
+
     ArrayList<NoticeParentData> parentDatas;
     ArrayList<ArrayList<NoticeChildData>> childListDatas;
 
@@ -49,5 +52,12 @@ public class NoticeActivity extends Activity{
         parentDatas.add(new NoticeParentData(sizeList,"암호를 잊어버리면 이렇게 하나요?","1597/11/06"));
         childListDatas.add(new ArrayList<NoticeChildData>());
         childListDatas.get(sizeList).add(new NoticeChildData("아니니까 알아서 하세요 ^-^"));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(NoticeActivity.this,FragmentActivity.class));
+        finish();
     }
 }
