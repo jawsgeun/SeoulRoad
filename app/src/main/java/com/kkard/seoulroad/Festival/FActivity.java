@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kkard.seoulroad.R;
+import com.kkard.seoulroad.Recycler.Data;
+import com.kkard.seoulroad.Recycler.ViewAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.nlmartian.silkcal.DatePickerController;
-import me.nlmartian.silkcal.DayPickerView;
 import me.nlmartian.silkcal.SimpleMonthAdapter;
 
 
@@ -45,19 +47,19 @@ public class FActivity extends Fragment implements DatePickerController {
         calendarView = (DayPickerView_C) getView().findViewById(R.id.calendar_view);
         calendarView.setController(FActivity.this);
 
-        recyclerView = (RecyclerView)getView().findViewById(R.id.recycle_view);
+        recyclerView = (RecyclerView)getView().findViewById(R.id.fest_recycle_view);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList items = new ArrayList<ListItem>();
-
-        items.add(new ListItem(R.drawable.abc));
-        items.add(new ListItem(R.drawable.listview_off));
-        items.add(new ListItem(R.drawable.listview_on));
+//        ArrayList items = new ArrayList<ListItem>();
+//
+//        items.add(new ListItem(R.drawable.abc));
+//        items.add(new ListItem(R.drawable.listview_off));
+//        items.add(new ListItem(R.drawable.listview_on));
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerAdapter(context,items);
+        adapter = new ViewAdapter(getData(),context);
         recyclerView.setAdapter(adapter);
 
     }
@@ -74,6 +76,23 @@ public class FActivity extends Fragment implements DatePickerController {
 
     @Override
     public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays) {
+
+    }
+    private List<Data> getData() {
+
+        List<Data> finalList = new ArrayList<>();
+
+        for (int i = 1; i <= 3; i++) {
+
+            Data data = new Data();
+
+                data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
+                data.setTextItem("List Item: " + i);
+
+            finalList.add(data);
+        }
+
+        return finalList;
 
     }
 }

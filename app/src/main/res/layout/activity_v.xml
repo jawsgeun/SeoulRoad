@@ -5,27 +5,26 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="205dp"
-        android:id="@+id/v_rank_layout">
-        <com.kkard.seoulroad.Circleindicator_C.LoopViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"/>
-        <!--<com.tmall.ultraviewpager.UltraViewPager-->
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="205dp"-->
+        <!--android:id="@+id/v_rank_layout">-->
+        <!--<com.kkard.seoulroad.Circleindicator_C.LoopViewPager-->
+            <!--android:id="@+id/viewpager"-->
             <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="300dp"-->
-            <!--android:id="@+id/viewpager">-->
-        <!--</com.tmall.ultraviewpager.UltraViewPager>-->
-        <me.relex.circleindicator.CircleIndicator
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignBottom="@id/viewpager"
-            android:padding="5dp"
-            android:id="@+id/indicator">
-        </me.relex.circleindicator.CircleIndicator>
-    </RelativeLayout>
+            <!--android:layout_height="200dp"/>-->
+        <!--<me.relex.circleindicator.CircleIndicator-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="48dp"-->
+            <!--android:layout_alignBottom="@id/viewpager"-->
+            <!--android:padding="5dp"-->
+            <!--android:id="@+id/indicator">-->
+        <!--</me.relex.circleindicator.CircleIndicator>-->
+    <!--</RelativeLayout>-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/v_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/material_design_android_floating_action_menu"
         android:layout_width="match_parent"
