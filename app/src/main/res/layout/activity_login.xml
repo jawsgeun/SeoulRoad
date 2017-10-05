@@ -53,31 +53,17 @@
         app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
     <CheckBox
-        android:id="@+id/autoLogin"
+        android:id="@+id/saveID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="11dp"
         android:checked="false"
         android:text="아이디 저장"
         android:textColor="@android:color/white"
         android:textColorLink="@android:color/transparent"
-        app:layout_constraintLeft_toLeftOf="@+id/passwordInput"
+        app:layout_constraintLeft_toLeftOf="@+id/iconPass"
         app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
-
-    <TextView
-        android:id="@+id/joinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="8dp"
-        android:text="회원가입 하기 >"
-        android:textColor="@android:color/white"
-        app:layout_constraintBaseline_toBaselineOf="@+id/autoLogin"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toRightOf="@+id/autoLogin"
-        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/loginButton"
@@ -95,7 +81,7 @@
         tools:layout_editor_absoluteY="433dp" />
 
     <Button
-        android:id="@+id/loginKakao"
+        android:id="@+id/joinButton"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
@@ -103,7 +89,7 @@
         android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryBtn"
-        android:text="카카오톡으로 연동하기"
+        android:text="회원가입 하기"
         android:textColor="#FFFFFF"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -138,5 +124,16 @@
         app:layout_constraintRight_toRightOf="@+id/iconMail"
         app:layout_constraintTop_toTopOf="@+id/passwordInput"
         android:src="@drawable/icon_pass" />
+
+    <CheckBox
+        android:id="@+id/autoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="0dp"
+        android:text="자동 로그인"
+        android:textColor="#FFFFFF"
+        app:layout_constraintRight_toRightOf="@+id/passwordInput"
+        app:layout_constraintTop_toTopOf="@+id/saveID" />
 
 </android.support.constraint.ConstraintLayout>

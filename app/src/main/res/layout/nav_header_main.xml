@@ -13,32 +13,30 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nav_logo"
         android:layout_width="120dp"
         android:layout_height="60dp"
-        app:srcCompat="@drawable/logo"
         android:layout_gravity="center_horizontal"
         android:scaleType="fitXY"
-        />
+        app:srcCompat="@drawable/logo" />
 
     <TextView
+        android:id="@+id/nav_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:paddingTop="20dp"
         android:text="김세진"
-        android:textSize="15sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:gravity="center_horizontal"
-        android:textStyle="bold"
-        />
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView"
-        android:paddingTop="8dp"
+        android:id="@+id/nav_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="kan02188@naver.com"
         android:gravity="center_horizontal"
-        android:textSize="20dp"
-        />
+        android:paddingTop="8dp"
+        android:text="kan02188@naver.com"
+        android:textSize="20dp" />
 </LinearLayout>

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -28,40 +27,56 @@ public class LoginActivity extends Activity {
     ///////////////Back 버튼 2번 종료 관련 변수////////////
     private final long FINISH_INTERVAL_TIME = 2000; //2초안에 Back 버튼 누르면 종료
     private long   backPressedTime = 0;
-
+    public String userId, userPassword;
     /////////////// 뷰 객체 선언 /////////////
     EditText email, pass;
-    Button loginBtn;
-    TextView joinBtn;
+    Button loginBtn, joinBtn;
     ConstraintLayout backLayout;
-    CheckBox autoLogin;
+    CheckBox saveID, autoLogin;
     SharedPreferences sh;
 
     /////////////////////// 변수 선언 //////////////////////
-    private boolean isAuto; // 자동로그인 체크박스
-    private boolean autoExist; // 자동로그인 설정 여부
+    private boolean isSave; // 아이디 저장 체크박스
+    private boolean saveExist; // 아이디 저장 설정 여부
+    private boolean isAuto;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sh = getPreferences(MODE_PRIVATE);
+        Intent intent = getIntent();
+        if(intent.getStringExtra("isAuto")!=null){
+            SharedPreferences.Editor editor = sh.edit();
+            editor.putString("isAuto","false");
+            editor.apply();
+        }
+        String autoBool = sh.getString("isAuto","None");
+        if(autoBool.equals("true")){ // 자동 로그인 할 경우
+            userId = sh.getString("userAutoId","None"); // 글로벌 아이디 저장
+            userPassword =sh.getString("userAutoPass","None"); // 글로벌 비밀번호 저장
+            intent = new Intent(LoginActivity.this, FragmentActivity.class);
+            intent.putExtra("userId",userId);
+            startActivity(intent);
+            finish();
+        }
 ///////////////////// 뷰 객체 초기화 //////////////////
         email = (EditText) findViewById(R.id.emailInput);
         pass = (EditText) findViewById(R.id.passwordInput);
         loginBtn = (Button) findViewById(R.id.loginButton);
-        joinBtn = (TextView) findViewById(R.id.joinButton);
+        joinBtn = (Button) findViewById(R.id.joinButton);
         backLayout = (ConstraintLayout) findViewById(R.id.backGround);
+        saveID = (CheckBox)findViewById(R.id.saveID);
         autoLogin = (CheckBox)findViewById(R.id.autoLogin);
 //////////////////////////////////////////////////////////////
-        sh = getPreferences(MODE_PRIVATE);
-        String userId = sh.getString("UserAutoId","None"); // 자동 저장 되어 있는 ID 가져오기
+        String userId = sh.getString("UserSaveId","None"); // 자동 저장 되어 있는 ID 가져오기
         if(userId.equals("None")){ // 자동 저장이 되어있지 않을 경우
-            autoExist = false;
-            isAuto=false;
+            saveExist = false;
+            isSave =false;
         }else{
-            autoExist = true;
-            autoLogin.setChecked(true);
-            isAuto =true;
+            saveExist = true;
+            saveID.setChecked(true);
+            isSave =true;
             email.setText(userId);
         }
 
@@ -89,13 +104,13 @@ public class LoginActivity extends Activity {
                 String idContent = email.getText().toString().trim();
                 String passContent = pass.getText().toString().trim();
                                                                         //  첫 저장  -> 입력
-                    if(isAuto == (!autoExist)) {                        //  isAuto = true  isExist = false
+                    if(isSave == (!saveExist)) {                        //  isSave = true  isExist = false
                         SharedPreferences.Editor editor = sh.edit();    //  저장되어있는상태 -> 입력 x
-                        if (isAuto) {                                   //  isAuto = true  isExist = true
-                            editor.putString("UserAutoId", idContent);  //  저장 해제 -> 삭제
-                        } else {                                        //  isAuto = false   isExist = true
-                            editor.remove("UserAutoId");                //  저장하지않음 -> 아무것도 안함
-                        }                                               //  isAuto = false   isExist = false
+                        if (isSave) {                                   //  isSave = true  isExist = true
+                            editor.putString("UserSaveId", idContent);  //  저장 해제 -> 삭제
+                        } else {                                        //  isSave = false   isExist = true
+                            editor.remove("UserSaveId");                //  저장하지않음 -> 아무것도 안함
+                        }                                               //  isSave = false   isExist = false
                         editor.apply();
                     }
 
@@ -108,8 +123,27 @@ public class LoginActivity extends Activity {
                 }else if(passContent.length()!=4){
                     Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
                 }else{
-                    startActivity(new Intent(LoginActivity.this, FragmentActivity.class));
+                    if(isAuto){
+                        SharedPreferences.Editor editor = sh.edit();
+                        editor.putString("UserAutoId",idContent);
+                        editor.putString("UserAutoPass",passContent);
+                        editor.putString("isAuto","true");
+                        editor.apply();
+                    }
+                    Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
+                    intent.putExtra("userId",idContent);
+                    startActivity(intent);
                     finish();
+                }
+            }
+        });
+        saveID.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    isSave = true;
+                }else{
+                    isSave = false;
                 }
             }
         });
@@ -119,31 +153,10 @@ public class LoginActivity extends Activity {
                 if(isChecked){
                     isAuto = true;
                 }else{
-                    isAuto= false;
+                    isAuto = false;
                 }
             }
         });
-//        email.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if(!emailFlag) {
-//                    email.setText("");
-//                    emailFlag=true;
-//                }
-//                return false;
-//            }
-//        });
-//        pass.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if(!passFlag){
-//                    pass.setText("");
-//                    pass.setInputType(0x00000081); // 숫자 비밀번호 방식(***)으로 변경
-//                    passFlag=true;
-//                }
-//                return false;
-//            }
-//        });
     }
 
     @Override
@@ -160,7 +173,6 @@ public class LoginActivity extends Activity {
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(), "종료를 원하시면 뒤로 버튼을 한 번 더 눌러주세요.", Toast.LENGTH_SHORT).show();
         }
-
     }
     /////////////// 이메일 포맷 체크 ////////////////
     public static boolean checkEmail(String email){
@@ -170,17 +182,4 @@ public class LoginActivity extends Activity {
         boolean isNormal = m.matches();
         return isNormal;
     }
-//    /////////////// 비밀번호 포맷 체크 (숫자 4자리)///////////////
-//    public static int checkPass(String s) {
-//        if(s.length()==4) {
-//            try {
-//                Double.parseDouble(s);
-//                return 0; // 정상
-//            } catch (NumberFormatException e) {
-//                return 1; // 숫자 형식 아님
-//            }
-//        }else{
-//            return 2; // 4 자리가 아님
-//        }
-//    }
 }

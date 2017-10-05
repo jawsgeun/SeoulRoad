@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
@@ -23,6 +24,7 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
     private ViewPager viewPager;
     private DrawerLayout drawer;
     private ImageView Mymenu;
+    private String userId;
     ///////////////Back 버튼 2번 종료 관련 변수////////////
     private final long FINISH_INTERVAL_TIME = 2000; //2초안에 Back 버튼 누르면 종료
     private long   backPressedTime = 0;
@@ -45,6 +47,8 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
@@ -85,6 +89,8 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
         });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        TextView navId = (TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_id);
+        navId.setText(userId);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -103,6 +109,11 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
             finish();
         } else if (id == R.id.menu_modify) {
             Toast.makeText(getApplicationContext(),"아직 못만듬",Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.menu_logout) {
+            Intent intent = new Intent(FragmentActivity.this, LoginActivity.class);
+            intent.putExtra("isAuto","false");
+            startActivity(intent);
+            finish();
         }
         return true;
     }
