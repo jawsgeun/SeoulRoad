@@ -52,19 +52,9 @@ public class VActivity extends Fragment {
         recyclerView.setAdapter(adapter);
 
 //////// 플로팅 액션 메뉴 //////////
-        fam = (FloatingActionMenu)view.findViewById(R.id.material_design_android_floating_action_menu);
-        fam.setClosedOnTouchOutside(true);
+
         fab1 = (FloatingActionButton)view.findViewById(R.id.material_design_floating_action_menu_item1);
-        fab2 = (FloatingActionButton)view.findViewById(R.id.material_design_floating_action_menu_item2);
-
-
         fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
