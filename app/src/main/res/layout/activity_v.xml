@@ -25,39 +25,17 @@
         android:id="@+id/v_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/material_design_android_floating_action_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/material_design_floating_action_menu_item1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        fab:menu_labels_style="@style/MenuLabelsStyle"
-        fab:menu_labels_ellipsize="end"
-        fab:menu_labels_singleLine="true"
-        fab:menu_backgroundColor="#ccffffff"
-        fab:menu_fab_label="Menu label">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/listview_on"
-            fab:fab_label="Menu Item 1"
-            fab:fab_size="mini" />
-
-        <com.github.clans.fab.FloatingActionButton
-
-            android:id="@+id/material_design_floating_action_menu_item2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/listview_off"
-            fab:fab_label="Menu Item 2"
-            fab:fab_size="mini" />
-
-
-    </com.github.clans.fab.FloatingActionMenu>
-
+        android:src="@drawable/listview_on"
+        fab:fab_label="Menu Item 1"
+        fab:fab_size="normal" />
 </RelativeLayout>
