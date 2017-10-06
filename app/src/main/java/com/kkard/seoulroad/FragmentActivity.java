@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.kkard.seoulroad.MyMenu.MyPostActivity;
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
 
 
@@ -93,7 +94,8 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
         int id = item.getItemId();
 
         if (id == R.id.menu_my_post) {
-            Toast.makeText(getApplicationContext(),"아직 못만듬",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(FragmentActivity.this, MyPostActivity.class));
+            finish();
         } else if (id == R.id.menu_my_like) {
             Toast.makeText(getApplicationContext(),"아직 못만듬",Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_fqa) {

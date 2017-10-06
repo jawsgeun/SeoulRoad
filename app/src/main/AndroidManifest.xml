@@ -42,6 +42,10 @@
         <activity
             android:name="com.kkard.seoulroad.MyMenu.NoticeActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Visit.VRegitActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MyMenu.MyPostActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
     <!--permission-->

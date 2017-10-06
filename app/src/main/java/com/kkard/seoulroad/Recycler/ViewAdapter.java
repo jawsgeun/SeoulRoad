@@ -26,13 +26,14 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int VIEW_TYPE_TEXT = 51;
     public final static int VIEW_TYPE_PAGER = 52;
     public static final int VIEW_TYPE_IMAGE = 53;
-
+    private Context mcontext;
     private List<Data> mDataList = new ArrayList<>();
 
     public ViewAdapter(List<Data> list, Context context) {
 
         if (list != null && list.size() > 0)
             mDataList.addAll(list);
+        mcontext = context;
     }
 
     @Override
@@ -94,7 +95,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void configurePagerHolder(PagerItemHolder holder, int position) {
 
-        IndicatorAdapter mPageAdapter = new IndicatorAdapter();
+        IndicatorAdapter mPageAdapter = new IndicatorAdapter(mcontext);
         holder.viewPager.setAdapter(mPageAdapter);
         holder.indicator.setViewPager(holder.viewPager);
 
