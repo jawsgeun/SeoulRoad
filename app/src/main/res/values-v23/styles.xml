@@ -13,4 +13,7 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+    <!--칼린더-->
+    <string name="sans_serif" translatable="false">sans-serif</string>
+    <!--칼린더-->
 </resources>

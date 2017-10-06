@@ -8,12 +8,6 @@
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_image</item>
     </style>
-    <style name="WhiteStatus" parent="Theme.AppCompat.Light.NoActionBar">
-
-    </style>
-    <style name="GreenStatus" parent="Theme.AppCompat.Light.NoActionBar">
-
-    </style>
     <style name="ToolbarTheme" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:background">#FFFFFF</item>
     </style>
@@ -31,5 +25,8 @@
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
     </style>
+    <!--칼린더-->
+    <string name="sans_serif" translatable="false">sans-serif</string>
+    <!--칼린더-->
 
 </resources>

@@ -1,4 +1,8 @@
-package com.kkard.seoulroad.Festival;
+package com.kkard.seoulroad.Calendar_C;
+
+/**
+ * Created by KyungHWan on 2017-10-07.
+ */
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,22 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.kkard.seoulroad.Calendar_C.DatePickerController;
-import com.kkard.seoulroad.Calendar_C.DayPickerView;
-import com.kkard.seoulroad.Calendar_C.ResizeAnimation;
-import com.kkard.seoulroad.Calendar_C.SimpleMonthAdapter;
 import com.kkard.seoulroad.R;
 
 import java.util.Calendar;
 import java.util.HashMap;
 
-
-/**
- * Created by KyungHWan on 2017-09-19.
- */
-
-public class DayPickerView_C extends DayPickerView {
-    public static final String TAG = DayPickerView_C.class.getSimpleName();
+public class DayPickerView extends RecyclerView {
+    public static final String TAG = DayPickerView.class.getSimpleName();
 
     protected Context mContext;
     protected SimpleMonthAdapter mAdapter;
@@ -33,17 +28,17 @@ public class DayPickerView_C extends DayPickerView {
     private TypedArray typedArray;
     private OnScrollListener onScrollListener;
 
-    public DayPickerView_C(Context context)
+    public DayPickerView(Context context)
     {
         this(context, null);
     }
 
-    public DayPickerView_C(Context context, AttributeSet attrs)
+    public DayPickerView(Context context, AttributeSet attrs)
     {
         this(context, attrs, 0);
     }
 
-    public DayPickerView_C(Context context, AttributeSet attrs, int defStyle)
+    public DayPickerView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
         if (!isInEditMode())
@@ -72,8 +67,19 @@ public class DayPickerView_C extends DayPickerView {
 
 
     public void init(Context paramContext) {
-        super.init(paramContext);
         onScrollListener = new OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                final SimpleMonthView child = (SimpleMonthView) recyclerView.getChildAt(0);
+                if (child == null) {
+                    return;
+                }
+
+                mPreviousScrollPosition = dy;
+                mPreviousScrollState = mCurrentScrollState;
+            }
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -92,18 +98,18 @@ public class DayPickerView_C extends DayPickerView {
                     float offset = getY() - firstChild.getY();
                     if (offset > firstChild.getMeasuredHeight() / 2) {
                         stopScroll();
-                        smoothScrollBy(0, (int) (getChildAt(1).getY() - getY()+30));
+                        smoothScrollBy(0, (int) (getChildAt(1).getY() - getY()));
                     } else {
                         stopScroll();
-                        smoothScrollBy(0, -(int) offset+30);
+                        smoothScrollBy(0, -(int) offset);
                     }
 
                     postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            int firstItemHeight = 490;
+                            int firstItemHeight = getChildAt(0).getMeasuredHeight();
                             if (getMeasuredHeight() != firstItemHeight) {
-                                ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView_C.this, firstItemHeight);
+                                ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView.this, firstItemHeight);
                                 resizeAnimation.setDuration(300);
                                 startAnimation(resizeAnimation);
                             }
@@ -112,9 +118,11 @@ public class DayPickerView_C extends DayPickerView {
                 }
             }
         };
+
         setLayoutManager(new LinearLayoutManager(paramContext));
         mContext = paramContext;
         setUpListView();
+
     }
 
 
@@ -130,8 +138,8 @@ public class DayPickerView_C extends DayPickerView {
             @Override
             public void run() {
                 if (getChildAt(0) != null) {
-                    int firstItemHeight = 520;
-                    ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView_C.this, firstItemHeight);
+                    int firstItemHeight = getChildAt(0).getMeasuredHeight();
+                    ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView.this, firstItemHeight);
                     resizeAnimation.setDuration(300);
                     startAnimation(resizeAnimation);
                 }
