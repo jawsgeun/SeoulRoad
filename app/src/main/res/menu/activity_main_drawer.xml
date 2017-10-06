@@ -17,6 +17,9 @@
         <item
             android:id="@+id/menu_modify"
             android:title="비밀번호 수정"/>
+        <item
+            android:id="@+id/menu_logout"
+            android:title="로그아웃"/>
     </group>
 
 </menu>
