@@ -178,7 +178,6 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
                 monthCountMap.put(calendarMonth, tempMap);
             }
         }
-
         notifyDataSetChanged();
     }
 

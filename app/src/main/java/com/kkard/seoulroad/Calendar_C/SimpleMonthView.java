@@ -15,6 +15,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.text.format.DateUtils;
 import android.text.format.Time;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -117,6 +118,7 @@ public class SimpleMonthView extends View {
     private DateFormatSymbols mDateFormatSymbols = new DateFormatSymbols();
 
     private OnDayClickListener mOnDayClickListener;
+    int flag = 1;
 
     public SimpleMonthView(Context context, TypedArray typedArray)
     {
@@ -187,7 +189,7 @@ public class SimpleMonthView extends View {
     private void drawMonthTitle(Canvas canvas) {
         int paddingDay = (mWidth - 2 * mPadding) / (2 * mNumDays);
         //int x = paddingDay * (findDayOffset() * 2 + 1) + mPadding;
-        int x = (int)(getWidth()*0.5);
+        int x = (int)(getWidth()*0.5);//월 가운데에 위치 시키는것
         int y = ((mRowHeight + MINI_DAY_NUMBER_TEXT_SIZE) / 2 - DAY_SEPARATOR_WIDTH + MONTH_HEADER_SIZE / 5 * 2)-15;
 
         StringBuilder stringBuilder = new StringBuilder(getMonthString().toLowerCase());
@@ -258,7 +260,9 @@ public class SimpleMonthView extends View {
         int dayOffset = findDayOffset();
         int day = 1;
 
+
         while (day <= mNumCells) {
+
             int x = paddingDay * (1 + dayOffset * 2) + mPadding;
             if (mMonth == mSelectedBeginMonth && mSelectedBeginDay == day && mSelectedBeginYear == mYear) {
                 if (mDrawRect)
@@ -266,22 +270,23 @@ public class SimpleMonthView extends View {
                     RectF rectF = new RectF(x - DAY_SELECTED_CIRCLE_SIZE, (y  - MINI_DAY_NUMBER_TEXT_SIZE / 3) - DAY_SELECTED_CIRCLE_SIZE, x + DAY_SELECTED_CIRCLE_SIZE, (y  - MINI_DAY_NUMBER_TEXT_SIZE / 3) + DAY_SELECTED_CIRCLE_SIZE);
                     canvas.drawRoundRect(rectF, 10.0f, 10.0f,mSelectedCirclePaint);
                 }
-                else
+                else {
                     canvas.drawCircle(x, y - MINI_DAY_NUMBER_TEXT_SIZE / 3, DAY_SELECTED_CIRCLE_SIZE, mSelectedCirclePaint);
+                }
+                Log.d("day : "+day,"cellNum : "+mNumCells);
             } else {
-                if (mHasToday && (mToday == day)) {
+                if (mHasToday && (mToday == day)&&flag <3) {
+                    Log.d("1day : "+day,"cellNum : "+mNumCells);
                     canvas.drawCircle(x, y - MINI_DAY_NUMBER_TEXT_SIZE / 3, DAY_SELECTED_CIRCLE_SIZE, mCurrentCirclePaint);
+                    flag=flag+1;
                 } else {
-                    if (day == 1) {
-                        drawMonthTitle(canvas);
-                    }
+                    drawMonthTitle(canvas);
                     Integer dotsCount = eventSymbols.get(day);
                     if (dotsCount != null && dotsCount > 0) {
                         drawDots(x, y, dotsCount, canvas);
                     }
                 }
             }
-
 
             if (dayOffset == 0  || dayOffset == mNumDays - 1) {
                 mMonthNumPaint.setColor(mWeekendsColor);
