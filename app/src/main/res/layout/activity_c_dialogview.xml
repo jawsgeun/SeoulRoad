@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:orientation="vertical"
+        android:background="@android:color/darker_gray"
+        >
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Title"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            />
+
+        <TextView
+            android:id="@+id/tv_id_dia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:textColor="@android:color/black"
+            />
+
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:src="@drawable/abc"
+            android:layout_gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="25dp"
+            >
+
+            <Button
+                android:id="@+id/btn_heart"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/listview_on" />
+
+            <TextView
+                android:id="@+id/bt_right"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:textSize="15dp"
+                android:text="좋아요"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:id="@+id/tv_heart_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:textSize="15dp"
+                android:text="xx개"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:id="@+id/tv_content"
+            android:layout_marginLeft="25dp"
+            android:textSize="15dp"
+            android:text="주저리주러리"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+</LinearLayout>
