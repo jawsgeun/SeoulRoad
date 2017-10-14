@@ -53,8 +53,8 @@ public class LoginActivity extends Activity {
         }
         String autoBool = sh.getString("isAuto","None");
         if(autoBool.equals("true")){ // 자동 로그인 할 경우
-            userId = sh.getString("userAutoId","None"); // 글로벌 아이디 저장
-            userPassword =sh.getString("userAutoPass","None"); // 글로벌 비밀번호 저장
+            userId = sh.getString("UserAutoId","None"); // 글로벌 아이디 저장
+            userPassword =sh.getString("UserAutoPass","None"); // 글로벌 비밀번호 저장
             intent = new Intent(LoginActivity.this, FragmentActivity.class);
             intent.putExtra("userId",userId);
             startActivity(intent);
