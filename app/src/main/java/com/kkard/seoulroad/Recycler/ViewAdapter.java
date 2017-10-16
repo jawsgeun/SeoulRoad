@@ -12,6 +12,7 @@ import com.kkard.seoulroad.ViewHolder.ImageItemHolder;
 import com.kkard.seoulroad.ViewHolder.PagerItemHolder;
 import com.kkard.seoulroad.ViewHolder.TextItemHolder;
 import com.kkard.seoulroad.utils.Check;
+import com.kkard.seoulroad.utils.DialogView_C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int VIEW_TYPE_TEXT = 51;
     public final static int VIEW_TYPE_PAGER = 52;
     public static final int VIEW_TYPE_IMAGE = 53;
+    private DialogView_C mDialog;
     private Context mcontext;
     private List<Data> mDataList = new ArrayList<>();
 
@@ -101,12 +103,36 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 }
     private void configureImageHolder(ImageItemHolder holder, int position){
-        Data data = mDataList.get(position);
+        final Data data = mDataList.get(position);
 
         if(!data.getListImageItemList().isEmpty()){
             holder.imageView1.setImageResource(data.getListImageItemList().get(0).getItemImage());
+            holder.imageView1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog = new DialogView_C(v.getContext(),data.getListImageItemList().get(0).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+                    mDialog.show();
+                    mDialog.setCanceledOnTouchOutside(false);
+                }
+            });
             holder.imageView2.setImageResource(data.getListImageItemList().get(1).getItemImage());
+            holder.imageView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog = new DialogView_C(v.getContext(),data.getListImageItemList().get(1).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+                    mDialog.show();
+                    mDialog.setCanceledOnTouchOutside(false);
+                }
+            });
             holder.imageView3.setImageResource(data.getListImageItemList().get(2).getItemImage());
+            holder.imageView3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog = new DialogView_C(v.getContext(),data.getListImageItemList().get(2).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+                    mDialog.show();
+                    mDialog.setCanceledOnTouchOutside(false);
+                }
+            });
         }
 
     }

@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kkard.seoulroad.R;
@@ -23,11 +24,13 @@ public class DialogView_C extends Dialog {
     private TextView mContentView;
     private TextView mIdView;
     private TextView mCountView;
+    private ImageView mImageView;
 
     private Button mLeftButton;
     private Button mRightButton;
     private Button mMiddleButton;
 
+    private int mImage;
     private String mTitle;
     private String mContent;
     private String mCount;
@@ -47,16 +50,17 @@ public class DialogView_C extends Dialog {
         lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         lpWindow.dimAmount = 0.8f;
         getWindow().setAttributes(lpWindow);
-        if(flag) {
+        if(flag) { // 이미지 클릭 다이얼로그
             setContentView(R.layout.activity_c_dialogview);
             setLayout();
             setTitle(mTitle);
             setContent(mContent);
             setId(mId);
             setCount(mCount);
+            setImage(mImage);
             //setClickListener(mLeftClickListener , mRightClickListener);
         }
-        else {
+        else { // 버튼 3개 다이얼로그
             setContentView(R.layout.activity_regit_dialog);
             setLayout(flag);
             setTitle(mTitle);
@@ -64,10 +68,11 @@ public class DialogView_C extends Dialog {
         }
 
     }
-
-    public DialogView_C(Context context,String title, String id,String count,String content) {
+// 이미지 클릭시 생성자
+    public DialogView_C(Context context,int image, String title, String id,String count,String content) {
         // Dialog 배경을 투명 처리 해준다.
         super(context , android.R.style.Theme_Translucent_NoTitleBar);
+        mImage = image;
         mTitle = title;
         mId = id;
         mCount = count;
@@ -90,6 +95,7 @@ public class DialogView_C extends Dialog {
         this.mLeftClickListener = leftListener;
         this.mRightClickListener = rightListener;
     }
+    // 버튼 3개 생성자
     public DialogView_C (Context context, String title, View.OnClickListener photoClick , View.OnClickListener galleryClick, View.OnClickListener cancelClick){
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mTitle = title;
@@ -113,12 +119,12 @@ public class DialogView_C extends Dialog {
     private void setTitle(String title){
         mTitleView.setText(title);
     }
-
     private void setContent(String content){
         mContentView.setText(content);
     }
     private void setCount(String count){mContentView.setText(count);}
     private void setId(String id){mIdView.setText(id);}
+    private void setImage(int id){if(id != -1)mImageView.setImageResource(id);}
 
     private void setClickListener(View.OnClickListener left , View.OnClickListener right){
         if(left!=null && right!=null){
@@ -139,13 +145,16 @@ public class DialogView_C extends Dialog {
     /*
      * Layout
      */
+    // 이미지 클릭 초기화 함수
     private void setLayout(){
         mTitleView = (TextView) findViewById(R.id.tv_title);
         mContentView = (TextView) findViewById(R.id.tv_content);
         mCountView = (TextView) findViewById(R.id.tv_heart_cnt);
         mIdView = (TextView)findViewById(R.id.tv_id_dia);
+        mImageView = (ImageView)findViewById(R.id.image_dialog);
         mLeftButton = (Button) findViewById(R.id.btn_heart);
     }
+    // 버튼 세개 초기화 함수
     private void setLayout(boolean flag){
         mTitleView = (TextView) findViewById(R.id.up_title);
         mLeftButton = (Button) findViewById(R.id.takepicture);

@@ -41,7 +41,7 @@ public class MyPostActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog = new DialogView_C(v.getContext(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+                mDialog = new DialogView_C(v.getContext(),-1,"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
                 mDialog.show();
             }
         });

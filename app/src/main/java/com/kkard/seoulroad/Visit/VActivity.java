@@ -73,11 +73,15 @@ public class VActivity extends Fragment {
 
             List<ListImageItem> imageItems = new ArrayList<>();
 
-            ListImageItem listImageItem = new ListImageItem();
-            listImageItem.setItemImage(R.drawable.abc);
-            imageItems.add(listImageItem);
-            imageItems.add(listImageItem);
-             imageItems.add(listImageItem);
+            ListImageItem listImageItem1 = new ListImageItem();
+            listImageItem1.setItemImage(R.drawable.abc);
+            imageItems.add(listImageItem1);
+        ListImageItem listImageItem2 = new ListImageItem();
+        listImageItem2.setItemImage(R.drawable.logo_green);
+            imageItems.add(listImageItem2);
+        ListImageItem listImageItem3 = new ListImageItem();
+        listImageItem3.setItemImage(R.drawable.icon_email);
+             imageItems.add(listImageItem3);
         Data data = new Data();
         data.setViewType(ViewAdapter.VIEW_TYPE_PAGER);
         finalList.add(data);

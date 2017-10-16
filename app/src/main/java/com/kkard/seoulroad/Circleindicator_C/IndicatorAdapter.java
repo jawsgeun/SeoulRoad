@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
-import com.kkard.seoulroad.Visit.VActivity;
 import com.kkard.seoulroad.utils.DialogView_C;
 
 import java.util.Random;
@@ -62,7 +61,7 @@ public class IndicatorAdapter extends PagerAdapter {
     private View.OnClickListener mPagerListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mDialog = new DialogView_C(v.getContext(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+            mDialog = new DialogView_C(v.getContext(),-1,"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
             mDialog.show();
             mDialog.setCanceledOnTouchOutside(false);
         }
