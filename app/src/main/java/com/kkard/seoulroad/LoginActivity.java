@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -34,12 +39,13 @@ public class LoginActivity extends Activity {
     ConstraintLayout backLayout;
     CheckBox saveID, autoLogin;
     SharedPreferences sh;
+    TextView emailError,passError;
 
     /////////////////////// 변수 선언 //////////////////////
     private boolean isSave; // 아이디 저장 체크박스
     private boolean saveExist; // 아이디 저장 설정 여부
     private boolean isAuto;
-
+    private int lineColor;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +66,11 @@ public class LoginActivity extends Activity {
             startActivity(intent);
             finish();
         }
-///////////////////// 뷰 객체 초기화 //////////////////
-        email = (EditText) findViewById(R.id.emailInput);
-        pass = (EditText) findViewById(R.id.passwordInput);
-        loginBtn = (Button) findViewById(R.id.loginButton);
-        joinBtn = (Button) findViewById(R.id.joinButton);
-        backLayout = (ConstraintLayout) findViewById(R.id.backGround);
-        saveID = (CheckBox)findViewById(R.id.saveID);
-        autoLogin = (CheckBox)findViewById(R.id.autoLogin);
-//////////////////////////////////////////////////////////////
+        InitView();
+        lineColor = Color.parseColor("#FFFFFF");
+        email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+        email.setSelection(email.length());
+        pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
         String userId = sh.getString("UserSaveId","None"); // 자동 저장 되어 있는 ID 가져오기
         if(userId.equals("None")){ // 자동 저장이 되어있지 않을 경우
             saveExist = false;
@@ -157,6 +159,43 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!checkEmail(email.getText().toString().trim())){
+                    lineColor = Color.parseColor("#E73A62");
+                    email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                    emailError.setVisibility(View.VISIBLE);
+                }else{
+                    lineColor = Color.parseColor("#FFFFFF");
+                    email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                    emailError.setVisibility(View.INVISIBLE);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        pass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(pass.length()>4){
+                    lineColor = Color.parseColor("#E73A62");
+                    pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                    passError.setVisibility(View.VISIBLE);
+                }else{
+                    lineColor = Color.parseColor("#FFFFFF");
+                    pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                    passError.setVisibility(View.INVISIBLE);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     @Override
@@ -178,8 +217,21 @@ public class LoginActivity extends Activity {
     public static boolean checkEmail(String email){
         String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
         Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(email);
+        Matcher m = p.matcher(email.trim());
         boolean isNormal = m.matches();
+        if(email.length()==0)isNormal =true;
         return isNormal;
     }
+    private void InitView(){
+        email = (EditText) findViewById(R.id.emailInput);
+        pass = (EditText) findViewById(R.id.passwordInput);
+        loginBtn = (Button) findViewById(R.id.loginButton);
+        joinBtn = (Button) findViewById(R.id.joinButton);
+        backLayout = (ConstraintLayout) findViewById(R.id.backGround);
+        saveID = (CheckBox)findViewById(R.id.saveID);
+        autoLogin = (CheckBox)findViewById(R.id.autoLogin);
+        emailError = (TextView)findViewById(R.id.emailError);
+        passError = (TextView)findViewById(R.id.passError);
+    }
 }
+

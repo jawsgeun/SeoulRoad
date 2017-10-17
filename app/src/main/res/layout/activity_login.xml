@@ -31,10 +31,14 @@
         android:layout_marginTop="43dp"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:textColor="#FFFFFF"
+        android:textCursorDrawable="@null"
         app:layout_constraintHorizontal_bias="0.59"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        android:hint="e-mail"
+        />
 
     <EditText
         android:id="@+id/passwordInput"
@@ -44,7 +48,11 @@
         android:ems="10"
         android:inputType="numberPassword"
         app:layout_constraintRight_toRightOf="@+id/emailInput"
-        app:layout_constraintTop_toBottomOf="@+id/emailInput" />
+        app:layout_constraintTop_toBottomOf="@+id/emailInput"
+        android:textCursorDrawable="@null"
+        android:textColor="#FFFFFF"
+        android:hint="password"
+        />
 
     <CheckBox
         android:id="@+id/saveID"
@@ -127,5 +135,33 @@
         app:layout_constraintRight_toRightOf="@+id/passwordInput"
         app:layout_constraintTop_toTopOf="@+id/saveID"
         android:layout_marginEnd="4dp" />
+
+    <TextView
+        android:id="@+id/emailError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="40dp"
+        android:text="유효하지 않은 이메일 주소입니다."
+        android:textColor="@color/colorPrimaryBtn"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@+id/emailInput"
+        app:layout_constraintTop_toTopOf="@+id/emailInput" />
+
+    <TextView
+        android:id="@+id/passError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="40dp"
+        android:text="비밀 번호는 4자리 입니다."
+        android:textColor="@color/colorPrimaryBtn"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@+id/passwordInput"
+        app:layout_constraintTop_toTopOf="@+id/passwordInput" />
 
 </android.support.constraint.ConstraintLayout>
