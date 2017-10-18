@@ -77,15 +77,35 @@ public class FActivity extends Fragment implements DatePickerController {
 
         List<Data> finalList = new ArrayList<>();
 
-        for (int i = 1; i <= 3; i++) {
+        Data data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT_MAIN);
+        // 맨위 리스트
+        List<String> content = new ArrayList<>();
+        content.add("대한민국 환경조경대전 '광장의 재발견'");
+        content.add("김형학 화훼 작가의 '서울로 자연의 철학'");
+        content.add("서울로 100일의 꽃 세밀화전");
+        content.add("서울로 가드너의 '정원이 놀다'");
+        content.add("어린이 참가작 전시");
+        data.setTextList("주요전시",content);
+        finalList.add(data);
+        // 부수적인 것
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
+        data.setTextList("10 : 00","100일의 식물이야기 산책 (개막)");
+        finalList.add(data);
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
+        data.setTextList("11 : 00","100일의 꽃 그리기");
+        finalList.add(data);
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
+        data.setTextList("13 : 00","100일의 인증사진");
+        finalList.add(data);
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
+        data.setTextList("14 : 00","100일의 꽃 그려버리기");
+        finalList.add(data);
 
-            Data data = new Data();
-
-                data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
-                data.setTextItem("List Item: " + i);
-
-            finalList.add(data);
-        }
 
         return finalList;
 

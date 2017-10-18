@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.kkard.seoulroad.Circleindicator_C.IndicatorAdapter;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.ViewHolder.ImageItemHolder;
+import com.kkard.seoulroad.ViewHolder.MainTextItemHolder;
 import com.kkard.seoulroad.ViewHolder.PagerItemHolder;
 import com.kkard.seoulroad.ViewHolder.TextItemHolder;
 import com.kkard.seoulroad.utils.Check;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 
 public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    public static final int VIEW_TYPE_TEXT_MAIN = 50;
     public static final int VIEW_TYPE_TEXT = 51;
     public final static int VIEW_TYPE_PAGER = 52;
     public static final int VIEW_TYPE_IMAGE = 53;
@@ -45,7 +46,10 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch (viewType) {
-
+            case VIEW_TYPE_TEXT_MAIN:
+                View mainUserView = inflater.inflate(R.layout.layout_recycle_maintext, parent, false);
+                viewHolder = new MainTextItemHolder(mainUserView);
+                break;
             case VIEW_TYPE_TEXT:
                 View userView = inflater.inflate(R.layout.layout_recycle_text, parent, false);
                 viewHolder = new TextItemHolder(userView);
@@ -69,6 +73,10 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         switch (holder.getItemViewType()) {
+            case VIEW_TYPE_TEXT_MAIN:
+                MainTextItemHolder mainTextHolder = (MainTextItemHolder) holder;
+                configureMainTextItem(mainTextHolder, position);
+                break;
 
             case VIEW_TYPE_TEXT:
                 TextItemHolder textHolder = (TextItemHolder) holder;
@@ -87,12 +95,25 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    private void configureMainTextItem(MainTextItemHolder holder, int position) {
+
+        Data data = mDataList.get(position);
+
+        if (!Check.isEmpty(data.getTextTile()))
+            holder.mainTvTitle.setText(data.getTextTile());
+            holder.mainTvContent1.setText("-"+data.getTextContent().get(0));
+            holder.mainTvContent2.setText("-"+data.getTextContent().get(1));
+            holder.mainTvContent3.setText("-"+data.getTextContent().get(2));
+            holder.mainTvContent4.setText("-"+data.getTextContent().get(3));
+            holder.mainTvContent5.setText("-"+data.getTextContent().get(4));
+    }
     private void configureTextItem(TextItemHolder holder, int position) {
 
         Data data = mDataList.get(position);
 
-        if (!Check.isEmpty(data.getTextItem()))
-            holder.tvTitle.setText(data.getTextItem());
+        if (!Check.isEmpty(data.getTextTile()))
+            holder.tvTitle.setText(data.getTextTile());
+            holder.tvContent.setText(data.getTextSingle());
     }
 
     private void configurePagerHolder(PagerItemHolder holder, int position) {

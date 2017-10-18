@@ -11,11 +11,11 @@ import com.kkard.seoulroad.R;
  */
 public class TextItemHolder extends RecyclerView.ViewHolder {
 
-    public TextView tvTitle;
+    public TextView tvTitle,tvContent;
 
     public TextItemHolder(View view) {
         super(view);
-
-        tvTitle = (TextView) view.findViewById(R.id.tv_item);
+        tvTitle = (TextView) view.findViewById(R.id.text_title);
+        tvContent = (TextView) view.findViewById(R.id.text_content);
     }
 }
