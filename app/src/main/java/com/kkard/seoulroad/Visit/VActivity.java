@@ -27,12 +27,12 @@ import java.util.List;
  */
 
 public class VActivity extends Fragment {
-    FloatingActionButton fab1, fab2;
-    FloatingActionMenu fam;
-    Context context;
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
+    private FloatingActionButton fab1, fab2;
+    private FloatingActionMenu fam;
+    private Context context;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

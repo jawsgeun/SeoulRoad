@@ -28,10 +28,10 @@ import java.util.List;
 
 public class FActivity extends Fragment implements DatePickerController {
 
-    Context context;
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
+    private Context context;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
     private DayPickerView_C calendarView;
 
     @Nullable

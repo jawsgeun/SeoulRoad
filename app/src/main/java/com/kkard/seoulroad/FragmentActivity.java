@@ -21,7 +21,9 @@ import com.kkard.seoulroad.MyMenu.MyPostActivity;
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
 
 
-public class FragmentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class FragmentActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener
+{
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DrawerLayout drawer;
@@ -113,8 +115,6 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
         } else if (id == R.id.menu_my_like) {
             Toast.makeText(getApplicationContext(),"아직 못만듬",Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_fqa) {
-            Toast.makeText(getApplicationContext(),"아직 못만듬",Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.menu_notice) {
             startActivity(new Intent(FragmentActivity.this,NoticeActivity.class));
             finish();
         } else if (id == R.id.menu_modify) {

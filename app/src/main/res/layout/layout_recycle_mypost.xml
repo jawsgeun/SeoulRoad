@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="380dp"    android:padding="20dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="2dp"
+            android:layout_height="17dp"
+            android:background="@color/colorPrimary"/>
+        <TextView
+            android:id="@+id/mypost_userid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="kan02188@.naver.com"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/mypost_img"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/testimage_mypost"
+        android:scaleType="fitXY"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/heart"/>
+        <TextView
+            android:id="@+id/mypost_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="좋아요 125명"/>
+        <TextView
+            android:id="@+id/mypost_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textSize="12sp"
+            android:layout_marginEnd="7dp"
+            android:text="2017.09.23"/>
+    </LinearLayout>
+        <TextView
+            android:id="@+id/mypost_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="야경이 진짜 이뻐요 ! 꼭 가보세요 !!!"/>
+</LinearLayout>

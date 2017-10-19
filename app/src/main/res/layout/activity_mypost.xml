@@ -7,32 +7,24 @@
         layout="@layout/my_menu_toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal">
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:id="@+id/mypost_img"
-            android:src="@drawable/abc"
-            android:layout_gravity="center_horizontal"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="아이디"
-            android:id="@+id/mypost_id"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mypost_text"
-            android:text="내용" />
-    </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/mypost_btn"
-        android:text="글쓰기"
-        android:layout_gravity="center_horizontal"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mypost_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="430dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/mypost_modify"
+            android:layout_width="308dp"
+            android:layout_height="41dp"
+            android:textColor="#FFFFFF"
+            android:text="수 정 하 기"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:background="@color/colorPrimaryBtn"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
 </LinearLayout>

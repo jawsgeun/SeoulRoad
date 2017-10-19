@@ -10,6 +10,7 @@ import com.kkard.seoulroad.Circleindicator_C.IndicatorAdapter;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.ViewHolder.ImageItemHolder;
 import com.kkard.seoulroad.ViewHolder.MainTextItemHolder;
+import com.kkard.seoulroad.ViewHolder.MypostItemHolder;
 import com.kkard.seoulroad.ViewHolder.PagerItemHolder;
 import com.kkard.seoulroad.ViewHolder.TextItemHolder;
 import com.kkard.seoulroad.utils.Check;
@@ -28,6 +29,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int VIEW_TYPE_TEXT = 51;
     public final static int VIEW_TYPE_PAGER = 52;
     public static final int VIEW_TYPE_IMAGE = 53;
+    public static final int VIEW_TYPE_POST = 54;
     private DialogView_C mDialog;
     private Context mcontext;
     private List<Data> mDataList = new ArrayList<>();
@@ -54,15 +56,17 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 View userView = inflater.inflate(R.layout.layout_recycle_text, parent, false);
                 viewHolder = new TextItemHolder(userView);
                 break;
-
             case VIEW_TYPE_PAGER:
                 View blockbusterView = inflater.inflate(R.layout.layout_recycle_pager, parent, false);
                 viewHolder = new PagerItemHolder(blockbusterView);
                 break;
-
             case VIEW_TYPE_IMAGE:
                 View userImageView = inflater.inflate(R.layout.layout_recycle_image, parent, false);
                 viewHolder = new ImageItemHolder(userImageView);
+                break;
+            case VIEW_TYPE_POST:
+                View userPostView = inflater.inflate(R.layout.layout_recycle_mypost, parent, false);
+                viewHolder = new MypostItemHolder(userPostView);
                 break;
         }
 
@@ -92,9 +96,24 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ImageItemHolder imageHolder = (ImageItemHolder) holder;
                 configureImageHolder(imageHolder, position);
                 break;
+
+            case VIEW_TYPE_POST:
+                MypostItemHolder postHolder = (MypostItemHolder) holder;
+                configurePostHolder(postHolder, position);
+                break;
         }
     }
+    private void configurePostHolder(MypostItemHolder holder, int position){
+        Data data = mDataList.get(position);
 
+        if (data.getmPostContent().size()==5){ // 아이디, 이미지, 좋아요 수, 날짜, 코멘트 까지 총 5개가 들어왔는지
+            holder.mypostUserid.setText(data.getmPostContent().get(0));
+            holder.mypostImg.setImageResource(R.drawable.testimage_mypost); // 이미지 저장 디비 구축 후 수정
+            holder.mypostLike.setText("좋아요 "+data.getmPostContent().get(2)+"명");
+            holder.mypostDate.setText(data.getmPostContent().get(3));
+            holder.mypostCom.setText(data.getmPostContent().get(4));
+        }
+    }
     private void configureMainTextItem(MainTextItemHolder holder, int position) {
 
         Data data = mDataList.get(position);

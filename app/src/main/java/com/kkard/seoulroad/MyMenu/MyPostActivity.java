@@ -1,58 +1,98 @@
 package com.kkard.seoulroad.MyMenu;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
+import com.kkard.seoulroad.Recycler.Data;
+import com.kkard.seoulroad.Recycler.ViewAdapter;
 import com.kkard.seoulroad.Visit.VRegitActivity;
-import com.kkard.seoulroad.utils.DialogView_C;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by KyungHWan on 2017-10-06.
  */
 
 public class MyPostActivity extends AppCompatActivity {
-    private ImageView imageView;
-    private Button mBtn;
-    private DialogView_C mDialog;
 
-    private View.OnClickListener leftClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-        }
-    };
-    private View.OnClickListener rightClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mDialog.dismiss();
-        }
-    };
+    private Button modifyBtn;
+    private ImageView backBtn;
+    private TextView toolbarTitle;
+    private Context context;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypost);
-        imageView = (ImageView) findViewById(R.id.mypost_img);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
+        toolbarTitle.setText("내가 쓴 글");
+        backBtn = (ImageView) findViewById(R.id.btn_toolbar_back);
+
+        context = getApplicationContext();
+        recyclerView = (RecyclerView)findViewById(R.id.mypost_recycle_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new ViewAdapter(getData(),context);
+        recyclerView.setAdapter(adapter);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog = new DialogView_C(v.getContext(),-1,"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
-                mDialog.show();
+                startActivity(new Intent(MyPostActivity.this, FragmentActivity.class));
             }
         });
-        mBtn = (Button)findViewById(R.id.mypost_btn);
-        mBtn.setOnClickListener(new View.OnClickListener() {
+        modifyBtn = (Button)findViewById(R.id.mypost_modify);
+        modifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent itn = new Intent(v.getContext(), VRegitActivity.class);
-                startActivity(itn);
+                startActivity(new Intent(v.getContext(), VRegitActivity.class));
                 finish();
             }
         });
+    }
+    private List<Data> getData() {
+        List<Data> finalList = new ArrayList<>();
+        SharedPreferences sh = getSharedPreferences("DB",MODE_PRIVATE);
+
+        Data data = new Data();
+        List<String> content = new ArrayList<>();
+        data.setViewType(ViewAdapter.VIEW_TYPE_POST);
+        content.add(sh.getString("G_ID","ID_error"));
+        content.add("null");
+        content.add("300");
+        content.add("2017.10.20");
+        content.add("매우 예쁘군요");
+        data.setmPostContent(content);
+        finalList.add(data);
+
+        data = new Data();
+        content = new ArrayList<>();
+        data.setViewType(ViewAdapter.VIEW_TYPE_POST);
+        content.add(sh.getString("G_ID","ID_error"));
+        content.add("null");
+        content.add("30");
+        content.add("3033.10.20");
+        content.add("매우 별로에요요");
+        data.setmPostContent(content);
+        finalList.add(data);
+
+        return finalList;
     }
 }

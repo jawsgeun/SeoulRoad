@@ -15,10 +15,12 @@ public class Data implements Serializable {
     private List<String> mTextContent; // 메인의 내용
     private String mTextSingle; // 서브의 내용
     private List<ListImageItem> listImageItemList;
+    private List<String> mPostContent;
 
     /*
      * SETTER
      */
+    public void setmPostContent(List<String> mPostContent) {this.mPostContent = mPostContent;}
     public void setListImageItemList(List<ListImageItem> listImageItemList) {
         this.listImageItemList = listImageItemList;
     }
@@ -38,10 +40,11 @@ public class Data implements Serializable {
     /*
      * GETTER
      */
+
+    public List<String> getmPostContent() {return mPostContent;}
     public List<ListImageItem> getListImageItemList() {
         return listImageItemList;
     }
-
     public String getTextTile() {
         return mTextTile;
     }
