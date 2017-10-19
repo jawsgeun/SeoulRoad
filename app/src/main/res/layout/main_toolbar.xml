@@ -31,9 +31,9 @@
 
         <ImageView
             android:id="@+id/myMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/star_big_off"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/menu_ic"
             app:layout_constraintLeft_toRightOf="@+id/imageView2"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"

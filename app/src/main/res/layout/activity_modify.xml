@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/joinBack"
+    android:id="@+id/modBack"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
-        android:id="@+id/joinName"
+        android:id="@+id/modName"
         android:layout_width="308dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
@@ -22,12 +22,12 @@
         android:hint="이름"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/joinEmail"
+        app:layout_constraintBottom_toTopOf="@+id/modEmail"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
-        android:id="@+id/joinPass"
+        android:id="@+id/modPass"
         android:layout_width="308dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
@@ -39,16 +39,16 @@
         android:ems="10"
         android:inputType="numberPassword"
         android:padding="8dip"
-        android:hint="비밀번호 (4자리 숫자)"
+        android:hint="새로운 비밀번호 (4자이상)"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/joinPassConf"
+        app:layout_constraintBottom_toTopOf="@+id/modPassConf"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
-        android:id="@+id/joinPassConf"
+        android:id="@+id/modPassConf"
         android:layout_width="308dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
@@ -60,10 +60,10 @@
         android:ems="10"
         android:inputType="numberPassword"
         android:padding="8dip"
-        android:hint="비밀번호확인"
+        android:hint="새로운 비밀번호 확인"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/joinEnter"
+        app:layout_constraintBottom_toTopOf="@+id/modEnter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -77,7 +77,7 @@
     />
 
     <EditText
-        android:id="@+id/joinEmail"
+        android:id="@+id/modEmail"
         android:layout_width="308dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
@@ -92,18 +92,18 @@
         android:hint="이메일"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/joinPass"
+        app:layout_constraintBottom_toTopOf="@+id/modPass"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/joinEnter"
+        android:id="@+id/modEnter"
         android:layout_width="308dp"
         android:layout_height="41dp"
         android:layout_marginBottom="100dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="가입하기"
+        android:text="수 정 하 기"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="20sp"
@@ -123,8 +123,8 @@
         android:layout_marginTop="7dp"
         android:text="비밀번호가 일치하지 않습니다"
         android:textColor="#FF0000"
-        app:layout_constraintLeft_toLeftOf="@+id/joinPassConf"
-        app:layout_constraintTop_toBottomOf="@+id/joinPassConf" />
+        app:layout_constraintLeft_toLeftOf="@+id/modPassConf"
+        app:layout_constraintTop_toBottomOf="@+id/modPassConf" />
 
     <TextView
         android:id="@+id/checkPass"
@@ -135,9 +135,9 @@
         android:layout_marginTop="8dp"
         android:text="비밀번호는 4자리 입니다"
         android:textColor="#FF0000"
-        app:layout_constraintBottom_toTopOf="@+id/joinPassConf"
-        app:layout_constraintLeft_toLeftOf="@+id/joinPass"
-        app:layout_constraintTop_toBottomOf="@+id/joinPass"
+        app:layout_constraintBottom_toTopOf="@+id/modPassConf"
+        app:layout_constraintLeft_toLeftOf="@+id/modPass"
+        app:layout_constraintTop_toBottomOf="@+id/modPass"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
@@ -149,9 +149,9 @@
         android:layout_marginTop="8dp"
         android:text="아이디를 이메일 형식으로 입력해주세요"
         android:textColor="#FF0000"
-        app:layout_constraintBottom_toTopOf="@+id/joinPass"
-        app:layout_constraintLeft_toLeftOf="@+id/joinEmail"
-        app:layout_constraintTop_toBottomOf="@+id/joinEmail"
+        app:layout_constraintBottom_toTopOf="@+id/modPass"
+        app:layout_constraintLeft_toLeftOf="@+id/modEmail"
+        app:layout_constraintTop_toBottomOf="@+id/modEmail"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
@@ -163,9 +163,9 @@
         android:layout_marginTop="8dp"
         android:text="이름이 올바르지 않습니다"
         android:textColor="#FF0000"
-        app:layout_constraintBottom_toTopOf="@+id/joinEmail"
-        app:layout_constraintLeft_toLeftOf="@+id/joinName"
-        app:layout_constraintTop_toBottomOf="@+id/joinName"
+        app:layout_constraintBottom_toTopOf="@+id/modEmail"
+        app:layout_constraintLeft_toLeftOf="@+id/modName"
+        app:layout_constraintTop_toBottomOf="@+id/modName"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

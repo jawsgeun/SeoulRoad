@@ -25,7 +25,8 @@
         <activity
             android:name="com.kkard.seoulroad.FragmentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/WhiteStatus" />
+            android:theme="@style/WhiteStatus"
+            />
         <activity
             android:name=".Plant.QRCamera"
             android:screenOrientation="portrait" />
@@ -44,6 +45,8 @@
         <activity android:name=".Visit.VRegitActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".MyMenu.MyPostActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ModifyActivity"
             android:screenOrientation="portrait"/>
     </application>
 

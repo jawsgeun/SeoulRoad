@@ -1,6 +1,7 @@
 package com.kkard.seoulroad;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -25,21 +26,25 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
     private ViewPager viewPager;
     private DrawerLayout drawer;
     private ImageView Mymenu;
-    private String userId;
+    private String userId, userName;
     ///////////////Back 버튼 2번 종료 관련 변수////////////
     private final long FINISH_INTERVAL_TIME = 2000; //2초안에 Back 버튼 누르면 종료
     private long   backPressedTime = 0;
 
     @Override
     public void onBackPressed() {
-        long tempTime = System.currentTimeMillis();
-        long intervalTime = tempTime - backPressedTime;
-
-        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
-            super.onBackPressed();
+        if(drawer.isDrawerOpen(Gravity.RIGHT)) {
+            drawer.closeDrawer(Gravity.RIGHT);
         }else {
-            backPressedTime = tempTime;
-            Toast.makeText(getApplicationContext(), "종료를 원하시면 뒤로 버튼을 한 번 더 눌러주세요.", Toast.LENGTH_SHORT).show();
+            long tempTime = System.currentTimeMillis();
+            long intervalTime = tempTime - backPressedTime;
+
+            if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+                super.onBackPressed();
+            } else {
+                backPressedTime = tempTime;
+                Toast.makeText(getApplicationContext(), "종료를 원하시면 뒤로 버튼을 한 번 더 눌러주세요.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -48,8 +53,9 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        Intent intent = getIntent();
-        userId = intent.getStringExtra("userId");
+        SharedPreferences pre = getSharedPreferences("DB",MODE_PRIVATE);
+        userId = pre.getString("G_ID","g_id error");
+        userName = pre.getString("G_NAME","g_name error");
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
@@ -91,7 +97,9 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         TextView navId = (TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_id);
+        TextView navName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_name);
         navId.setText(userId);
+        navName.setText(userName);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -110,11 +118,14 @@ public class FragmentActivity extends AppCompatActivity implements NavigationVie
             startActivity(new Intent(FragmentActivity.this,NoticeActivity.class));
             finish();
         } else if (id == R.id.menu_modify) {
-            Toast.makeText(getApplicationContext(),"아직 못만듬",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(FragmentActivity.this, ModifyActivity.class));
+            finish();
         } else if (id == R.id.menu_logout) {
-            Intent intent = new Intent(FragmentActivity.this, LoginActivity.class);
-            intent.putExtra("isAuto","false");
-            startActivity(intent);
+            SharedPreferences sh = getSharedPreferences("AutoINFO",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sh.edit();
+            editor.putString("isAuto","false");
+            editor.apply();
+            startActivity(new Intent(FragmentActivity.this, LoginActivity.class));
             finish();
         }
         return true;

@@ -32,13 +32,15 @@ public class LoginActivity extends Activity {
     ///////////////Back 버튼 2번 종료 관련 변수////////////
     private final long FINISH_INTERVAL_TIME = 2000; //2초안에 Back 버튼 누르면 종료
     private long   backPressedTime = 0;
-    public String userId, userPassword;
+    private String userId, userPassword;
     /////////////// 뷰 객체 선언 /////////////
     EditText email, pass;
     Button loginBtn, joinBtn;
     ConstraintLayout backLayout;
     CheckBox saveID, autoLogin;
     SharedPreferences sh;
+    SharedPreferences miniDB;
+    SharedPreferences.Editor editor;
     TextView emailError,passError;
 
     /////////////////////// 변수 선언 //////////////////////
@@ -50,20 +52,15 @@ public class LoginActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sh = getPreferences(MODE_PRIVATE);
-        Intent intent = getIntent();
-        if(intent.getStringExtra("isAuto")!=null){
-            SharedPreferences.Editor editor = sh.edit();
+        sh = getSharedPreferences("AutoINFO",MODE_PRIVATE);
+        if(sh.getString("isAuto","false").equals("false")){
+            editor = sh.edit();
             editor.putString("isAuto","false");
             editor.apply();
-        }
-        String autoBool = sh.getString("isAuto","None");
-        if(autoBool.equals("true")){ // 자동 로그인 할 경우
+        }else{ // 자동 로그인 할 경우
             userId = sh.getString("UserAutoId","None"); // 글로벌 아이디 저장
-            userPassword =sh.getString("UserAutoPass","None"); // 글로벌 비밀번호 저장
-            intent = new Intent(LoginActivity.this, FragmentActivity.class);
-            intent.putExtra("userId",userId);
-            startActivity(intent);
+            userPassword = sh.getString("UserAutoPass","None"); // 글로벌 비밀번호 저장
+            startActivity(new Intent(LoginActivity.this, FragmentActivity.class));
             finish();
         }
         InitView();
@@ -71,7 +68,7 @@ public class LoginActivity extends Activity {
         email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
         email.setSelection(email.length());
         pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-        String userId = sh.getString("UserSaveId","None"); // 자동 저장 되어 있는 ID 가져오기
+        userId = sh.getString("UserSaveId","None"); // 자동 저장 되어 있는 ID 가져오기
         if(userId.equals("None")){ // 자동 저장이 되어있지 않을 경우
             saveExist = false;
             isSave =false;
@@ -105,17 +102,9 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 String idContent = email.getText().toString().trim();
                 String passContent = pass.getText().toString().trim();
-                                                                        //  첫 저장  -> 입력
-                    if(isSave == (!saveExist)) {                        //  isSave = true  isExist = false
-                        SharedPreferences.Editor editor = sh.edit();    //  저장되어있는상태 -> 입력 x
-                        if (isSave) {                                   //  isSave = true  isExist = true
-                            editor.putString("UserSaveId", idContent);  //  저장 해제 -> 삭제
-                        } else {                                        //  isSave = false   isExist = true
-                            editor.remove("UserSaveId");                //  저장하지않음 -> 아무것도 안함
-                        }                                               //  isSave = false   isExist = false
-                        editor.apply();
-                    }
-
+                miniDB = getSharedPreferences("DB",MODE_PRIVATE);
+                userId = miniDB.getString("G_ID","none");
+                userPassword = miniDB.getString("G_PASS","none");
                 if(idContent.getBytes().length <= 0 ){//빈값이 넘어올때의 처리
                     Toast.makeText(getApplicationContext(), "아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
                 }else if( passContent.getBytes().length <= 0){
@@ -124,18 +113,29 @@ public class LoginActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else if(passContent.length()!=4){
                     Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
-                }else{
+                }else if(idContent.equals(userId) && passContent.equals(userPassword)) {
+                    editor = sh.edit();
                     if(isAuto){
-                        SharedPreferences.Editor editor = sh.edit();
-                        editor.putString("UserAutoId",idContent);
-                        editor.putString("UserAutoPass",passContent);
+                        editor.putString("UserAutoId",userId);
+                        editor.putString("UserAutoPass",userPassword);
                         editor.putString("isAuto","true");
                         editor.apply();
                     }
+                                                                        //  첫 저장  -> 입력
+                    if(isSave || saveExist) {                        //  isSave = true  isExist = false
+                                                                        //  저장되어있는상태 -> 입력
+                        if (isSave) {                                   //  isSave = true  isExist = true
+                            editor.putString("UserSaveId", userId);     //  저장 해제 -> 삭제
+                        } else {                                        //  isSave = false   isExist = true
+                            editor.remove("UserSaveId");                //  저장하지않음 -> 아무것도 안함
+                        }                                               //  isSave = false   isExist = false
+                        editor.apply();
+                    }
                     Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
-                    intent.putExtra("userId",idContent);
                     startActivity(intent);
                     finish();
+                }else{
+                    Toast.makeText(getApplicationContext(),"로그인 불가",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -233,5 +233,6 @@ public class LoginActivity extends Activity {
         emailError = (TextView)findViewById(R.id.emailError);
         passError = (TextView)findViewById(R.id.passError);
     }
+
 }
 

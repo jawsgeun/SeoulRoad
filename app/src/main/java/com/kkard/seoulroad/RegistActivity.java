@@ -2,6 +2,7 @@ package com.kkard.seoulroad;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -129,6 +130,12 @@ public class RegistActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(), "가입 정보를 정확하게 입력해 주세요", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(), "가입되었습니다", Toast.LENGTH_SHORT).show();
+                    SharedPreferences miniDB = getSharedPreferences("DB",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = miniDB.edit();
+                    editor.putString("G_ID",emailContent);
+                    editor.putString("G_PASS",passContent);
+                    editor.putString("G_NAME",nameContent);
+                    editor.apply();
                     startActivity(new Intent(RegistActivity.this, LoginActivity.class));
                     overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                     finish();
