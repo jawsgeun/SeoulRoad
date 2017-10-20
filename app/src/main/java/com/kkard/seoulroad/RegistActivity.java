@@ -14,7 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +28,7 @@ public class RegistActivity extends AppCompatActivity{
     private EditText password,passConf ,email ,name ;
     private ConstraintLayout backLayout;
     private Button joinBtn;
-    private ImageView backBtn;
+    private ImageButton backBtn;
     private TextView toolbarTitle, checkName, checkEmail, checkPass, checkPassC;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class RegistActivity extends AppCompatActivity{
         email = (EditText)findViewById(R.id.joinEmail); // 이메일
         name = (EditText)findViewById(R.id.joinName); // 이름
         backLayout = (ConstraintLayout)findViewById(R.id.joinBack);// 뒷배경
-        backBtn = (ImageView)findViewById(R.id.btn_toolbar_back); // 툴바 내 뒤로가기 이미지 버튼
+        backBtn = (ImageButton)findViewById(R.id.btn_toolbar_back); // 툴바 내 뒤로가기 이미지 버튼
         toolbarTitle = (TextView)findViewById(R.id.text_toolbar); // 툴바 제목
         checkName = (TextView)findViewById(R.id.checkName); // 이름 경고창
         checkEmail = (TextView)findViewById(R.id.checkEmail); // 이메일 경고창

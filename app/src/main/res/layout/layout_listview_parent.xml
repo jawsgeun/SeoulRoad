@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:padding="5dp"
+    android:layout_height="55dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     >
-
     <ImageView
-        android:id="@+id/image_parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/listview_off"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="8dp"
-        />
-    <TextView
-        android:id="@+id/content_parent"
+        android:id="@+id/div_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="공지사항 제목 테스트 입니다 테스트 테스트"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:gravity="center_vertical"
-        android:layout_toRightOf="@+id/image_parent"
-        android:layout_marginStart="5dp"
-        />
-    <TextView
-        android:id="@+id/date_parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2013/12/25"
-        android:textSize="12sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        />
-</RelativeLayout>
+        android:layout_height="2dp"
+        android:background="#E77F7A"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/type_parent"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="공지"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:background="@drawable/pink_circle_back"
+            tools:textColor="#FFFFFF"
+            />
+        <TextView
+            android:id="@+id/content_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="꺼짐 오류 수정 버전 2.1로 업데이트 되었습니다"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorPrimary"
+            />
+    </LinearLayout>
+</LinearLayout>

@@ -70,27 +70,54 @@ public class VActivity extends Fragment {
     private List<Data> getData() { // 방문록 부분 데이터 받아오는 곳
 
         List<Data> finalList = new ArrayList<>();
-
-            List<ListImageItem> imageItems = new ArrayList<>();
-
-            ListImageItem listImageItem1 = new ListImageItem();
-            listImageItem1.setItemImage(R.drawable.abc);
-            imageItems.add(listImageItem1);
-        ListImageItem listImageItem2 = new ListImageItem();
-        listImageItem2.setItemImage(R.drawable.logo_green);
-            imageItems.add(listImageItem2);
-        ListImageItem listImageItem3 = new ListImageItem();
-        listImageItem3.setItemImage(R.drawable.icon_email);
-             imageItems.add(listImageItem3);
         Data data = new Data();
         data.setViewType(ViewAdapter.VIEW_TYPE_PAGER);
         finalList.add(data);
-        for(int i=0;i<10;i++){
-            data = new Data();
-            data.setViewType(ViewAdapter.VIEW_TYPE_IMAGE);
-            data.setListImageItemList(imageItems);
-            finalList.add(data);
-        }
+
+        List<ListImageItem> imageItems = new ArrayList<>();
+        ListImageItem listImageItem1 = new ListImageItem();
+        listImageItem1.setItemImage(R.drawable.test_blue);
+        imageItems.add(listImageItem1);
+        ListImageItem listImageItem2 = new ListImageItem();
+        listImageItem2.setItemImage(R.drawable.test_pink);
+        imageItems.add(listImageItem2);
+        ListImageItem listImageItem3 = new ListImageItem();
+        listImageItem3.setItemImage(R.drawable.test_blue);
+        imageItems.add(listImageItem3);
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_IMAGE);
+        data.setListImageItemList(imageItems);
+        finalList.add(data);
+
+        imageItems = new ArrayList<>();
+        listImageItem1 = new ListImageItem();
+        listImageItem1.setItemImage(R.drawable.test_white);
+        imageItems.add(listImageItem1);
+        listImageItem2 = new ListImageItem();
+        listImageItem2.setItemImage(R.drawable.test_yellow);
+        imageItems.add(listImageItem2);
+        listImageItem3 = new ListImageItem();
+        listImageItem3.setItemImage(R.drawable.test_white);
+        imageItems.add(listImageItem3);
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_IMAGE);
+        data.setListImageItemList(imageItems);
+        finalList.add(data);
+
+        imageItems = new ArrayList<>();
+        listImageItem1 = new ListImageItem();
+        listImageItem1.setItemImage(R.drawable.test_pink);
+        imageItems.add(listImageItem1);
+        listImageItem2 = new ListImageItem();
+        listImageItem2.setItemImage(R.drawable.test_blue);
+        imageItems.add(listImageItem2);
+        listImageItem3 = new ListImageItem();
+        listImageItem3.setItemImage(R.drawable.test_yellow);
+        imageItems.add(listImageItem3);
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_IMAGE);
+        data.setListImageItemList(imageItems);
+        finalList.add(data);
 
         return finalList;
 

@@ -5,24 +5,16 @@ package com.kkard.seoulroad.MyMenu;
  */
 
 public class NoticeParentData {
-    private int id;
+    private int type;
     private String title;
-    private String date;
 
-    public NoticeParentData(int id, String title, String date) {
+    public NoticeParentData(int type, String title) {
+        this.type = type;
         this.title = title;
-        this.date = date;
     }
 
-    public int getId() {
-        return id;
-    }
-
+    public int getType(){return type;}
     public String getTitle() {
         return title;
-    }
-
-    public String getDate() {
-        return date;
     }
 }

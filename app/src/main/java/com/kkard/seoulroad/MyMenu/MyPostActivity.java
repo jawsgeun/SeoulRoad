@@ -10,7 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.kkard.seoulroad.FragmentActivity;
@@ -29,7 +29,7 @@ import java.util.List;
 public class MyPostActivity extends AppCompatActivity {
 
     private Button modifyBtn;
-    private ImageView backBtn;
+    private ImageButton backBtn;
     private TextView toolbarTitle;
     private Context context;
     private RecyclerView recyclerView;
@@ -42,7 +42,7 @@ public class MyPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypost);
         toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
         toolbarTitle.setText("내가 쓴 글");
-        backBtn = (ImageView) findViewById(R.id.btn_toolbar_back);
+        backBtn = (ImageButton) findViewById(R.id.btn_toolbar_back);
 
         context = getApplicationContext();
         recyclerView = (RecyclerView)findViewById(R.id.mypost_recycle_view);
@@ -56,6 +56,7 @@ public class MyPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MyPostActivity.this, FragmentActivity.class));
+                finish();
             }
         });
         modifyBtn = (Button)findViewById(R.id.mypost_modify);

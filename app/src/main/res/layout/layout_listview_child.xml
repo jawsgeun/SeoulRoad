@@ -2,14 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:paddingStart="15dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="5dp"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E1E1E1"
+        android:orientation="vertical"
+        android:paddingRight="13dp"
+        android:paddingLeft="13dp"
+        android:paddingTop="13dp">
     <TextView
         android:id="@+id/content_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="공지사항 내용 테스트 테스트"
+        android:textSize="12sp"
+        android:text="페이스북 연동 기능 추가되었습니다. 로그인 창에서 페이스북 연동하기 버튼을 클릭하면 자동으로 페이스북과 연결됩니다.\n많은 이용 바랍니다. 앞으로도 사용자들의 편의를 위하겠습니다.\n감사합니다."
+        android:lineSpacingExtra="3dp"
         />
-
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/closeBtn_child"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_keyboard_arrow_up_black_18dp"
+            />
+    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

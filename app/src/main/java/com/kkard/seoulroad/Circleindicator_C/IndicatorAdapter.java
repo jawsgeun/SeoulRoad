@@ -3,24 +3,20 @@ package com.kkard.seoulroad.Circleindicator_C;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
+import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.utils.DialogView_C;
-
-import java.util.Random;
 
 /**
  * Created by KyungHWan on 2017-09-20.
  */
 
 public class IndicatorAdapter extends PagerAdapter {
-    private final Random random = new Random();
     private int mSize;
     private DialogView_C mDialog;
     private Context mcontext;
@@ -47,16 +43,13 @@ public class IndicatorAdapter extends PagerAdapter {
     }
 
     @Override public Object instantiateItem(ViewGroup view, int position) {
-        TextView textView = new TextView(view.getContext());
-        textView.setText(String.valueOf(position + 1));
-        textView.setBackgroundColor(0xff000000 | random.nextInt(0x00ffffff));
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextColor(Color.WHITE);
-        textView.setTextSize(48);
-        textView.setOnClickListener(mPagerListener);
-        view.addView(textView, ViewGroup.LayoutParams.MATCH_PARENT,
+        ImageView imageView = new ImageView(view.getContext());
+        imageView.setImageResource(R.drawable.test_pager);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setOnClickListener(mPagerListener);
+        view.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-        return textView;
+        return imageView;
     }
     private View.OnClickListener mPagerListener = new View.OnClickListener() {
         @Override

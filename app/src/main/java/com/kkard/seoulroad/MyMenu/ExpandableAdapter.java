@@ -2,7 +2,6 @@ package com.kkard.seoulroad.MyMenu;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,14 @@ import java.util.ArrayList;
  */
 
 public class ExpandableAdapter extends BaseExpandableListAdapter {
+    public static final int TYPE_NOTICE = 78;
+    public static final int TYPE_QNA = 79;
     ArrayList<NoticeParentData> noticeParentDatas;
-    ArrayList<ArrayList<NoticeChildData>> noticeChildDatas;
+    ArrayList<NoticeChildData> noticeChildDatas;
     LayoutInflater layoutInflater;
 
     public ExpandableAdapter(Context c, ArrayList<NoticeParentData> noticeParentDatas,
-                             ArrayList<ArrayList<NoticeChildData>> noticeChildDatas ) {
+                             ArrayList<NoticeChildData> noticeChildDatas ) {
         this.noticeChildDatas = noticeChildDatas;
         this.noticeParentDatas = noticeParentDatas;
         layoutInflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -37,7 +38,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return noticeChildDatas.get(groupPosition).size();
+        return 1; // 각 부모당 자식은 1개
     }
 
     @Override
@@ -47,7 +48,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public NoticeChildData getChild(int groupPosition, int childPosition) {
-        return noticeChildDatas.get(groupPosition).get(childPosition);
+        return noticeChildDatas.get(groupPosition);
     }
 
     @Override
@@ -70,58 +71,47 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         if(convertView == null){
             convertView = layoutInflater.inflate(R.layout.layout_listview_parent,null);
         }
-        Log.e("갱신","실행");
-        if(groupPosition%2==0){
-            convertView.setBackgroundColor(Color.rgb(189,189,189));
-            Log.e("벌집","실행");
-        }
-        ImageView image_parent_iv = (ImageView)convertView.findViewById(R.id.image_parent);
+        TextView type_parent_tv = (TextView)convertView.findViewById(R.id.type_parent);
         TextView content_parent_tv = (TextView)convertView.findViewById(R.id.content_parent);
-        TextView date_parent_tv = (TextView)convertView.findViewById(R.id.date_parent);
-        if(isExpanded){
-            image_parent_iv.setImageResource(R.drawable.listview_on);
-        } else{
-            image_parent_iv.setImageResource(R.drawable.listview_off);
+        ImageView div_parent = (ImageView)convertView.findViewById(R.id.div_parent);
+        if(groupPosition == 0){
+            div_parent.setVisibility(View.INVISIBLE);
+        }
+        switch (noticeParentDatas.get(groupPosition).getType()){
+            case TYPE_NOTICE : //공지인 경우
+                type_parent_tv.setText("공지");
+                type_parent_tv.setBackgroundResource(R.drawable.pink_circle_back);
+                type_parent_tv.setTextColor(Color.parseColor("#FFFFFF"));
+                break;
+            case TYPE_QNA : // 질문일 경우
+                type_parent_tv.setText("Q.");
+                type_parent_tv.setBackgroundColor(Color.TRANSPARENT);
+                type_parent_tv.setTextColor(Color.parseColor("#00A24C"));
+                break;
         }
         content_parent_tv.setText(noticeParentDatas.get(groupPosition).getTitle());
-        date_parent_tv.setText(noticeParentDatas.get(groupPosition).getDate());
-
         return convertView;
     }
 
     @Override
     public void onGroupExpanded(int groupPosition) {
-        View parentV = layoutInflater.inflate(R.layout.layout_listview_parent,null);
-        parentV.setBackgroundColor(Color.rgb(206,242,121));
-        ImageView image_parent_iv = (ImageView)parentV.findViewById(R.id.image_parent);
-        image_parent_iv.setImageResource(R.drawable.listview_on);
-        Log.e("확장","실행");
-
-        super.onGroupExpanded(groupPosition);
     }
 
     @Override
     public void onGroupCollapsed(int groupPosition) {
-        View parentV = layoutInflater.inflate(R.layout.layout_listview_parent,null);
-        ImageView image_parent_iv = (ImageView)parentV.findViewById(R.id.image_parent);
-        image_parent_iv.setImageResource(R.drawable.listview_off);
-        Log.e("축소","실행");
-        super.onGroupCollapsed(groupPosition);
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if(convertView == null){
             convertView = layoutInflater.inflate(R.layout.layout_listview_child,null);
         }
         TextView content_child_tv = (TextView)convertView.findViewById(R.id.content_child);
-        content_child_tv.setText(noticeChildDatas.get(groupPosition).get(childPosition).getContent());
 
+        content_child_tv.setText(noticeChildDatas.get(groupPosition).getContent());
         return convertView;
     }
 
     @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
-    }
+    public boolean isChildSelectable(int groupPosition, int childPosition) {return false;}
 }
