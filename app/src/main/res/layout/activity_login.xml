@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="123dp"
+        android:layout_marginTop="110dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:textColor="#FFFFFF"
@@ -58,21 +58,20 @@
         android:id="@+id/saveID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="10dp"
         android:checked="false"
         android:text="아이디 저장"
         android:textColor="@android:color/white"
-        app:layout_constraintLeft_toLeftOf="@+id/iconPass"
         app:layout_constraintTop_toBottomOf="@+id/passwordInput"
-        android:layout_marginStart="4dp" />
+        android:layout_marginLeft="32dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="330dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="70dp"
-        android:background="@color/colorPrimaryBtn"
+        android:layout_width="298dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/pink_back_btn"
         android:elevation="0dp"
         android:text=" 로 그 인"
         android:textColor="#FFFFFF"
@@ -84,11 +83,11 @@
     <Button
         android:id="@+id/joinButton"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimaryBtn"
-        android:text="회원가입 하기"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/button_selector"
+        android:text="회 원 가 입"
         android:textColor="#FFFFFF"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,29 +99,28 @@
 
     <ImageView
         android:id="@+id/iconMail"
-        android:layout_width="23dp"
-        android:layout_height="19dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.809"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/emailInput"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/icon_email"
+        android:src="@drawable/email_icon"
         android:layout_marginStart="16dp"
-        app:layout_constraintVertical_bias="0.439" />
+        app:layout_constraintTop_toTopOf="@+id/emailInput"
+        android:layout_marginTop="16dp" />
 
     <ImageView
         android:id="@+id/iconPass"
-        android:layout_width="20dp"
-        android:layout_height="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="14dp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@+id/iconMail"
         app:layout_constraintTop_toTopOf="@+id/passwordInput"
-        android:src="@drawable/icon_pass"
+        android:src="@drawable/password_icon"
         android:layout_marginStart="16dp" />
 
     <CheckBox

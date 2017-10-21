@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="52dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/ToolbarThemeMenu"
-    >
+    app:contentInsetStart="0dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
         <ImageButton
             android:id="@+id/btn_toolbar_back"
-            android:layout_width="22dp"
-            android:layout_height="30dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="17dp"
+            android:src="@drawable/btn_back_ic"
             android:background="@color/colorPrimary"
-            android:layout_centerVertical="true"
             />
         <TextView
             android:id="@+id/text_toolbar"
@@ -25,9 +26,9 @@
             android:text="테스트 페이지"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:textSize="25sp"
+            android:textSize="18sp"
             android:gravity="center"
             android:layout_centerHorizontal="true"
-            />
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

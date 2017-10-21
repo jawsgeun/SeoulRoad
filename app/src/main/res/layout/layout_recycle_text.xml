@@ -9,12 +9,12 @@
         android:background="@drawable/underline_listview">
         <TextView
             android:id="@+id/text_title"
-            android:layout_width="80dp"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:text="10 : 00"
             android:textSize="19sp"
             android:layout_gravity="center"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="18dp"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
             />

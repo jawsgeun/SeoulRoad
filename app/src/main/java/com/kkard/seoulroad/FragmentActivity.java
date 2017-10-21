@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kkard.seoulroad.MyMenu.MyLikeActivity;
 import com.kkard.seoulroad.MyMenu.MyPostActivity;
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
 
@@ -60,10 +61,11 @@ public class FragmentActivity extends AppCompatActivity
         userName = pre.getString("G_NAME","g_name error");
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
-        tabLayout.addTab(tabLayout.newTab().setText("지도"));
         tabLayout.addTab(tabLayout.newTab().setText("방문록"));
-        tabLayout.addTab(tabLayout.newTab().setText("식물"));
+        tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
+        tabLayout.addTab(tabLayout.newTab().setText("식물찾기"));
+        tabLayout.addTab(tabLayout.newTab().setText("지도보기"));
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -113,7 +115,8 @@ public class FragmentActivity extends AppCompatActivity
             startActivity(new Intent(FragmentActivity.this, MyPostActivity.class));
             finish();
         } else if (id == R.id.menu_my_like) {
-            Toast.makeText(getApplicationContext(),"아직 못만듬",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(FragmentActivity.this, MyLikeActivity.class));
+            finish();
         } else if (id == R.id.menu_fqa) {
             startActivity(new Intent(FragmentActivity.this,NoticeActivity.class));
             finish();

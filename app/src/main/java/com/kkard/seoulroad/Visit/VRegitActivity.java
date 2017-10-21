@@ -1,6 +1,5 @@
 package com.kkard.seoulroad.Visit;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,8 +9,11 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.utils.DialogView_C;
 
@@ -24,19 +26,27 @@ import java.io.File;
 public class VRegitActivity extends AppCompatActivity {
     private ImageView imageView;
     private DialogView_C mdialog;
-    private Context mcontext;
+    private TextView toolbalTitle;
+    private ImageButton backBtn;
     private Uri mImageCaptureUri;
     private final int PICK_FROM_CAMERA = 0;
     private final int PICK_FROM_ALBUM = 1;
     private final int CROP_FROM_IMAGE = 2;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vregit);
-        imageView = (ImageView)findViewById(R.id.regit_image);
+        InitView();
+        toolbalTitle.setText("방문록 쓰기");
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(VRegitActivity.this,FragmentActivity.class));
+                finish();
+            }
+        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,5 +127,9 @@ public class VRegitActivity extends AppCompatActivity {
                 if(f.exists())f.delete();
         }
     }
-
+    private void InitView(){
+        imageView = (ImageView)findViewById(R.id.regit_image);
+        toolbalTitle = (TextView)findViewById(R.id.text_toolbar);
+        backBtn = (ImageButton)findViewById(R.id.btn_toolbar_back);
+    }
 }

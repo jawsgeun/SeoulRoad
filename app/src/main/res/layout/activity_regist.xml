@@ -65,17 +65,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/joinEnter"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
+        app:layout_constraintRight_toRightOf="parent"/>
     <include
         layout="@layout/my_menu_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
     />
-
     <EditText
         android:id="@+id/joinEmail"
         android:layout_width="308dp"

@@ -28,10 +28,10 @@
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/closeBtn_child"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_keyboard_arrow_up_black_18dp"
+            android:src="@drawable/qna_close"
             />
     </RelativeLayout>
     </LinearLayout>
