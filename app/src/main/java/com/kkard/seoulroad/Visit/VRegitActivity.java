@@ -56,6 +56,12 @@ public class VRegitActivity extends AppCompatActivity {
         });
 
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(VRegitActivity.this,FragmentActivity.class));
+        finish();
+    }
     private View.OnClickListener leftClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

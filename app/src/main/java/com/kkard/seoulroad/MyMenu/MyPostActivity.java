@@ -68,6 +68,14 @@ public class MyPostActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(MyPostActivity.this, FragmentActivity.class));
+        finish();
+    }
+
     private List<Data> getData() {
         List<Data> finalList = new ArrayList<>();
         SharedPreferences sh = getSharedPreferences("DB",MODE_PRIVATE);
