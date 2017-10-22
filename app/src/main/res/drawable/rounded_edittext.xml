@@ -6,8 +6,5 @@
         android:width="2dp"
         android:color="@color/colorPrimaryBtn"/>
     <corners
-        android:bottomRightRadius="15dp"
-        android:bottomLeftRadius="15dp"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp"/>
+        android:radius="10dp"/>
 </shape>

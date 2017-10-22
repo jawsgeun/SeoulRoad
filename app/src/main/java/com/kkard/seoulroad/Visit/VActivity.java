@@ -76,13 +76,13 @@ public class VActivity extends Fragment {
 
         List<ListImageItem> imageItems = new ArrayList<>();
         ListImageItem listImageItem1 = new ListImageItem();
-        listImageItem1.setItemImage(R.drawable.test_blue);
+        listImageItem1.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem1);
         ListImageItem listImageItem2 = new ListImageItem();
-        listImageItem2.setItemImage(R.drawable.test_pink);
+        listImageItem2.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem2);
         ListImageItem listImageItem3 = new ListImageItem();
-        listImageItem3.setItemImage(R.drawable.test_blue);
+        listImageItem3.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem3);
         data = new Data();
         data.setViewType(ViewAdapter.VIEW_TYPE_IMAGE);
@@ -91,13 +91,13 @@ public class VActivity extends Fragment {
 
         imageItems = new ArrayList<>();
         listImageItem1 = new ListImageItem();
-        listImageItem1.setItemImage(R.drawable.test_white);
+        listImageItem1.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem1);
         listImageItem2 = new ListImageItem();
         listImageItem2.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem2);
         listImageItem3 = new ListImageItem();
-        listImageItem3.setItemImage(R.drawable.test_white);
+        listImageItem3.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem3);
         data = new Data();
         data.setViewType(ViewAdapter.VIEW_TYPE_IMAGE);
@@ -106,10 +106,10 @@ public class VActivity extends Fragment {
 
         imageItems = new ArrayList<>();
         listImageItem1 = new ListImageItem();
-        listImageItem1.setItemImage(R.drawable.test_pink);
+        listImageItem1.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem1);
         listImageItem2 = new ListImageItem();
-        listImageItem2.setItemImage(R.drawable.test_blue);
+        listImageItem2.setItemImage(R.drawable.test_yellow);
         imageItems.add(listImageItem2);
         listImageItem3 = new ListImageItem();
         listImageItem3.setItemImage(R.drawable.test_yellow);

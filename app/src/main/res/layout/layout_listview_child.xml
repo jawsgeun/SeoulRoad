@@ -22,17 +22,5 @@
         android:text="페이스북 연동 기능 추가되었습니다. 로그인 창에서 페이스북 연동하기 버튼을 클릭하면 자동으로 페이스북과 연결됩니다.\n많은 이용 바랍니다. 앞으로도 사용자들의 편의를 위하겠습니다.\n감사합니다."
         android:lineSpacingExtra="3dp"
         />
-    <RelativeLayout
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/closeBtn_child"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/qna_close"
-            />
-    </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

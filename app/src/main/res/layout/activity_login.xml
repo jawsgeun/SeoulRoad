@@ -86,7 +86,7 @@
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="18dp"
-        android:background="@drawable/button_selector"
+        android:background="@drawable/pink_back_btn"
         android:text="회 원 가 입"
         android:textColor="#FFFFFF"
         android:textSize="17sp"

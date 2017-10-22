@@ -51,6 +51,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".MyMenu.MyLikeActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".Map.CourseDetailActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
     <!--permission-->

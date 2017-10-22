@@ -11,11 +11,12 @@
         >
         <ImageButton
             android:id="@+id/btn_toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginBottom="17dp"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:paddingEnd="10dp"
+            android:paddingStart="12dp"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
             android:src="@drawable/btn_back_ic"
             android:background="@color/colorPrimary"
             />
@@ -26,7 +27,7 @@
             android:text="테스트 페이지"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="19sp"
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />

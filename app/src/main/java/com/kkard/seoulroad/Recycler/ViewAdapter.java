@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.kkard.seoulroad.Circleindicator_C.IndicatorAdapter;
 import com.kkard.seoulroad.R;
+import com.kkard.seoulroad.ViewHolder.CourseItemHolder;
 import com.kkard.seoulroad.ViewHolder.ImageItemHolder;
 import com.kkard.seoulroad.ViewHolder.MainTextItemHolder;
 import com.kkard.seoulroad.ViewHolder.MypostItemHolder;
@@ -30,6 +31,8 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final static int VIEW_TYPE_PAGER = 52;
     public static final int VIEW_TYPE_IMAGE = 53;
     public static final int VIEW_TYPE_POST = 54;
+    public static final int VIEW_TYPE_COURSE = 55;
+
     private DialogView_C mDialog;
     private Context mcontext;
     private List<Data> mDataList = new ArrayList<>();
@@ -48,6 +51,10 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch (viewType) {
+            case VIEW_TYPE_COURSE:
+                View courseView = inflater.inflate(R.layout.layout_recycle_course, parent, false);
+                viewHolder = new CourseItemHolder(courseView);
+                break;
             case VIEW_TYPE_TEXT_MAIN:
                 View mainUserView = inflater.inflate(R.layout.layout_recycle_maintext, parent, false);
                 viewHolder = new MainTextItemHolder(mainUserView);
@@ -77,6 +84,10 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         switch (holder.getItemViewType()) {
+            case VIEW_TYPE_COURSE:
+                CourseItemHolder courseItemHolder = (CourseItemHolder) holder;
+                configureCourseHolder(courseItemHolder,position);
+                break;
             case VIEW_TYPE_TEXT_MAIN:
                 MainTextItemHolder mainTextHolder = (MainTextItemHolder) holder;
                 configureMainTextItem(mainTextHolder, position);
@@ -101,6 +112,15 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 MypostItemHolder postHolder = (MypostItemHolder) holder;
                 configurePostHolder(postHolder, position);
                 break;
+        }
+    }
+    private void configureCourseHolder(CourseItemHolder holder, int position){
+        Data data = mDataList.get(position);
+
+        if(data.getmCourseContent().size()==3) { //사진, 제목, 내용 까지 총 3개가 들어왔는지
+            holder.courseImage.setImageResource(R.drawable.test_pink); // 이미지 저장 디비 구축 후 수정
+            holder.courseTitle.setText(data.getmCourseContent().get(1));
+            holder.courseContent.setText(data.getmCourseContent().get(2));
         }
     }
     private void configurePostHolder(MypostItemHolder holder, int position){
