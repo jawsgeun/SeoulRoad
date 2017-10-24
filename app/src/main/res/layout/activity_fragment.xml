@@ -19,13 +19,12 @@
             android:orientation="vertical"
             android:background="@color/colorPrimary">
             <ImageView
-                android:padding="10dp"
-                android:layout_width="88dp"
-                android:layout_height="88dp"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
                 android:layout_marginTop="28dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/white_circle_back"
-                android:src="@drawable/logo_green" />
+                android:src="@drawable/mymenu_logo"
+                 />
             <TextView
                 android:id="@+id/drawer_name"
                 android:layout_width="match_parent"
