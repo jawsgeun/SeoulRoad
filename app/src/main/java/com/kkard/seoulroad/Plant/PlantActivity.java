@@ -31,7 +31,7 @@ public class PlantActivity extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                Intent itn = new Intent(v.getContext(), QRCamera.class);
+                Intent itn = new Intent(v.getContext(), QRCameraActivity.class);
                 startActivityForResult(itn,0);
             }
         });

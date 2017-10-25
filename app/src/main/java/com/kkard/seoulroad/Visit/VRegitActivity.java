@@ -65,13 +65,13 @@ public class VRegitActivity extends AppCompatActivity {
     private View.OnClickListener leftClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            doTakePhotoAction();
+            doTakePhotoAction(); // 사진 찍기
         }
     };
     private View.OnClickListener middleClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            doTakeAlbumAction();
+            doTakeAlbumAction(); // 앨범에서 고르기
         }
     };
     private View.OnClickListener rightClickListener = new View.OnClickListener() {
@@ -81,7 +81,7 @@ public class VRegitActivity extends AppCompatActivity {
         }
     };
 
-    private void doTakePhotoAction() {
+    private void doTakePhotoAction() {  // 사진 찍기
         Intent itn = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         String url = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
@@ -91,7 +91,7 @@ public class VRegitActivity extends AppCompatActivity {
         startActivityForResult(itn,PICK_FROM_CAMERA);
     }
 
-    private void doTakeAlbumAction() {
+    private void doTakeAlbumAction() {  // 앨범에서 고르기
         Intent itn = new Intent(Intent.ACTION_PICK);
         itn.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(itn,PICK_FROM_ALBUM);

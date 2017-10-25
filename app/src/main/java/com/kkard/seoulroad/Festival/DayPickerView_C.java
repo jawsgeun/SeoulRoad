@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.kkard.seoulroad.Calendar_C.DatePickerController;
 import com.kkard.seoulroad.Calendar_C.DayPickerView;
-import com.kkard.seoulroad.Calendar_C.ResizeAnimation;
 import com.kkard.seoulroad.Calendar_C.SimpleMonthAdapter;
 import com.kkard.seoulroad.R;
 
@@ -103,9 +102,9 @@ public class DayPickerView_C extends DayPickerView {
                         public void run() {
                             int firstItemHeight = 490;
                             if (getMeasuredHeight() != firstItemHeight) {
-                                ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView_C.this, firstItemHeight);
-                                resizeAnimation.setDuration(300);
-                                startAnimation(resizeAnimation);
+                              //  ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView_C.this, firstItemHeight);
+                             //   resizeAnimation.setDuration(300);
+                              //  startAnimation(resizeAnimation);
                             }
                         }
                     }, 400);
@@ -131,9 +130,9 @@ public class DayPickerView_C extends DayPickerView {
             public void run() {
                 if (getChildAt(0) != null) {
                     int firstItemHeight = 520;
-                    ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView_C.this, firstItemHeight);
-                    resizeAnimation.setDuration(300);
-                    startAnimation(resizeAnimation);
+                   // ResizeAnimation resizeAnimation = new ResizeAnimation(DayPickerView_C.this, firstItemHeight);
+                  //  resizeAnimation.setDuration(300);
+                  //  startAnimation(resizeAnimation);
                 }
             }
         }, 200);

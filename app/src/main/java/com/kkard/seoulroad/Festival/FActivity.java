@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kkard.seoulroad.Calendar_C.DatePickerController;
+import com.kkard.seoulroad.Calendar_C.DayPickerView;
 import com.kkard.seoulroad.Calendar_C.SimpleMonthAdapter;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.Recycler.Data;
@@ -32,7 +33,7 @@ public class FActivity extends Fragment implements DatePickerController {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private DayPickerView_C calendarView;
+    private DayPickerView calendarView;
 
     @Nullable
     @Override
@@ -45,7 +46,7 @@ public class FActivity extends Fragment implements DatePickerController {
         super.onActivityCreated(savedInstanceState);
         context = getContext();
 
-        calendarView = (DayPickerView_C) getView().findViewById(R.id.calendar_view);
+        calendarView = (DayPickerView) getView().findViewById(R.id.calendar_view);
         calendarView.setController(FActivity.this);
 
         recyclerView = (RecyclerView)getView().findViewById(R.id.fest_recycle_view);

@@ -17,10 +17,11 @@ public class Data implements Serializable {
     private List<ListImageItem> listImageItemList;
     private List<String> mPostContent; // 아이디, 이미지, 좋아요, 날짜, 코멘트 순서
     private List<String> mCourseContent; // 사진, 제목, 내용 순서
-
+    private int mImageId; // 코스에 넣을 이미지 id
     /*
      * SETTER
      */
+    public void setmImageId(int mImageId) {        this.mImageId = mImageId;    }
     public void setmCourseContent(List<String> mCourseContent) {this.mCourseContent = mCourseContent;}
     public void setmPostContent(List<String> mPostContent) {this.mPostContent = mPostContent;}
     public void setListImageItemList(List<ListImageItem> listImageItemList) {
@@ -42,6 +43,7 @@ public class Data implements Serializable {
     /*
      * GETTER
      */
+    public int getmImageId() {        return mImageId;    }
     public List<String> getmCourseContent() {return mCourseContent;}
     public List<String> getmPostContent() {return mPostContent;}
     public List<ListImageItem> getListImageItemList() {

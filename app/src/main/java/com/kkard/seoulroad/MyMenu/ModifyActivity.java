@@ -1,4 +1,4 @@
-package com.kkard.seoulroad;
+package com.kkard.seoulroad.MyMenu;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kkard.seoulroad.FragmentActivity;
+import com.kkard.seoulroad.LoginActivity;
+import com.kkard.seoulroad.R;
+
 import java.util.regex.Pattern;
 
 /**
@@ -30,15 +34,21 @@ public class ModifyActivity extends AppCompatActivity{
     private Button modBtn;
     private ImageButton backBtn;
     private TextView toolbarTitle, checkName, checkEmail, checkPass, checkPassC;
+    private int pageNum;
+    private Intent intent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify);
+        intent = getIntent();
+        pageNum = intent.getIntExtra("pageNum",0);
         InitView();
         backBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                startActivity(new Intent(ModifyActivity.this,FragmentActivity.class));
+                intent = new Intent(ModifyActivity.this,FragmentActivity.class);
+                intent.putExtra("pageNum",pageNum);
+                startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                 finish();
                 return false;
@@ -122,7 +132,9 @@ public class ModifyActivity extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(ModifyActivity.this,FragmentActivity.class));
+        intent = new Intent(ModifyActivity.this,FragmentActivity.class);
+        intent.putExtra("pageNum",pageNum);
+        startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
         finish();
     }

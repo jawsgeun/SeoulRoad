@@ -60,7 +60,9 @@ public class LoginActivity extends Activity {
         }else{ // 자동 로그인 할 경우
             userId = sh.getString("UserAutoId","None"); // 글로벌 아이디 저장
             userPassword = sh.getString("UserAutoPass","None"); // 글로벌 비밀번호 저장
-            startActivity(new Intent(LoginActivity.this, FragmentActivity.class));
+            Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
+            intent.putExtra("pageNum",0);
+            startActivity(intent);
             finish();
         }
         InitView();

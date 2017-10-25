@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kkard.seoulroad">
 
+    <!-- permission -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- permission for over sdk23 -->
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
+    <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon"
@@ -9,27 +22,24 @@
         android:supportsRtl="true"
         android:theme="@style/GreenStatus">
         <activity
-            android:name="com.kkard.seoulroad.SplashActivity"
+            android:name=".SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme"
-            >
-
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.kkard.seoulroad.LoginActivity"
-            android:screenOrientation="portrait"
-            />
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.kkard.seoulroad.FragmentActivity"
+            android:name=".FragmentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/WhiteStatus"
-            />
+            android:theme="@style/WhiteStatus" />
         <activity
-            android:name=".Plant.QRCamera"
+            android:name=".Plant.QRCameraActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Plant.CaptureActivityAnyOrientation"
@@ -38,30 +48,40 @@
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.kkard.seoulroad.RegistActivity"
+            android:name=".RegistActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.kkard.seoulroad.MyMenu.NoticeActivity"
+            android:name=".MyMenu.NoticeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Visit.VRegitActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MyMenu.MyPostActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ModifyActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MyMenu.MyLikeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Map.CourseDetailActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Visit.VRegitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyMenu.MyPostActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyMenu.ModifyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyMenu.MyLikeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Map.CourseDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Map.CourseActivity"
+            android:screenOrientation="portrait" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
     </application>
-
-    <!--permission-->
-    <uses-feature android:name="android.hardware.camera" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
 
 </manifest>

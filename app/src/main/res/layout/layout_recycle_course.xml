@@ -1,40 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="147dp"
-    android:padding="5dp">
-    <LinearLayout
-        android:layout_width="match_parent"
+xmlns:card_view="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="170dp"
+    android:layout_marginBottom="8dp">
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="163dp"
+    card_view:cardElevation="7dp"
+    >
+    <ImageView
+        android:id="@+id/course_main_image"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="4.5dp">
-        <ImageView
-            android:id="@+id/course_image"
-            android:layout_width="138dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/test_blue"
-            android:scaleType="fitXY"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="6dp"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/course_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="문화역서울 284"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/course_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp"
-                android:textSize="11sp"
-                android:text="최초의 서울역은 1900년 염천교 부근에 10편짜리 목제 건물로 지어졌습니다. 당시의 이름은 '남대문정거장' 으로 남대문을 통해 경성의 중심부로 물자를 조달하기 위해 만들어졌습니다. 지금의 위치에 서울역(경성역)이 지어진 물자를"/>
-
-        </LinearLayout>
-    </LinearLayout>
-
-
+        android:src="@drawable/course1"/>
+</android.support.v7.widget.CardView>
 </LinearLayout>

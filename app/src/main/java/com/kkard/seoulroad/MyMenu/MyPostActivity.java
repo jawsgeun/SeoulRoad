@@ -35,11 +35,15 @@ public class MyPostActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private int pageNum;
+    private Intent intent;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypost);
+        intent = getIntent();
+        pageNum = intent.getIntExtra("pageNum",0);
         toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
         toolbarTitle.setText("내가 쓴 글");
         backBtn = (ImageButton) findViewById(R.id.btn_toolbar_back);
@@ -55,7 +59,9 @@ public class MyPostActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MyPostActivity.this, FragmentActivity.class));
+                intent = new Intent(MyPostActivity.this, FragmentActivity.class);
+                intent.putExtra("pageNum",pageNum);
+                startActivity(intent);
                 finish();
             }
         });
@@ -72,7 +78,9 @@ public class MyPostActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(MyPostActivity.this, FragmentActivity.class));
+        intent = new Intent(MyPostActivity.this, FragmentActivity.class);
+        intent.putExtra("pageNum",pageNum);
+        startActivity(intent);
         finish();
     }
 

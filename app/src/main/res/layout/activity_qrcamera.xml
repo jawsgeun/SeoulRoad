@@ -2,8 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="안녕하세요"/>
+    <include
+        layout="@layout/my_menu_toolbar"
+        android:layout_height="52dp"
+        android:layout_width="match_parent"/>
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/qr_wv">
+    </WebView>
+
 </LinearLayout>

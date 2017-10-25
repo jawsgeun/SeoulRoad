@@ -33,13 +33,13 @@ public class CourseDetailActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_detail);
+        setContentView(R.layout.activity_course);
         toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
         toolbarTitle.setText("남산회현 코스");
         backBtn = (ImageButton) findViewById(R.id.btn_toolbar_back);
 
         context = getApplicationContext();
-        recyclerView = (RecyclerView)findViewById(R.id.course_detail_recycle_view);
+        recyclerView = (RecyclerView)findViewById(R.id.course_recycle_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);

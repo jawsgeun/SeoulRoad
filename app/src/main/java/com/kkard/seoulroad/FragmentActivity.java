@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kkard.seoulroad.MyMenu.ModifyActivity;
 import com.kkard.seoulroad.MyMenu.MyLikeActivity;
 import com.kkard.seoulroad.MyMenu.MyPostActivity;
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
@@ -31,12 +32,15 @@ public class FragmentActivity extends AppCompatActivity {
     ///////////////Back 버튼 2번 종료 관련 변수////////////
     private final long FINISH_INTERVAL_TIME = 2000; //2초안에 Back 버튼 누르면 종료
     private long   backPressedTime = 0;
+    private int pageNum;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         InitView();
+        pageNum = new Intent(getIntent()).getIntExtra("pageNum",0);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         SharedPreferences pre = getSharedPreferences("DB",MODE_PRIVATE);
         userId = pre.getString("G_ID","g_id error");
@@ -52,6 +56,7 @@ public class FragmentActivity extends AppCompatActivity {
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.setCurrentItem(pageNum);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -81,28 +86,36 @@ public class FragmentActivity extends AppCompatActivity {
         drawerWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FragmentActivity.this, MyPostActivity.class));
+                intent = new Intent(FragmentActivity.this, MyPostActivity.class);
+                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                startActivity(intent);
                 finish();
             }
         });
         drawerLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FragmentActivity.this, MyLikeActivity.class));
+                intent = new Intent(FragmentActivity.this, MyLikeActivity.class);
+                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                startActivity(intent);
                 finish();
             }
         });
         drawerNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FragmentActivity.this,NoticeActivity.class));
+                intent = new Intent(FragmentActivity.this, NoticeActivity.class);
+                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                startActivity(intent);
                 finish();
             }
         });
         drawerModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FragmentActivity.this, ModifyActivity.class));
+                intent = new Intent(FragmentActivity.this, ModifyActivity.class);
+                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                startActivity(intent);
                 finish();
             }
         });

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SeoulRoad</string>
+    <string name="title_activity_remove">Map</string>
 </resources>

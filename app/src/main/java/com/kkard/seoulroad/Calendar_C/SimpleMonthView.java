@@ -58,6 +58,7 @@ public class SimpleMonthView extends View {
 
     protected int mPadding = 0;
 
+
     private String mDayOfWeekTypeface;
     private String mMonthTitleTypeface;
 
@@ -275,10 +276,9 @@ public class SimpleMonthView extends View {
                 }
                 Log.d("day : "+day,"cellNum : "+mNumCells);
             } else {
-                if (mHasToday && (mToday == day)&&flag <3) {
+                if (mHasToday && (mToday == day)) {
                     Log.d("1day : "+day,"cellNum : "+mNumCells);
                     canvas.drawCircle(x, y - MINI_DAY_NUMBER_TEXT_SIZE / 3, DAY_SELECTED_CIRCLE_SIZE, mCurrentCirclePaint);
-                    flag=flag+1;
                 } else {
                     drawMonthTitle(canvas);
                     Integer dotsCount = eventSymbols.get(day);

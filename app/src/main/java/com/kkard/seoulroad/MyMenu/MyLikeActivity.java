@@ -30,12 +30,15 @@ public class MyLikeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-
+    private int pageNum;
+    private Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylike);
+        intent = getIntent();
+        pageNum = intent.getIntExtra("pageNum",0);
         InitView();
         toolbarTitle.setText("좋아요");
         recyclerView.setHasFixedSize(true);
@@ -46,7 +49,9 @@ public class MyLikeActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MyLikeActivity.this, FragmentActivity.class));
+                intent = new Intent(MyLikeActivity.this, FragmentActivity.class);
+                intent.putExtra("pageNum",pageNum);
+                startActivity(intent);
                 finish();
             }
         });
@@ -54,7 +59,9 @@ public class MyLikeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(MyLikeActivity.this, FragmentActivity.class));
+        intent = new Intent(MyLikeActivity.this, FragmentActivity.class);
+        intent.putExtra("pageNum",pageNum);
+        startActivity(intent);
         finish();
     }
     private List<Data> getData(){

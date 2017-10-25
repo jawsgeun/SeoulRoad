@@ -1,9 +1,9 @@
 package com.kkard.seoulroad.MyMenu;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -18,18 +18,22 @@ import java.util.ArrayList;
  * Created by SuGeun on 2017-09-01.
  */
 
-public class NoticeActivity extends Activity{
+public class NoticeActivity extends AppCompatActivity{
     private ExpandableListView expandableListView;
     private ExpandableAdapter adapter;
     private TextView toolbarTitle;
     private ImageButton toolbarBack;
     private ArrayList<NoticeParentData> parentDatas;
     private ArrayList<NoticeChildData> childListDatas;
+    private int pageNum;
+    private Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
+        intent = getIntent();
+        pageNum = intent.getIntExtra("pageNum",0);
         expandableListView = (ExpandableListView)findViewById(R.id.expand_menu);
         toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
         toolbarTitle.setText("게시판");
@@ -37,7 +41,9 @@ public class NoticeActivity extends Activity{
         toolbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NoticeActivity.this,FragmentActivity.class));
+                intent = new Intent(NoticeActivity.this, FragmentActivity.class);
+                intent.putExtra("pageNum",pageNum);
+                startActivity(intent);
                 finish();
             }
         });
@@ -66,7 +72,9 @@ public class NoticeActivity extends Activity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(NoticeActivity.this,FragmentActivity.class));
+        intent = new Intent(NoticeActivity.this, FragmentActivity.class);
+        intent.putExtra("pageNum",pageNum);
+        startActivity(intent);
         finish();
     }
 }

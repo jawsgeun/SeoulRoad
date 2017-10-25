@@ -15,7 +15,7 @@
         android:layout_height="match_parent" android:layout_gravity="right">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:orientation="vertical"
             android:background="@color/colorPrimary">
             <ImageView
@@ -32,17 +32,18 @@
                 android:gravity="center_horizontal"
                 android:layout_marginTop="18dp"
                 android:text="김세진"
-                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/drawer_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="22dp"
+                android:layout_marginBottom="18dp"
+                android:textColor="#FFFFFF"
                 android:text="kan02188@naver.com"
-                android:textSize="16dp" />
+                android:textSize="15sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -166,6 +167,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#5500A24C"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/a"
+                    android:text="서울로 안내소 : 02 . 313 . 7017"
+                    android:layout_centerInParent="true"
+                    android:textSize="11sp"
+                    android:textColor="@color/colorPrimary"/>
+                <TextView
+                    android:id="@+id/a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="문의사항 : 010 . 1234 . 1234"
+                    android:textSize="11sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorPrimary"/>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
