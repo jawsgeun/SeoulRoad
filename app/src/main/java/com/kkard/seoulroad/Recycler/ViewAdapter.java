@@ -1,12 +1,14 @@
 package com.kkard.seoulroad.Recycler;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.kkard.seoulroad.Circleindicator_C.IndicatorAdapter;
+import com.kkard.seoulroad.MyMenu.MyPostEditActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.ViewHolder.CourseItemHolder;
 import com.kkard.seoulroad.ViewHolder.ImageItemHolder;
@@ -141,14 +143,28 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
     private void configurePostHolder(MypostItemHolder holder, int position){
-        Data data = mDataList.get(position);
-
-        if (data.getmPostContent().size()==5){ // 아이디, 이미지, 좋아요 수, 날짜, 코멘트 까지 총 5개가 들어왔는지
+        final Data data = mDataList.get(position);
+        if (data.getmPostContent().size()==6){ // 아이디, 이미지, 좋아요 수, 날짜, 코멘트, 수정여부 까지 총 5개가 들어왔는지
             holder.mypostUserid.setText(data.getmPostContent().get(0));
             holder.mypostImg.setImageResource(R.drawable.testimage_mypost); // 이미지 저장 디비 구축 후 수정
-            holder.mypostLike.setText("좋아요 "+data.getmPostContent().get(2)+"명");
+            holder.mypostLike.setText(data.getmPostContent().get(2)+"명");
             holder.mypostDate.setText(data.getmPostContent().get(3));
             holder.mypostCom.setText(data.getmPostContent().get(4));
+        }
+        if(data.getmPostContent().get(5).equals("수정 불가"))holder.modify.setVisibility(View.INVISIBLE);
+        else{holder.modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mcontext, MyPostEditActivity.class);
+                intent.putExtra("userId",data.getmPostContent().get(0));
+                intent.putExtra("img",R.drawable.testimage_mypost);
+                intent.putExtra("like",data.getmPostContent().get(2)+"명");
+                intent.putExtra("date",data.getmPostContent().get(3));
+                intent.putExtra("comment",data.getmPostContent().get(4));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mcontext.startActivity(intent);
+            }
+        });
         }
     }
     private void configureMainTextItem(MainTextItemHolder holder, int position) {

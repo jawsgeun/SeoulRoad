@@ -1,14 +1,11 @@
 package com.kkard.seoulroad.Circleindicator_C;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.kkard.seoulroad.MyMenu.NoticeActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.utils.DialogView_C;
 
@@ -24,10 +21,6 @@ public class IndicatorAdapter extends PagerAdapter {
     public IndicatorAdapter(Context context) {
         mSize = 3;
         mcontext = context;
-    }
-
-    public IndicatorAdapter(int count) {
-        mSize = count;
     }
 
     @Override public int getCount() {
@@ -54,37 +47,8 @@ public class IndicatorAdapter extends PagerAdapter {
     private View.OnClickListener mPagerListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mDialog = new DialogView_C(v.getContext(),-1,"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+            mDialog = new DialogView_C(v.getContext(),-1,"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리"); // 페이저 눌렀을때 다이얼로그 전달
             mDialog.show();
-            mDialog.setCanceledOnTouchOutside(false);
         }
     };
-    private View.OnClickListener leftClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent itn = new Intent(mcontext,NoticeActivity.class);
-            mcontext.startActivity(itn);
-            ((Activity)mcontext).finish();
-        }
-    };
-
-    private View.OnClickListener rightClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mDialog.dismiss();
-        }
-    };
-
-
-    public void addItem() {
-        mSize++;
-        notifyDataSetChanged();
-    }
-
-    public void removeItem() {
-        mSize--;
-        mSize = mSize < 0 ? 0 : mSize;
-
-        notifyDataSetChanged();
-    }
 }

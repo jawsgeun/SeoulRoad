@@ -75,6 +75,7 @@ public class MyLikeActivity extends AppCompatActivity {
         content.add("300");
         content.add("2017.10.20");
         content.add("매우 예쁘군요");
+        content.add("수정 불가");
         data.setmPostContent(content);
         finalList.add(data);
 
@@ -86,6 +87,7 @@ public class MyLikeActivity extends AppCompatActivity {
         content.add("30");
         content.add("3033.10.20");
         content.add("매우 별로에요요");
+        content.add("수정 불가");
         data.setmPostContent(content);
         finalList.add(data);
 

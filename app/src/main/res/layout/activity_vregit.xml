@@ -33,6 +33,7 @@
         android:gravity="top"
         android:layout_gravity="center_horizontal"
         android:hint="(20자 이내로 작성해주세요)"
+        android:textCursorDrawable="@drawable/pink_cursor"
         android:background="@drawable/rounded_line_edittext"/>
         <RelativeLayout
             android:layout_width="match_parent"

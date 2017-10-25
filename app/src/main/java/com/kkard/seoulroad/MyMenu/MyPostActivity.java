@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,7 +16,6 @@ import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.Recycler.Data;
 import com.kkard.seoulroad.Recycler.ViewAdapter;
-import com.kkard.seoulroad.Visit.VRegitActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,6 @@ import java.util.List;
 
 public class MyPostActivity extends AppCompatActivity {
 
-    private Button modifyBtn;
     private ImageButton backBtn;
     private TextView toolbarTitle;
     private Context context;
@@ -65,14 +62,6 @@ public class MyPostActivity extends AppCompatActivity {
                 finish();
             }
         });
-        modifyBtn = (Button)findViewById(R.id.mypost_modify);
-        modifyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), VRegitActivity.class));
-                finish();
-            }
-        });
     }
 
     @Override
@@ -96,6 +85,7 @@ public class MyPostActivity extends AppCompatActivity {
         content.add("300");
         content.add("2017.10.20");
         content.add("매우 예쁘군요");
+        content.add("수정 가능");
         data.setmPostContent(content);
         finalList.add(data);
 
@@ -107,6 +97,7 @@ public class MyPostActivity extends AppCompatActivity {
         content.add("30");
         content.add("3033.10.20");
         content.add("매우 별로에요요");
+        content.add("수정 가능");
         data.setmPostContent(content);
         finalList.add(data);
 
