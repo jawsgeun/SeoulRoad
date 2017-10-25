@@ -1,78 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="320dp"
-    android:layout_height="450dp"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_back"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/grey_rounded_back">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/dialog_inside"
+        android:layout_width="346dp"
+        android:layout_height="377dp"
         android:orientation="vertical"
-        android:background="@android:color/darker_gray"
+        android:background="@drawable/rounded_back"
+        android:layout_centerInParent="true"
         >
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Title"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            />
-
-        <TextView
-            android:id="@+id/tv_id_dia"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:textColor="@android:color/black"
-            />
-
+            android:layout_height="41dp"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_back_green">
+        <TextView
+            android:id="@+id/dia_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="1 번째 방문자 입니다 !"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="#FFFFFF"
+            android:layout_centerInParent="true"/>
+            <ImageView
+                android:id="@+id/dia_x_btn"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/x_btn"
+                android:padding="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="15dp">
+            <ImageView
+                android:id="@+id/green_bar"
+                android:layout_width="2dp"
+                android:layout_height="13dp"
+                android:background="@color/colorPrimary"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="4dp"/>
+            <TextView
+                android:id="@+id/dia_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kan02188@naver.com"
+                android:textColor="@android:color/black"
+                android:layout_toRightOf="@id/green_bar"
+                android:layout_marginStart="7dp"
+                android:layout_marginBottom="2dp" />
         <ImageView
             android:id="@+id/image_dialog"
-            android:layout_width="350dp"
-            android:layout_height="350dp"
-            android:src="@drawable/abc"
-            android:layout_gravity="center"
-            />
-
+            android:layout_width="325dp"
+            android:layout_height="240dp"
+            android:layout_below="@id/dia_id"
+            android:src="@drawable/test_pager"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="25dp"
-            >
-
+            android:layout_marginTop="6dp"
+            android:layout_below="@id/image_dialog">
             <Button
                 android:id="@+id/btn_heart"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/listview_on" />
-
+                android:layout_width="17dp"
+                android:layout_height="15dp"
+                android:background="@drawable/love_btn_black"
+                android:layout_marginStart="1dp"/>
             <TextView
-                android:id="@+id/bt_right"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:textSize="15dp"
+                android:layout_height="match_parent"
+                android:textSize="12dp"
                 android:text="좋아요"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="1dp"
                 android:textColor="@android:color/black"/>
             <TextView
-                android:id="@+id/tv_heart_cnt"
+                android:id="@+id/cnt_like"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:textSize="15dp"
-                android:text="xx개"
+                android:layout_height="match_parent"
+                android:textSize="12dp"
+                android:text="125명"
+                android:textStyle="bold"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="1dp"
                 android:textColor="@android:color/black"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="2017.09.23"
+                android:textSize="10dp"
+                android:gravity="end"
+                />
         </LinearLayout>
         <TextView
+            android:id="@+id/dia_content"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:id="@+id/tv_content"
-            android:layout_marginLeft="25dp"
-            android:textSize="15dp"
-            android:text="주저리주러리"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:text="야경이 진짜 이뻐요 ! 꼭 가보세요 !!!"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="1dp"
             android:textColor="@android:color/black"/>
+        </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
