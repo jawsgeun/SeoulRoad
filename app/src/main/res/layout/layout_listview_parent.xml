@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="55dp"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    >
+    android:paddingRight="10dp">
     <ImageView
         android:id="@+id/div_parent"
         android:layout_width="match_parent"
@@ -21,10 +21,10 @@
             android:layout_width="53dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            app:font="Regular"
             android:text="공지"
             android:gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="16dp"
             tools:background="@drawable/pink_circle_back"
             tools:textColor="#FFFFFF"
             />
@@ -32,10 +32,10 @@
             android:id="@+id/content_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:font="Regular"
             android:text="꺼짐 오류 수정 버전 2.1로 업데이트 되었습니다"
             android:singleLine="true"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:textSize="15dp"
             android:gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:textColor="@color/colorPrimary"

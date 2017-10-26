@@ -21,6 +21,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tsengvn.typekit.TypekitContextWrapper;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +50,12 @@ public class LoginActivity extends Activity {
     private boolean saveExist; // 아이디 저장 설정 여부
     private boolean isAuto;
     private int lineColor;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

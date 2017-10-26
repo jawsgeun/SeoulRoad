@@ -16,6 +16,7 @@ import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.Recycler.Data;
 import com.kkard.seoulroad.Recycler.ViewAdapter;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,10 @@ public class MyPostActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private int pageNum;
     private Intent intent;
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

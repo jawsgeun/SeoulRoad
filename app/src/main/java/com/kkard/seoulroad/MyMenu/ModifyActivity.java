@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.LoginActivity;
 import com.kkard.seoulroad.R;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.regex.Pattern;
 
@@ -36,6 +37,10 @@ public class ModifyActivity extends AppCompatActivity{
     private TextView toolbarTitle, checkName, checkEmail, checkPass, checkPassC;
     private int pageNum;
     private Intent intent;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

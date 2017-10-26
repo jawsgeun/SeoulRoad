@@ -10,7 +10,7 @@
         android:layout_height="200dp"
         android:background="@android:color/darker_gray"
         android:orientation="vertical">
-
+// 폰트 적용 해야댐
         <TextView
             android:id="@+id/up_title"
             android:layout_width="fill_parent"

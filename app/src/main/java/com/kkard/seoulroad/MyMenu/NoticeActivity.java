@@ -1,5 +1,6 @@
 package com.kkard.seoulroad.MyMenu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 
@@ -27,7 +29,10 @@ public class NoticeActivity extends AppCompatActivity{
     private ArrayList<NoticeChildData> childListDatas;
     private int pageNum;
     private Intent intent;
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

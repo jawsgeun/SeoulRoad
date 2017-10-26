@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tsengvn.typekit.TypekitContextWrapper;
+
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +32,10 @@ public class RegistActivity extends AppCompatActivity{
     private Button joinBtn;
     private ImageButton backBtn;
     private TextView toolbarTitle, checkName, checkEmail, checkPass, checkPassC;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

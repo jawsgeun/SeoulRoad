@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
+            app:font="Regular"
             android:text="1 번째 방문자 입니다 !"
-            android:textStyle="bold"
             android:textSize="18dp"
             android:textColor="#FFFFFF"
             android:layout_centerInParent="true"/>
@@ -53,6 +54,7 @@
                 android:id="@+id/dia_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:font="Regular"
                 android:text="kan02188@naver.com"
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@id/green_bar"
@@ -82,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textSize="12dp"
+                app:font="Regular"
                 android:text="좋아요"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="1dp"
@@ -91,8 +94,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textSize="12dp"
+                app:font="Regular"
                 android:text="125명"
-                android:textStyle="bold"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="1dp"
                 android:textColor="@android:color/black"/>
@@ -100,6 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="2017.09.23"
+                app:font="Regular"
                 android:textSize="10dp"
                 android:gravity="end"
                 />
@@ -109,6 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12dp"
+            app:font="Regular"
             android:text="야경이 진짜 이뻐요 ! 꼭 가보세요 !!!"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"

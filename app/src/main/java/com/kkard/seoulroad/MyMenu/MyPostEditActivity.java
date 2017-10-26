@@ -1,6 +1,7 @@
 package com.kkard.seoulroad.MyMenu;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kkard.seoulroad.R;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 
 /**
@@ -29,6 +31,10 @@ public class MyPostEditActivity extends AppCompatActivity {
     private Intent intent;
     private Button enter;
     private int lineColor;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

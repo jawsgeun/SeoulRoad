@@ -1,5 +1,6 @@
 package com.kkard.seoulroad;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.kkard.seoulroad.MyMenu.ModifyActivity;
 import com.kkard.seoulroad.MyMenu.MyLikeActivity;
 import com.kkard.seoulroad.MyMenu.MyPostActivity;
 import com.kkard.seoulroad.MyMenu.NoticeActivity;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 
 public class FragmentActivity extends AppCompatActivity {
@@ -34,7 +36,10 @@ public class FragmentActivity extends AppCompatActivity {
     private long   backPressedTime = 0;
     private int pageNum;
     private Intent intent;
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

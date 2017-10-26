@@ -20,7 +20,8 @@
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/GreenStatus">
+        android:theme="@style/GreenStatus"
+        android:name=".ApplicationBase">
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
