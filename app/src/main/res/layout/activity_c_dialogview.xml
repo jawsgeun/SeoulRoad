@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@drawable/grey_rounded_back">
+    tools:background="@drawable/grey_rounded_back"
+    tools:ignore="missingPrefix">
     <LinearLayout
         android:id="@+id/dialog_inside"
         android:layout_width="346dp"
@@ -45,7 +46,7 @@
             android:padding="15dp">
             <ImageView
                 android:id="@+id/green_bar"
-                android:layout_width="2dp"
+                android:layout_width="3dp"
                 android:layout_height="13dp"
                 android:background="@color/colorPrimary"
                 android:layout_alignParentStart="true"
@@ -55,16 +56,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:font="Regular"
+                android:layout_alignBottom="@id/green_bar"
                 android:text="kan02188@naver.com"
                 android:textColor="@android:color/black"
+                android:textSize="10dp"
                 android:layout_toRightOf="@id/green_bar"
-                android:layout_marginStart="7dp"
-                android:layout_marginBottom="2dp" />
+                android:layout_marginStart="7dp"/>
         <ImageView
             android:id="@+id/image_dialog"
             android:layout_width="325dp"
             android:layout_height="240dp"
             android:layout_below="@id/dia_id"
+            android:layout_marginTop="2dp"
             android:src="@drawable/test_pager"
             android:scaleType="fitXY"
             android:layout_centerHorizontal="true"/>
@@ -116,8 +119,8 @@
             app:font="Regular"
             android:text="야경이 진짜 이뻐요 ! 꼭 가보세요 !!!"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="1dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="2dp"
             android:textColor="@android:color/black"/>
         </RelativeLayout>
     </LinearLayout>

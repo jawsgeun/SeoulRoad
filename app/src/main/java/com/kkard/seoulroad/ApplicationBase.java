@@ -13,10 +13,10 @@ public class ApplicationBase extends Application {
     public void onCreate() {
         super.onCreate();
         Typekit.getInstance()
-                .add("Regular",Typekit.createFromAsset(this,"NotoSansCJKkr-Regular.otf"))
-                .addBold(Typekit.createFromAsset(this,"NotoSansCJKkr-Bold.otf"))
-                .add("DemiLight",Typekit.createFromAsset(this,"NotoSansCJKkr-DemiLight.otf"))
-                .add("Light",Typekit.createFromAsset(this,"NotoSansCJKkr-Light.otf"))
-                .add("Medium",Typekit.createFromAsset(this,"NotoSansCJKkr-Medium.otf"));
+                .add("Regular",Typekit.createFromAsset(this,"NotoSansKR-Regular-Hestia.otf"))
+                .addBold(Typekit.createFromAsset(this,"NotoSansKR-Bold-Hestia.otf"))
+                .add("DemiLight",Typekit.createFromAsset(this,"NotoSansKR-DemiLight-Hestia.otf"))
+                .add("Light",Typekit.createFromAsset(this,"NotoSansKR-Light-Hestia.otf"))
+                .add("Medium",Typekit.createFromAsset(this,"NotoSansKR-Medium-Hestia.otf"));
     }
 }
