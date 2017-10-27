@@ -40,7 +40,7 @@ public class CourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_course);
     toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
-        toolbarTitle.setText("추천 코스");
+        toolbarTitle.setText("추천코스");
     backBtn = (ImageButton) findViewById(R.id.btn_toolbar_back);
 
     context = getApplicationContext();

@@ -3,11 +3,15 @@ package com.kkard.seoulroad.Recycler;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.kkard.seoulroad.Circleindicator_C.IndicatorAdapter;
+import com.kkard.seoulroad.Map.CourseDetailActivity;
 import com.kkard.seoulroad.MyMenu.MyPostEditActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.ViewHolder.CourseItemHolder;
@@ -126,11 +130,20 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
         }
     }
-    private void configureMaincourseHolder(MainCourseItemHolder holder, int position){
+    private void configureMaincourseHolder(MainCourseItemHolder holder, final int position){
         Data data = mDataList.get(position);
 
         if(data.getmImageId() != -1){
             holder.mainCourseImage.setImageResource(data.getmImageId());
+            holder.mainCourseImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mcontext, CourseDetailActivity.class);
+                    intent.putExtra("courseNum",position);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mcontext.startActivity(intent);
+                }
+            });
         }
     }
     private void configureCourseHolder(CourseItemHolder holder, int position){
@@ -140,6 +153,25 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.courseImage.setImageResource(R.drawable.test_pink); // 이미지 저장 디비 구축 후 수정
             holder.courseTitle.setText(data.getmCourseContent().get(1));
             holder.courseContent.setText(data.getmCourseContent().get(2));
+            holder.courseContent.setMovementMethod(ScrollingMovementMethod.getInstance());
+            holder.courseContent.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    boolean isLarger;
+
+                    isLarger = ((TextView) v).getLineCount()
+                            * ((TextView) v).getLineHeight() > v.getHeight();
+                    if (event.getAction() == MotionEvent.ACTION_MOVE
+                            && isLarger) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+
+                    } else {
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+
+                    }
+                    return false;
+                }
+            });
         }
     }
     private void configurePostHolder(MypostItemHolder holder, int position){
@@ -203,7 +235,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.imageView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog = new DialogView_C(v.getContext(),data.getListImageItemList().get(0).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE,v.getContext(),data.getListImageItemList().get(0).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
@@ -212,7 +244,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.imageView2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog = new DialogView_C(v.getContext(),data.getListImageItemList().get(1).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE,v.getContext(),data.getListImageItemList().get(1).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
@@ -221,7 +253,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.imageView3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog = new DialogView_C(v.getContext(),data.getListImageItemList().get(2).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
+                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE,v.getContext(),data.getListImageItemList().get(2).getItemImage(),"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리");
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }

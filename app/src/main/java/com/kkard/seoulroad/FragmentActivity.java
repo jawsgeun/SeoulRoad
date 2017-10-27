@@ -3,6 +3,7 @@ package com.kkard.seoulroad;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -55,6 +56,17 @@ public class FragmentActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
         tabLayout.addTab(tabLayout.newTab().setText("식물찾기"));
         tabLayout.addTab(tabLayout.newTab().setText("지도보기"));
+
+        Typeface fontTypeFace = Typeface.createFromAsset(getAssets(), "NotoSansKR-Regular-Hestia.otf");
+
+        for (int i = 0; i < tabLayout.getChildCount(); ++i) {
+            View nextChild = tabLayout.getChildAt(i);
+            if (nextChild instanceof TextView) {
+                TextView textViewToConvert = (TextView) nextChild;
+                textViewToConvert.setTypeface(fontTypeFace);
+                textViewToConvert.setScaleY((float)1.05);
+            }
+        }
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

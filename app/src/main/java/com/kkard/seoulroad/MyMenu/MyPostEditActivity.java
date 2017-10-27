@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kkard.seoulroad.R;
+import com.kkard.seoulroad.utils.DialogView_C;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 
@@ -26,6 +27,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 public class MyPostEditActivity extends AppCompatActivity {
     private ImageButton toolbarBack;
     private TextView toolbarTitle, userId, like, date;
+    private DialogView_C mdialog;
     private EditText comment;
     private ImageView img;
     private Intent intent;
@@ -47,8 +49,8 @@ public class MyPostEditActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        mdialog = new DialogView_C(DialogView_C.DIA_TYPE_MOD,MyPostEditActivity.this,confListener);
+        mdialog.show();
     }
     private void InitView(){
         toolbarBack = (ImageButton)findViewById(R.id.btn_toolbar_back);
@@ -65,14 +67,16 @@ public class MyPostEditActivity extends AppCompatActivity {
         toolbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                mdialog = new DialogView_C(DialogView_C.DIA_TYPE_MOD,MyPostEditActivity.this,confListener);
+                mdialog.show();
             }
         });
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //디비 부분 : comment update 해야함
-                finish();
+                mdialog = new DialogView_C(DialogView_C.DIA_TYPE_MOD_CONF,MyPostEditActivity.this,confListener);
+                mdialog.show();
             }
         });
         toolbarTitle.setText("수정하기");
@@ -82,4 +86,11 @@ public class MyPostEditActivity extends AppCompatActivity {
         comment.setText(intent.getStringExtra("comment"));
         img.setImageResource(intent.getIntExtra("img",R.drawable.abc));
     }
+    private View.OnClickListener confListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mdialog.dismiss();
+            finish(); // 뒤로가기
+        }
+    };
 }

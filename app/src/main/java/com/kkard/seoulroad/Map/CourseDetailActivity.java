@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.Recycler.Data;
 import com.kkard.seoulroad.Recycler.ViewAdapter;
@@ -31,14 +31,27 @@ public class CourseDetailActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private Intent intent;
+    private int courseNum; // 0 : 남산회현, 1 : 중림중천, 2 : 청파효창 3 : 서울역통합
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+        intent = getIntent();
+        courseNum = intent.getIntExtra("courseNum",-1);
+        Log.e("@@@@@@@@@@@@@@@2",String.valueOf(courseNum));
         toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
         toolbarTitle.setText("남산회현 코스");
         backBtn = (ImageButton) findViewById(R.id.btn_toolbar_back);
@@ -54,14 +67,12 @@ public class CourseDetailActivity extends AppCompatActivity{
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CourseDetailActivity.this, FragmentActivity.class));
                 finish();
             }
         });
     }
-    private List<Data> getData() {
+    private List<Data> getData() { // 코스 번호에 따라서 다르게 디비 가져와야함
         List<Data> finalList = new ArrayList<>();
-
         Data data = new Data();
         List<String> content = new ArrayList<>(); // 이미지, 제목 , 내용 순서
         data.setViewType(ViewAdapter.VIEW_TYPE_COURSE);

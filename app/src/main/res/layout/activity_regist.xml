@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/joinBack"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <EditText
+    android:layout_height="match_parent"    tools:ignore="missingPrefix">
+
+<EditText
         android:id="@+id/joinName"
         android:layout_width="320dp"
         android:layout_height="38dp"

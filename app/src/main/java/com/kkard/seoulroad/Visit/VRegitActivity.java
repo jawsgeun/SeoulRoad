@@ -24,7 +24,7 @@ import java.io.File;
  */
 
 public class VRegitActivity extends AppCompatActivity {
-    private ImageView imageView;
+    private ImageView cameraSelect;
     private DialogView_C mdialog;
     private TextView toolbalTitle;
     private ImageButton backBtn;
@@ -47,10 +47,10 @@ public class VRegitActivity extends AppCompatActivity {
                 finish();
             }
         });
-        imageView.setOnClickListener(new View.OnClickListener() {
+        cameraSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mdialog = new DialogView_C(v.getContext(),"사진선택",leftClickListener,middleClickListener,rightClickListener);
+                mdialog = new DialogView_C(DialogView_C.DIA_TYPE_CAMERA,v.getContext(),leftClickListener,middleClickListener,rightClickListener);
                 mdialog.show();
             }
         });
@@ -126,7 +126,7 @@ public class VRegitActivity extends AppCompatActivity {
                 String filepath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/SmartWheel/"+ System.currentTimeMillis()+".jpg";
                 if(extras !=null){
                     Bitmap photo = extras.getParcelable("data");
-                    imageView.setImageBitmap(photo);
+                    cameraSelect.setImageBitmap(photo);
                     break;
                 }
                 File f = new File(mImageCaptureUri.getPath());
@@ -134,7 +134,7 @@ public class VRegitActivity extends AppCompatActivity {
         }
     }
     private void InitView(){
-        imageView = (ImageView)findViewById(R.id.regit_image);
+        cameraSelect = (ImageView)findViewById(R.id.regit_image);
         toolbalTitle = (TextView)findViewById(R.id.text_toolbar);
         backBtn = (ImageButton)findViewById(R.id.btn_toolbar_back);
     }
