@@ -3,10 +3,12 @@ package com.kkard.seoulroad.Visit;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,8 +19,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +31,11 @@ import android.widget.Toast;
 import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.utils.DialogView_C;
+import com.kkard.seoulroad.utils.JSONParser;
+import com.kkard.seoulroad.utils.RequestHttpConnection;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +51,7 @@ public class VRegitActivity extends AppCompatActivity {
     private DialogView_C mdialog;
     private TextView toolbalTitle;
     private ImageButton backBtn;
+    private Button registBtn;
 
     private static final int MY_PERMISSION_CAMERA = 1111;
     private static final int REQUEST_TAKE_PHOTO = 2222; //카메라 촬영으로 사진 가져오기
@@ -57,6 +67,7 @@ public class VRegitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vregit);
         InitView();
+        checkPermission();
         toolbalTitle.setText("방문록 쓰기");
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +83,55 @@ public class VRegitActivity extends AppCompatActivity {
                 mdialog.show();
             }
         });
-        checkPermission();
+        registBtn = (Button)findViewById(R.id.regit_btn);
+        registBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(mCurrentPhotoPath)){
+                    // if(true){
+                    new AsyncTask<Void, Integer, Boolean>(){
+                        ProgressDialog progressDialog;
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            progressDialog = new ProgressDialog(VRegitActivity.this);
+                            progressDialog.setMessage("기달려봐");
+                            progressDialog.show();
+                        }
+                        @Override
+                        protected Boolean doInBackground(Void... params) {
+                            try {
+                                RequestHttpConnection rhc = new RequestHttpConnection();
+                                String i_name = mCurrentPhotoPath.substring(mCurrentPhotoPath.lastIndexOf("/")+1);
+                                rhc.upPictureName("http://stou2.cafe24.com/imagenameup.php","8","c@c.com",i_name,"카카카");//userindex 받아서 넣어야함 이메일도 내용도
+                                JSONObject jsonObject = JSONParser.uploadImage(mCurrentPhotoPath);
+                                if (jsonObject != null)
+                                    return jsonObject.getString("result").equals("success");
+                            } catch (JSONException e) {
+                                Log.i("TAG", "Error : " + e.getLocalizedMessage());
+                            }
+                            return false;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Boolean aBoolean) {
+                            super.onPostExecute(aBoolean);
+                            if (progressDialog != null)
+                                progressDialog.dismiss();
+                            if (aBoolean)
+                                Toast.makeText(getApplicationContext(), "성공인듯", Toast.LENGTH_LONG).show();
+                            else
+                                Toast.makeText(getApplicationContext(), "실패인듯", Toast.LENGTH_LONG).show();
+                            //imagePath = "";
+                            //imv.setVisibility(View.INVISIBLE);
+                            
+                            startActivity(new Intent(VRegitActivity.this,FragmentActivity.class));
+                            finish();
+                        }
+                    }.execute();
+                }
+            }
+        });
 
     }
     @Override

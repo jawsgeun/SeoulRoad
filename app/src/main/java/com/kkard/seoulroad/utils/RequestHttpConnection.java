@@ -24,7 +24,7 @@ public class RequestHttpConnection {
     InputStreamReader inputStreamReader;
     StringBuilder sb;
 
-    public void upPictureName(String url, String userid, String picname) {
+    public void upPictureName(String url,String u_index, String userid, String picname,String content) {
         try {
             this.url = new URL(url);
             con = (HttpURLConnection) this.url.openConnection();
@@ -32,7 +32,7 @@ public class RequestHttpConnection {
             con.setRequestProperty("Accept-Charset", "UTF-8");
             con.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
 
-            param = "userid=" + userid + "&picname=" + picname;
+            param = "uindex="+u_index+"&userid=" + userid + "&picname=" + picname+"&content="+content;
             os = con.getOutputStream();
             os.write(param.getBytes("UTF-8"));
             os.flush();
@@ -40,6 +40,7 @@ public class RequestHttpConnection {
 
             br = new BufferedReader(new InputStreamReader(con.getInputStream()));
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
