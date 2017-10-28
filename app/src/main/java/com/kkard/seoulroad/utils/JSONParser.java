@@ -20,7 +20,7 @@ import okhttp3.Response;
  */
 
 public class JSONParser {
-    private static final String URL_UPLOAD_IMAGE = "http://stou2.cafe24.com/upload.php";
+    private static final String URL_UPLOAD_IMAGE = "http://stou2.cafe24.com/php/upload.php";
     /**
      * Upload Image
      *
