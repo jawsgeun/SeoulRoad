@@ -1,6 +1,7 @@
 package com.kkard.seoulroad.Festival;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.kkard.seoulroad.Calendar_C.DatePickerController;
 import com.kkard.seoulroad.Calendar_C.DayPickerView;
@@ -35,6 +37,8 @@ public class FActivity extends Fragment implements DatePickerController {
     private RecyclerView.LayoutManager layoutManager;
     private DayPickerView calendarView;
 
+    private String time;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -45,12 +49,14 @@ public class FActivity extends Fragment implements DatePickerController {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getContext();
+        time = "2017-10-28";
 
         calendarView = (DayPickerView) getView().findViewById(R.id.calendar_view);
         calendarView.setController(FActivity.this);
 
         recyclerView = (RecyclerView)getView().findViewById(R.id.fest_recycle_view);
         recyclerView.setHasFixedSize(true);
+
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -67,6 +73,22 @@ public class FActivity extends Fragment implements DatePickerController {
 
     @Override
     public void onDayOfMonthSelected(int year, int month, int day) {
+        Toast.makeText(context,""+year+"년"+(month+1)+"월"+day+"일", Toast.LENGTH_SHORT).show();
+        final String time1 = ""+(month+1)+"월"+day+"일";
+        new AsyncTask<String,Void,Void>(){
+            @Override
+            protected void onProgressUpdate(Void... values) {
+                recyclerView.swapAdapter(adapter,true);
+            }
+
+            @Override
+            protected Void doInBackground(String... voids) {
+                time = time1;
+                adapter = new ViewAdapter(getData(),context);
+                publishProgress();
+                return null;
+            }
+        }.execute(time1);
 
     }
 
@@ -92,7 +114,7 @@ public class FActivity extends Fragment implements DatePickerController {
         // 부수적인 것
         data = new Data();
         data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
-        data.setTextList("10 : 00","100일의 식물이야기 산책 (개막)");
+        data.setTextList(time,"100일의 식물이야기 산책 (개막)");
         finalList.add(data);
         data = new Data();
         data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
