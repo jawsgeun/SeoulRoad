@@ -1,8 +1,10 @@
 package com.kkard.seoulroad.utils;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +19,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kkard.seoulroad.R;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /**
  * Created by KyungHWan on 2017-10-05.
@@ -30,6 +40,7 @@ public class DialogView_C extends Dialog {
     private TextView mLikeCountView;
     private ImageView mImageView;
     private ImageView mXBtn;
+    private TextView mDateView;
 
     private ImageButton mLikeButton;
     private ImageButton mMiddleButton;
@@ -53,9 +64,23 @@ public class DialogView_C extends Dialog {
     public final static int DIA_TYPE_CAMERA = 91;
     public final static int DIA_TYPE_MOD = 92;
     public final static int DIA_TYPE_MOD_CONF = 93;
+    public final static int DIA_TYPE_TEST = 94;
 
     private int type;
     private boolean isClickLike = false;
+
+
+    ////
+    private String u_index_id;
+    private String u_email_id;
+    private String heart_toggle;
+    private String p_name;
+    private String count;
+    private String date;
+    private String photo_index_id;
+    private String content;
+    private String imgUrl = "http://stou2.cafe24.com/";
+    ///
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +113,51 @@ public class DialogView_C extends Dialog {
                 setContentView(R.layout.layout_dialog_modify_conf);
                 setLayout(type);
                 break;
+            case DIA_TYPE_TEST:
+                setContentView(R.layout.activity_c_dialogview);
+                break;
         }
+    }
+
+    public DialogView_C(int type , final Context context, final String u_index_id, final String photo_id){
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.type = type;
+        new AsyncTask<Void,Void,String>(){
+            ProgressDialog progressDialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setMessage("기달려봐");
+                progressDialog.show();
+            }
+            @Override
+            protected String doInBackground(Void... voids) {
+                RequestHttpConnection rhc = new RequestHttpConnection();
+                BufferedReader br = rhc.requestImageInfo("http://stou2.cafe24.com/test.php", u_index_id, photo_id);//앞숫자가 유저인덱스아이디, 뒷숫자가 포토아이디
+                String json;
+                StringBuilder sb = new StringBuilder();
+                try {
+                    while ((json = br.readLine()) != null) {
+                        sb.append(json + "\n");
+                    }
+                }catch(IOException e){}
+                String myJson =sb.toString().trim();
+                getimageinfo(myJson);
+                return sb.toString().trim();
+            }
+
+            @Override
+            protected void onPostExecute(String aVoid) {
+                super.onPostExecute(aVoid);
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                    setlayout1(94);
+                }
+            }
+
+        }.execute();
+
     }
 
     // 이미지 클릭시 생성자
@@ -155,6 +224,69 @@ public class DialogView_C extends Dialog {
                 mMiddleButton.setOnClickListener(middle);
                 mXBtn.setOnClickListener(right);
         }
+
+    public void setlayout1(int type){
+        mTitleView = (TextView) findViewById(R.id.dia_title);
+        mTitleView.setText(photo_index_id+"번째 방문자입니다.");
+        mContentView = (TextView) findViewById(R.id.dia_content);
+        mContentView.setText(content);
+        mLikeCountView = (TextView) findViewById(R.id.cnt_like);
+        mLikeCountView.setText(count+"명");
+        mIdView = (TextView) findViewById(R.id.dia_id);
+        mIdView.setText(u_email_id);
+        mImageView = (ImageView) findViewById(R.id.image_dialog);
+        Picasso.with(getContext()).load(imgUrl).into(mImageView);
+        mDateView = (TextView)findViewById(R.id.date_tv);
+        mDateView.setText(date);
+        mLikeButton = (ImageButton) findViewById(R.id.btn_heart);
+        if (heart_toggle.equals("1")){
+            mLikeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.love_btn));
+        }else{
+            mLikeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.love_btn_black));
+        }
+        mLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mcnt;
+                String cnt = mLikeCountView.getText().toString();
+                cnt = cnt.substring(0, cnt.length() - 1);
+                mcnt = Integer.parseInt(cnt);
+                if (heart_toggle.equals("1")) { // 좋아요가 눌려있으면
+                    mLikeButton.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.love_btn_black));
+                    heart_toggle = "0";
+                    mcnt--;
+                    mLikeCountView.setText(Integer.toString(mcnt) + "명");
+                } else {
+                    mLikeButton.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.love_btn));
+                    heart_toggle = "1";
+                    mcnt++;
+                    mLikeCountView.setText(Integer.toString(mcnt) + "명");
+                }
+            }
+        });
+        mXBtn = (ImageView) findViewById(R.id.dia_x_btn);
+        back = (RelativeLayout) findViewById(R.id.dialog_back);
+        inside = (LinearLayout) findViewById(R.id.dialog_inside);
+        inside.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 아무것도 안함
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        mXBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
+    }
     /*
      * Layout
      */
@@ -244,6 +376,42 @@ public class DialogView_C extends Dialog {
                 confBtn = (Button)findViewById(R.id.modconf_conf);
                 confBtn.setOnClickListener(mLeftClickListener);
                 break;
+        }
+    }
+    private void getimageinfo(String myJson){
+        try{
+            JSONObject jsonObject = new JSONObject(myJson);
+            JSONArray res = jsonObject.getJSONArray("result");
+            for(int i =0 ; i<res.length();i++){
+                JSONObject c = res.getJSONObject(i);
+                switch (i){
+                    case 0:
+                        heart_toggle = c.getString("created");
+                        break;
+                    case 1:
+                        u_email_id = c.getString("u_email_id");
+                        break;
+                    case 2:
+                        String p_name = c.getString("photo_name");
+                        imgUrl = imgUrl+p_name;
+                        break;
+                    case 3:
+                        count = c.getString("count");
+                        break;
+                    case 4:
+                        date = c.getString("date");
+                        break;
+                    case 5:
+                        content = c.getString("content");
+                        break;
+                    case 6:
+                        photo_index_id = c.getString("photo_id");
+                        break;
+                }
+            }
+
+        }catch (JSONException e ){
+            e.printStackTrace();
         }
     }
 }

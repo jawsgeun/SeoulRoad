@@ -124,7 +124,7 @@ public class VRegitActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "실패인듯", Toast.LENGTH_LONG).show();
                             //imagePath = "";
                             //imv.setVisibility(View.INVISIBLE);
-                            
+
                             startActivity(new Intent(VRegitActivity.this,FragmentActivity.class));
                             finish();
                         }
