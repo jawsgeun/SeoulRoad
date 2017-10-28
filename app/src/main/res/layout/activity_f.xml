@@ -7,7 +7,7 @@
         xmlns:calendar="http://schemas.android.com/apk/com.kkard.seoulroad"
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
         android:background="@color/colorPrimary"
         calendar:drawRoundRect="false"/>
     <android.support.v7.widget.RecyclerView
