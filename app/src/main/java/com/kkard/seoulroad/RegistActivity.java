@@ -2,7 +2,6 @@ package com.kkard.seoulroad;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -148,11 +147,11 @@ public class RegistActivity extends AppCompatActivity{
                             return 5;
                         } else if (!checkInput()) {
                             return 6;
-                        }else if((new RequestHttpConnection().loginConfirm("http://stou2.cafe24.com/idcheck.php",emailContent,passContent)).equals("1")){
+                        }else if((new RequestHttpConnection().loginConfirm(R.string.server_php+"idcheck.php",emailContent,passContent)).equals("1")){
                             return 0;
                         }else {
                             RequestHttpConnection rhq = new RequestHttpConnection();
-                            rhq.registUserForm("http://stou2.cafe24.com/registuserform.php", nameContent, emailContent, passContent);
+                            rhq.registUserForm(R.string.server_php+"registuserform.php", nameContent, emailContent, passContent);
                             return 1;
                         }
                     }

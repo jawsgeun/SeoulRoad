@@ -120,4 +120,23 @@ public class RequestHttpConnection {
         }
         return br;
     }
+    public BufferedReader requestCourseInfo(String url, String index) {
+        try {
+            this.url = new URL(url);
+            con = (HttpURLConnection) this.url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Accept-Charset", "UTF-8");
+            con.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
+
+            param = "index=" + index;
+            os = con.getOutputStream();
+            os.write(param.getBytes("UTF-8"));
+            os.flush();
+            os.close();
+
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        } catch (Exception e) {
+        }
+        return br;
+    }
 }

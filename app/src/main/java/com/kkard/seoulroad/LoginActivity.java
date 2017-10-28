@@ -139,8 +139,8 @@ public class LoginActivity extends Activity {
                     @Override
                     protected Integer doInBackground(Void... voids) {
                         RequestHttpConnection rhc = new RequestHttpConnection();
-                        String result =rhc.loginConfirm("http://stou2.cafe24.com/login.php",idContent,passContent);
-                        if(result.equals("1")) {
+                        String result =rhc.loginConfirm("http://stou2.cafe24.com/php/login.php",idContent,passContent);
+                        if(result.contains(idContent)) {
                             editor = sh.edit();
                             if(isAuto){
                                 editor.putString("UserAutoId",idContent);
