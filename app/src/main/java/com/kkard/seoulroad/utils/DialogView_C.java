@@ -78,7 +78,6 @@ public class DialogView_C extends Dialog {
             case DIA_TYPE_CAMERA:
                 setContentView(R.layout.activity_regit_dialog);
                 setLayout(type);
-                setTitle(mTitle);
                 setClickListener(mLeftClickListener, mMiddleClickListener, mRightClickListener);
                 break;
             case DIA_TYPE_MOD:

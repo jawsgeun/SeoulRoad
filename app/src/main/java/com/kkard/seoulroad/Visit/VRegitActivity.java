@@ -1,23 +1,37 @@
 package com.kkard.seoulroad.Visit;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kkard.seoulroad.FragmentActivity;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.utils.DialogView_C;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by KyungHWan on 2017-10-06.
@@ -28,11 +42,15 @@ public class VRegitActivity extends AppCompatActivity {
     private DialogView_C mdialog;
     private TextView toolbalTitle;
     private ImageButton backBtn;
-    private Uri mImageCaptureUri;
-    private final int PICK_FROM_CAMERA = 0;
-    private final int PICK_FROM_ALBUM = 1;
-    private final int CROP_FROM_IMAGE = 2;
 
+    private static final int MY_PERMISSION_CAMERA = 1111;
+    private static final int REQUEST_TAKE_PHOTO = 2222; //카메라 촬영으로 사진 가져오기
+    private static final int REQUEST_TAKE_ALBUM = 3333; //앨범에서 사진 가져오기
+    private static final int REQUEST_IMAGE_CROP = 4444; //가져온 사진을 자르기 위한 변수
+
+    String mCurrentPhotoPath;
+    Uri imageUri;
+    Uri photoURI, albumURI;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +72,7 @@ public class VRegitActivity extends AppCompatActivity {
                 mdialog.show();
             }
         });
+        checkPermission();
 
     }
     @Override
@@ -65,13 +84,15 @@ public class VRegitActivity extends AppCompatActivity {
     private View.OnClickListener leftClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            doTakePhotoAction(); // 사진 찍기
+            mdialog.dismiss();
+            captureCamera(); // 사진 찍기
         }
     };
     private View.OnClickListener middleClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            doTakeAlbumAction(); // 앨범에서 고르기
+            mdialog.dismiss();
+            getAlbum(); // 앨범에서 고르기
         }
     };
     private View.OnClickListener rightClickListener = new View.OnClickListener() {
@@ -80,62 +101,168 @@ public class VRegitActivity extends AppCompatActivity {
             mdialog.dismiss();
         }
     };
-
-    private void doTakePhotoAction() {  // 사진 찍기
-        Intent itn = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        String url = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
-        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),url));
-
-        itn.putExtra(MediaStore.EXTRA_OUTPUT,mImageCaptureUri);
-        startActivityForResult(itn,PICK_FROM_CAMERA);
-    }
-
-    private void doTakeAlbumAction() {  // 앨범에서 고르기
-        Intent itn = new Intent(Intent.ACTION_PICK);
-        itn.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(itn,PICK_FROM_ALBUM);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode != RESULT_OK)
-            return;
-        switch (requestCode){
-            case PICK_FROM_ALBUM:
-                mImageCaptureUri = data.getData();
-            case PICK_FROM_CAMERA:
-                Intent itn = new Intent("com.android.camera.action.CROP");
-                itn.setDataAndType(mImageCaptureUri,"image/*");
-
-                //사진크기 300*300으로 자르기
-                itn.putExtra("outputX",300);
-                itn.putExtra("outputY",300);
-                itn.putExtra("aspectX",1);
-                itn.putExtra("aspectX",1);
-                itn.putExtra("scale",true);
-                itn.putExtra("return-data",true);
-                startActivityForResult(itn,CROP_FROM_IMAGE);
-                break;
-            case CROP_FROM_IMAGE:
-                if(resultCode != RESULT_OK){
-                    return;
-                }
-                final Bundle extras = data.getExtras();
-                String filepath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/SmartWheel/"+ System.currentTimeMillis()+".jpg";
-                if(extras !=null){
-                    Bitmap photo = extras.getParcelable("data");
-                    cameraSelect.setImageBitmap(photo);
-                    break;
-                }
-                File f = new File(mImageCaptureUri.getPath());
-                if(f.exists())f.delete();
-        }
-    }
     private void InitView(){
         cameraSelect = (ImageView)findViewById(R.id.regit_image);
         toolbalTitle = (TextView)findViewById(R.id.text_toolbar);
         backBtn = (ImageButton)findViewById(R.id.btn_toolbar_back);
+    }
+    private void captureCamera() {
+        String state = Environment.getExternalStorageState();
+        // 외장 메모리 검사
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Log.e("captureCamera", ex.toString());
+                }
+                if (photoFile != null) {
+                    // getUriForFile의 두 번째 인자는 Manifest provider의 authorites와 일치해야 함
+                    Uri providerURI = FileProvider.getUriForFile(this, getPackageName(), photoFile);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
+            }
+        } else {
+            Toast.makeText(this, "접근 불가능 기기", Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
+
+    public File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        File imageFile = null;
+        File storageDir = new File(Environment.getExternalStorageDirectory()+ "/Pictures","tnrms");
+
+        if(!storageDir.exists()){
+            Log.e("mCurrentPhotoPath1",storageDir.toString());
+            storageDir.mkdirs();
+        }
+
+        imageFile = new File(storageDir, imageFileName);
+        mCurrentPhotoPath = imageFile.getAbsolutePath();
+
+        return imageFile;
+    }
+    private void getAlbum(){
+        Log.e("getAlbum","Call");
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_TAKE_ALBUM);
+    }
+    private void galleryAddPic(){
+        Log.e("galleryAddPic","Call");
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
+        Toast.makeText(this,"사진이 앨범에 저장 되었음",Toast.LENGTH_SHORT).show();
+    }
+    public void cropImage(){
+        Log.e("cropImage","Call");
+        Log.e("cropImage","photoURI : "+ photoURI + "/ albumURI : "+ albumURI);
+
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+
+        cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        cropIntent.setDataAndType(photoURI,"image/*");
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 1);
+        cropIntent.putExtra("scale", true);
+        cropIntent.putExtra("output",albumURI);
+        startActivityForResult(cropIntent,REQUEST_IMAGE_CROP);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case REQUEST_TAKE_PHOTO:
+                if(resultCode == Activity.RESULT_OK){
+                    try{
+                        Log.e("사진 찍기","OK");
+                        File f = new File(mCurrentPhotoPath);
+                        photoURI = Uri.fromFile(f);
+                        File albumFile = null;
+                        albumFile = createImageFile();
+                        albumURI = Uri.fromFile(albumFile);
+                        cropImage();
+                    } catch (Exception e){
+                        Log.e("사진찍기 오류",e.toString());
+                    }
+                } else {
+                    Toast.makeText(this,"사진찍기 취소",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_TAKE_ALBUM:
+                if(resultCode == Activity.RESULT_OK){
+                    if(data.getData() != null){
+                        try{
+                            File albumFile = null;
+                            albumFile = createImageFile();
+                            photoURI = data.getData();
+                            albumURI = Uri.fromFile(albumFile);
+                            cropImage();
+                        }catch (Exception e){
+                            Log.e("앨범찾기 오류",e.toString());
+                        }
+                    }
+                }
+                break;
+            case REQUEST_IMAGE_CROP:
+                if(resultCode == Activity.RESULT_OK){
+                    galleryAddPic();
+                    cameraSelect.setImageURI(albumURI);
+                }
+                break;
+        }
+    }
+    private void checkPermission(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if((ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA))){
+                new AlertDialog.Builder(this)
+                        .setTitle("알림")
+                        .setMessage("저장소 권한 거부")
+                        .setNeutralButton("설정", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                intent.setData(Uri.parse("package:"+getPackageName()));
+                                startActivity(intent);
+                            }
+                        })
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        })
+                        .setCancelable(false)
+                        .create()
+                        .show();
+            }else{
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},MY_PERMISSION_CAMERA);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case MY_PERMISSION_CAMERA:
+                for(int i = 0; i< grantResults.length;i++){
+                    if(grantResults[i]<0){
+                        Toast.makeText(VRegitActivity.this,"해당 권한 활성하셈",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                break;
+        }
     }
 }
