@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kkard.seoulroad.utils.RequestHttpConnection;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.regex.Matcher;
@@ -50,6 +52,9 @@ public class LoginActivity extends Activity {
     private boolean saveExist; // 아이디 저장 설정 여부
     private boolean isAuto;
     private int lineColor;
+
+    private String idContent;
+    private String passContent;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -110,43 +115,65 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String idContent = email.getText().toString().trim();
-                String passContent = pass.getText().toString().trim();
-                miniDB = getSharedPreferences("DB",MODE_PRIVATE);
-                userId = miniDB.getString("G_ID","none");
-                userPassword = miniDB.getString("G_PASS","none");
-                if(idContent.getBytes().length <= 0 ){//빈값이 넘어올때의 처리
-                    Toast.makeText(getApplicationContext(), "아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
-                }else if( passContent.getBytes().length <= 0){
-                    Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
-                }else if(!checkEmail(idContent)){
-                    Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }else if(passContent.length()!=4){
-                    Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
-                }else if(idContent.equals(userId) && passContent.equals(userPassword)) {
-                    editor = sh.edit();
-                    if(isAuto){
-                        editor.putString("UserAutoId",userId);
-                        editor.putString("UserAutoPass",userPassword);
-                        editor.putString("isAuto","true");
-                        editor.apply();
+                new AsyncTask<Void,Void,Integer>(){
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        idContent = email.getText().toString().trim();
+                        passContent = pass.getText().toString().trim();
+//                        miniDB = getSharedPreferences("DB",MODE_PRIVATE);
+//                        userId = miniDB.getString("G_ID","none");
+//                        userPassword = miniDB.getString("G_PASS","none");
+                        if(idContent.getBytes().length <= 0 ){//빈값이 넘어올때의 처리
+                            Toast.makeText(getApplicationContext(), "아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
+                        }else if( passContent.getBytes().length <= 0){
+                            Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
+                        }else if(!checkEmail(idContent)){
+                            Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        }else if(passContent.length()!=4) {
+                            Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
+                        }else{}
                     }
-                                                                        //  첫 저장  -> 입력
-                    if(isSave || saveExist) {                        //  isSave = true  isExist = false
-                                                                        //  저장되어있는상태 -> 입력
-                        if (isSave) {                                   //  isSave = true  isExist = true
-                            editor.putString("UserSaveId", userId);     //  저장 해제 -> 삭제
-                        } else {                                        //  isSave = false   isExist = true
-                            editor.remove("UserSaveId");                //  저장하지않음 -> 아무것도 안함
-                        }                                               //  isSave = false   isExist = false
-                        editor.apply();
+
+                    @Override
+                    protected Integer doInBackground(Void... voids) {
+                        RequestHttpConnection rhc = new RequestHttpConnection();
+                        String result =rhc.loginConfirm("http://stou2.cafe24.com/login.php",idContent,passContent);
+                        if(result.equals("1")) {
+                            editor = sh.edit();
+                            if(isAuto){
+                                editor.putString("UserAutoId",idContent);
+                                editor.putString("UserAutoPass",passContent);
+                                editor.putString("isAuto","true");
+                                editor.apply();
+                            }
+                            //  첫 저장  -> 입력
+                            if(isSave || saveExist) {                        //  isSave = true  isExist = false
+                                //  저장되어있는상태 -> 입력
+                                if (isSave) {                                   //  isSave = true  isExist = true
+                                    editor.putString("UserSaveId", idContent);     //  저장 해제 -> 삭제
+                                } else {                                        //  isSave = false   isExist = true
+                                    editor.remove("UserSaveId");                //  저장하지않음 -> 아무것도 안함
+                                }                                               //  isSave = false   isExist = false
+                                editor.apply();
+                            }
+                            return 1;
+                        }
+                        else{return 0;}
                     }
-                    Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(getApplicationContext(),"로그인 불가",Toast.LENGTH_SHORT).show();
-                }
+
+                    @Override
+                    protected void onPostExecute(Integer integer) {
+                        super.onPostExecute(integer);
+                        if(integer ==1){
+                            Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else{ Toast.makeText(getApplicationContext(),"로그인 불가",Toast.LENGTH_SHORT).show();}
+                    }
+                }.execute();
             }
         });
         saveID.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
