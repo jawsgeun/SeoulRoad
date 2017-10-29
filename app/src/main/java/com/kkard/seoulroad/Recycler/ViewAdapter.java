@@ -2,6 +2,7 @@ package com.kkard.seoulroad.Recycler;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
@@ -55,22 +56,20 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ////////
     private JSONArray res = null;
     private String myJson;
-    private String imgUrl = "http://stou2.cafe24.com/";
+    private String imgUrl = "http://stou2.cafe24.com/image/";
     ////////
-    private String u_index_id;
-    private String u_email_id;
-    private String heart_toggle;
-    private String p_name;
-    private String count;
-    private String date;
-    private String photo_index_id;
-    private String content;
+    private  String userId;
+    private String user_index;
 
     public ViewAdapter(List<Data> list, Context context) {
 
         if (list != null && list.size() > 0)
             mDataList.addAll(list);
         mcontext = context;
+
+        SharedPreferences pre = mcontext.getSharedPreferences("UserInfo", 0);//user정보 저장 미니디비
+        userId = pre.getString("userid","id error");
+        user_index= pre.getString("userindex","index error");
     }
 
     @Override
@@ -259,13 +258,12 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void configureImageHolder(ImageItemHolder holder, int position) {
         final Data data = mDataList.get(position);
-
         if (!data.getListImageItemList().isEmpty()) {
             holder.imageView1.setImageResource(data.getListImageItemList().get(0).getItemImage());
             holder.imageView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    mDialog = new DialogView_C(94, v.getContext(), "4","1");//앞부분 user_index_id, 뒷부분 photo_id
+                    mDialog = new DialogView_C(94, v.getContext(), user_index,"5");//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
@@ -274,7 +272,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.imageView2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(), data.getListImageItemList().get(1).getItemImage(), "몇번째 방문자입니다.", "아이디@이메일.com", "xxx개", "주저리주저리");
+                    mDialog = new DialogView_C(94, v.getContext(), user_index,"1");//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
@@ -283,7 +281,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.imageView3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(), data.getListImageItemList().get(2).getItemImage(), "몇번째 방문자입니다.", "아이디@이메일.com", "xxx개", "주저리주저리");
+                    mDialog = new DialogView_C(94, v.getContext(), user_index,"6");//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }

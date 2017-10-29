@@ -3,11 +3,13 @@ package com.kkard.seoulroad.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -79,7 +81,7 @@ public class DialogView_C extends Dialog {
     private String date;
     private String photo_index_id;
     private String content;
-    private String imgUrl = "http://stou2.cafe24.com/";
+    private String imgUrl = "http://stou2.cafe24.com/image/";
     ///
 
     @Override
@@ -122,19 +124,22 @@ public class DialogView_C extends Dialog {
     public DialogView_C(int type , final Context context, final String u_index_id, final String photo_id){
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.type = type;
+        this.u_index_id = u_index_id;
+        this.photo_index_id = photo_id;
+
         new AsyncTask<Void,Void,String>(){
             ProgressDialog progressDialog;
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
                 progressDialog = new ProgressDialog(context);
                 progressDialog.setMessage("기달려봐");
                 progressDialog.show();
+                super.onPreExecute();
             }
             @Override
             protected String doInBackground(Void... voids) {
                 RequestHttpConnection rhc = new RequestHttpConnection();
-                BufferedReader br = rhc.requestImageInfo("http://stou2.cafe24.com/test.php", u_index_id, photo_id);//앞숫자가 유저인덱스아이디, 뒷숫자가 포토아이디
+                BufferedReader br = rhc.requestImageInfo("http://stou2.cafe24.com/php/imageinfodown.php", u_index_id, photo_id);//앞숫자가 유저인덱스아이디, 뒷숫자가 포토아이디
                 String json;
                 StringBuilder sb = new StringBuilder();
                 try {
@@ -194,7 +199,21 @@ public class DialogView_C extends Dialog {
         getWindow().getDecorView().getHitRect(dialogBounds);
         if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
             // Tapped outside so we finish the activity
-            this.dismiss();
+            new AsyncTask<Void,Void,Void>(){
+                @Override
+                protected Void doInBackground(Void... voids) {//좋아요 갯수랑 좋아요 눌렀는지 업데이트
+                    RequestHttpConnection rhc = new RequestHttpConnection();
+                    rhc.updateLike("http://stou2.cafe24.com/php/likeupdate.php",u_index_id,photo_index_id,heart_toggle,count);
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    dismiss();
+                }
+            }.execute();
+
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -237,6 +256,7 @@ public class DialogView_C extends Dialog {
         mImageView = (ImageView) findViewById(R.id.image_dialog);
         Picasso.with(getContext()).load(imgUrl).into(mImageView);
         mDateView = (TextView)findViewById(R.id.date_tv);
+        date = date.substring(0,10);
         mDateView.setText(date);
         mLikeButton = (ImageButton) findViewById(R.id.btn_heart);
         if (heart_toggle.equals("1")){
@@ -255,11 +275,13 @@ public class DialogView_C extends Dialog {
                     mLikeButton.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.love_btn_black));
                     heart_toggle = "0";
                     mcnt--;
+                    count = Integer.toString(mcnt);
                     mLikeCountView.setText(Integer.toString(mcnt) + "명");
                 } else {
                     mLikeButton.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.love_btn));
                     heart_toggle = "1";
                     mcnt++;
+                    count = Integer.toString(mcnt);
                     mLikeCountView.setText(Integer.toString(mcnt) + "명");
                 }
             }
@@ -276,13 +298,42 @@ public class DialogView_C extends Dialog {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
+                new AsyncTask<Void,Void,Void>(){//좋아요 갯수랑 좋아요 눌렀는지 업데이트
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        Log.d("heart",heart_toggle);
+                        RequestHttpConnection rhc = new RequestHttpConnection();
+                        rhc.updateLike("http://stou2.cafe24.com/php/likeupdate.php",u_index_id,photo_index_id,heart_toggle,count);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        dismiss();
+                    }
+                }.execute();
+
             }
         });
         mXBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
+                new AsyncTask<Void,Void,Void>(){//좋아요 갯수랑 좋아요 눌렀는지 업데이트
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        RequestHttpConnection rhc = new RequestHttpConnection();
+                        rhc.updateLike("http://stou2.cafe24.com/php/likeupdate.php",u_index_id,photo_index_id,heart_toggle,count);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        dismiss();
+                    }
+                }.execute();
+
             }
         });
 

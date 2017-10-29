@@ -24,7 +24,7 @@ public class RequestHttpConnection {
     InputStreamReader inputStreamReader;
     StringBuilder sb;
 
-    public void upPictureName(String url,String u_index, String userid, String picname,String content) {
+    public void upPictureName(String url, String u_index, String userid, String picname, String content) {
         try {
             this.url = new URL(url);
             con = (HttpURLConnection) this.url.openConnection();
@@ -32,7 +32,7 @@ public class RequestHttpConnection {
             con.setRequestProperty("Accept-Charset", "UTF-8");
             con.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
 
-            param = "uindex="+u_index+"&userid=" + userid + "&picname=" + picname+"&content="+content;
+            param = "uindex=" + u_index + "&userid=" + userid + "&picname=" + picname + "&content=" + content;
             os = con.getOutputStream();
             os.write(param.getBytes("UTF-8"));
             os.flush();
@@ -63,7 +63,7 @@ public class RequestHttpConnection {
         }
     }
 
-    public String loginConfirm(String url, String user_id,String user_pass){
+    public String loginConfirm(String url, String user_id, String user_pass) {
         try {
             this.url = new URL(url);
             con = (HttpURLConnection) this.url.openConnection();
@@ -73,12 +73,14 @@ public class RequestHttpConnection {
             con.setDoInput(true);
             con.setDoOutput(true);
 
-            param = "user_id=" + user_id+"&user_pass="+user_pass;
-            Log.d("param",param);
+            param = "user_id=" + user_id + "&user_pass=" + user_pass;
+            Log.d("param", param);
             os = con.getOutputStream();
             os.write(param.getBytes("UTF-8"));
             os.flush();
             os.close();
+
+
             responseStatusCode = con.getResponseCode();
             if (responseStatusCode == HttpURLConnection.HTTP_OK) {//http response상태 확인후 inputstream에 값넣어주기(오류있는걸로 나오는데 값은 잘 들어옴 이유몰라)
                 inputStream = con.getInputStream();
@@ -110,7 +112,7 @@ public class RequestHttpConnection {
             con.setRequestProperty("Accept-Charset", "UTF-8");
             con.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
 
-            param = "u_index_id=" + u_index_id + "&photo_id=" + photo_id ;
+            param = "u_index_id=" + u_index_id + "&photo_id=" + photo_id;
             os = con.getOutputStream();
             os.write(param.getBytes("UTF-8"));
             os.flush();
@@ -121,6 +123,7 @@ public class RequestHttpConnection {
         }
         return br;
     }
+
     public BufferedReader requestCourseInfo(String url, String index) {
         try {
             this.url = new URL(url);
@@ -128,6 +131,7 @@ public class RequestHttpConnection {
             con.setRequestMethod("POST");
             con.setRequestProperty("Accept-Charset", "UTF-8");
             con.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
+
 
             param = "index=" + index;
             os = con.getOutputStream();
@@ -139,5 +143,24 @@ public class RequestHttpConnection {
         } catch (Exception e) {
         }
         return br;
+    }
+
+    public void updateUserPass(String url, String u_email_id, String user_pass) {
+        try {
+            this.url = new URL(url);
+            con = (HttpURLConnection) this.url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Accept-Charset", "UTF-8");
+            con.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
+
+            param = "user_id=" + u_email_id + "&user_pass=" + user_pass;
+            os = con.getOutputStream();
+            os.write(param.getBytes("UTF-8"));
+            os.flush();
+            os.close();
+
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        } catch (Exception e) {
+        }
     }
 }

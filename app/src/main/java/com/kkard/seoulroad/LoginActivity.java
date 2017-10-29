@@ -25,6 +25,10 @@ import android.widget.Toast;
 import com.kkard.seoulroad.utils.RequestHttpConnection;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +60,10 @@ public class LoginActivity extends Activity {
     private String idContent;
     private String passContent;
 
+    private String intentID;
+    private String intentEMAIL;
+    private String intentNAME;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
@@ -66,6 +74,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sh = getSharedPreferences("AutoINFO",MODE_PRIVATE);
+        miniDB = getSharedPreferences("UserInfo",MODE_PRIVATE);
         if(sh.getString("isAuto","false").equals("false")){
             editor = sh.edit();
             editor.putString("isAuto","false");
@@ -140,7 +149,9 @@ public class LoginActivity extends Activity {
                     protected Integer doInBackground(Void... voids) {
                         RequestHttpConnection rhc = new RequestHttpConnection();
                         String result =rhc.loginConfirm("http://stou2.cafe24.com/php/login.php",idContent,passContent);
-                        if(result.contains(idContent)) {
+                        if(result.contains(idContent))
+                        {
+                            getuserinfo(result);
                             editor = sh.edit();
                             if(isAuto){
                                 editor.putString("UserAutoId",idContent);
@@ -167,6 +178,11 @@ public class LoginActivity extends Activity {
                     protected void onPostExecute(Integer integer) {
                         super.onPostExecute(integer);
                         if(integer ==1){
+                            editor = miniDB.edit();
+                            editor.putString("userindex",intentID);
+                            editor.putString("userid",intentEMAIL);
+                            editor.putString("username",intentNAME);
+                            editor.apply();
                             Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
                             startActivity(intent);
                             finish();
@@ -269,6 +285,30 @@ public class LoginActivity extends Activity {
         autoLogin = (CheckBox)findViewById(R.id.autoLogin);
         emailError = (TextView)findViewById(R.id.emailError);
         passError = (TextView)findViewById(R.id.passError);
+    }
+
+    private void getuserinfo(String myJson){
+        try{
+            JSONObject jsonObject = new JSONObject(myJson);
+            JSONArray res = jsonObject.getJSONArray("result");
+            for(int i =0 ; i<res.length();i++){
+                JSONObject c = res.getJSONObject(i);
+                switch (i){
+                    case 0:
+                        intentID = c.getString("u_index_id");
+                        break;
+                    case 1:
+                        intentEMAIL = c.getString("u_email_id");
+                        break;
+                    case 2:
+                        intentNAME = c.getString("u_name");
+                        break;
+                }
+            }
+
+        }catch (JSONException e ){
+            e.printStackTrace();
+        }
     }
 
 }

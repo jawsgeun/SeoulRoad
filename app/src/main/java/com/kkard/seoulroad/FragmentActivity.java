@@ -30,27 +30,32 @@ public class FragmentActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private LinearLayout drawerLayout;
     private ImageView Mymenu;
-    private String userId, userName;
-    private TextView drawerName,drawerId,drawerWrite,drawerLike,drawerNotice,drawerModify,drawerLogout;
+    private String userId, userName, user_index;
+    private TextView drawerName, drawerId, drawerWrite, drawerLike, drawerNotice, drawerModify, drawerLogout;
     ///////////////Back 버튼 2번 종료 관련 변수////////////
     private final long FINISH_INTERVAL_TIME = 2000; //2초안에 Back 버튼 누르면 종료
-    private long   backPressedTime = 0;
+    private long backPressedTime = 0;
     private int pageNum;
     private Intent intent;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         InitView();
-        pageNum = new Intent(getIntent()).getIntExtra("pageNum",0);
+        pageNum = new Intent(getIntent()).getIntExtra("pageNum", 0);
+
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        SharedPreferences pre = getSharedPreferences("DB",MODE_PRIVATE);
-        userId = pre.getString("G_ID","g_id error");
-        userName = pre.getString("G_NAME","g_name error");
+
+        SharedPreferences pre = getSharedPreferences("UserInfo", MODE_PRIVATE);//user정보 저장 미니디비
+        userId = pre.getString("userid", "id error");
+        userName = pre.getString("username", "name error");
+        user_index = pre.getString("userindex", "index error");
 
         tabLayout.addTab(tabLayout.newTab().setText("방문록"));
         tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
@@ -64,7 +69,7 @@ public class FragmentActivity extends AppCompatActivity {
             if (nextChild instanceof TextView) {
                 TextView textViewToConvert = (TextView) nextChild;
                 textViewToConvert.setTypeface(fontTypeFace);
-                textViewToConvert.setScaleY((float)1.05);
+                textViewToConvert.setScaleY((float) 1.05);
             }
         }
 
@@ -104,7 +109,7 @@ public class FragmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(FragmentActivity.this, MyPostActivity.class);
-                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
                 startActivity(intent);
                 finish();
             }
@@ -113,7 +118,7 @@ public class FragmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(FragmentActivity.this, MyLikeActivity.class);
-                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
                 startActivity(intent);
                 finish();
             }
@@ -122,7 +127,7 @@ public class FragmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(FragmentActivity.this, NoticeActivity.class);
-                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
                 startActivity(intent);
                 finish();
             }
@@ -131,7 +136,7 @@ public class FragmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(FragmentActivity.this, ModifyActivity.class);
-                intent.putExtra("pageNum",tabLayout.getSelectedTabPosition());
+                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
                 startActivity(intent);
                 finish();
             }
@@ -139,9 +144,9 @@ public class FragmentActivity extends AppCompatActivity {
         drawerLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sh = getSharedPreferences("AutoINFO",MODE_PRIVATE);
+                SharedPreferences sh = getSharedPreferences("AutoINFO", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sh.edit();
-                editor.putString("isAuto","false");
+                editor.putString("isAuto", "false");
                 editor.apply();
                 startActivity(new Intent(FragmentActivity.this, LoginActivity.class));
                 finish();
@@ -155,25 +160,26 @@ public class FragmentActivity extends AppCompatActivity {
         });
     }
 
-    private void InitView(){
+    private void InitView() {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.pager);
         Mymenu = (ImageView) findViewById(R.id.myMenu);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerId = (TextView)findViewById(R.id.drawer_id);
-        drawerName = (TextView)findViewById(R.id.drawer_name);
-        drawerWrite = (TextView)findViewById(R.id.drawer_write);
-        drawerLike = (TextView)findViewById(R.id.drawer_like);
-        drawerModify = (TextView)findViewById(R.id.drawer_modify);
-        drawerNotice = (TextView)findViewById(R.id.drawer_notice);
-        drawerLogout = (TextView)findViewById(R.id.drawer_logout);
-        drawerLayout = (LinearLayout)findViewById(R.id.layout_right_drawer);
+        drawerId = (TextView) findViewById(R.id.drawer_id);
+        drawerName = (TextView) findViewById(R.id.drawer_name);
+        drawerWrite = (TextView) findViewById(R.id.drawer_write);
+        drawerLike = (TextView) findViewById(R.id.drawer_like);
+        drawerModify = (TextView) findViewById(R.id.drawer_modify);
+        drawerNotice = (TextView) findViewById(R.id.drawer_notice);
+        drawerLogout = (TextView) findViewById(R.id.drawer_logout);
+        drawerLayout = (LinearLayout) findViewById(R.id.layout_right_drawer);
     }
+
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(Gravity.RIGHT)) {
+        if (drawer.isDrawerOpen(Gravity.RIGHT)) {
             drawer.closeDrawer(Gravity.RIGHT);
-        }else {
+        } else {
             long tempTime = System.currentTimeMillis();
             long intervalTime = tempTime - backPressedTime;
 

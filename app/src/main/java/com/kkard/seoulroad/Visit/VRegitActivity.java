@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,6 +54,7 @@ public class VRegitActivity extends AppCompatActivity {
     private TextView toolbalTitle;
     private ImageButton backBtn;
     private Button registBtn;
+    private EditText contentText;
 
     private static final int MY_PERMISSION_CAMERA = 1111;
     private static final int REQUEST_TAKE_PHOTO = 2222; //카메라 촬영으로 사진 가져오기
@@ -68,6 +71,12 @@ public class VRegitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vregit);
         InitView();
         checkPermission();
+
+        SharedPreferences pre = getSharedPreferences("UserInfo", MODE_PRIVATE);//user정보 저장 미니디비
+        final String  userId = pre.getString("userid","id error");
+        final String userName = pre.getString("username","name error");
+        final String user_index = pre.getString("userindex","index error");
+
         toolbalTitle.setText("방문록 쓰기");
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,48 +96,57 @@ public class VRegitActivity extends AppCompatActivity {
         registBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!TextUtils.isEmpty(mCurrentPhotoPath)){
-                    // if(true){
-                    new AsyncTask<Void, Integer, Boolean>(){
-                        ProgressDialog progressDialog;
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                            progressDialog = new ProgressDialog(VRegitActivity.this);
-                            progressDialog.setMessage("기달려봐");
-                            progressDialog.show();
-                        }
-                        @Override
-                        protected Boolean doInBackground(Void... params) {
-                            try {
-                                RequestHttpConnection rhc = new RequestHttpConnection();
-                                String i_name = mCurrentPhotoPath.substring(mCurrentPhotoPath.lastIndexOf("/")+1);
-                                rhc.upPictureName("http://stou2.cafe24.com/imagenameup.php","8","c@c.com",i_name,"카카카");//userindex 받아서 넣어야함 이메일도 내용도
-                                JSONObject jsonObject = JSONParser.uploadImage(mCurrentPhotoPath);
-                                if (jsonObject != null)
-                                    return jsonObject.getString("result").equals("success");
-                            } catch (JSONException e) {
-                                Log.i("TAG", "Error : " + e.getLocalizedMessage());
+                if(contentText.length() <= 0 || contentText.length() > 20){
+                    Toast.makeText(getApplicationContext(),"20자 이내로 작성해주세요.",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    final String content = contentText.getText().toString();
+                    if (!TextUtils.isEmpty(mCurrentPhotoPath)) {
+                        // if(true){
+                        new AsyncTask<Void, Integer, Boolean>() {
+                            ProgressDialog progressDialog;
+
+                            @Override
+                            protected void onPreExecute() {
+                                super.onPreExecute();
+                                progressDialog = new ProgressDialog(VRegitActivity.this);
+                                progressDialog.setMessage("기달려봐");
+                                progressDialog.show();
                             }
-                            return false;
-                        }
 
-                        @Override
-                        protected void onPostExecute(Boolean aBoolean) {
-                            super.onPostExecute(aBoolean);
-                            if (progressDialog != null)
-                                progressDialog.dismiss();
-                            if (aBoolean)
-                                Toast.makeText(getApplicationContext(), "성공인듯", Toast.LENGTH_LONG).show();
-                            else
-                                Toast.makeText(getApplicationContext(), "실패인듯", Toast.LENGTH_LONG).show();
-                            //imagePath = "";
-                            //imv.setVisibility(View.INVISIBLE);
+                            @Override
+                            protected Boolean doInBackground(Void... params) {
+                                try {
+                                    RequestHttpConnection rhc = new RequestHttpConnection();
+                                    String i_name = mCurrentPhotoPath.substring(mCurrentPhotoPath.lastIndexOf("/") + 1);
+                                    rhc.upPictureName("http://stou2.cafe24.com/php/imagenameup.php", user_index, userId , i_name, content);//userindex 받아서 넣어야함 이메일도 내용도
+                                    JSONObject jsonObject = JSONParser.uploadImage(mCurrentPhotoPath);
+                                    if (jsonObject != null)
+                                        return jsonObject.getString("result").equals("success");
+                                } catch (JSONException e) {
+                                    Log.i("TAG", "Error : " + e.getLocalizedMessage());
+                                }
+                                return false;
+                            }
 
-                            startActivity(new Intent(VRegitActivity.this,FragmentActivity.class));
-                            finish();
-                        }
-                    }.execute();
+                            @Override
+                            protected void onPostExecute(Boolean aBoolean) {
+                                super.onPostExecute(aBoolean);
+                                if (progressDialog != null)
+                                    progressDialog.dismiss();
+                                if (aBoolean){
+                                    Toast.makeText(getApplicationContext(), "성공인듯", Toast.LENGTH_LONG).show();
+                                }
+                                else
+                                    Toast.makeText(getApplicationContext(), "실패인듯", Toast.LENGTH_LONG).show();
+                                //imagePath = "";
+                                //imv.setVisibility(View.INVISIBLE);
+
+                                startActivity(new Intent(VRegitActivity.this, FragmentActivity.class));
+                                finish();
+                            }
+                        }.execute();
+                    }
                 }
             }
         });
@@ -164,6 +182,7 @@ public class VRegitActivity extends AppCompatActivity {
         cameraSelect = (ImageView)findViewById(R.id.regit_image);
         toolbalTitle = (TextView)findViewById(R.id.text_toolbar);
         backBtn = (ImageButton)findViewById(R.id.btn_toolbar_back);
+        contentText = (EditText)findViewById(R.id.regit_text);
     }
     private void captureCamera() {
         String state = Environment.getExternalStorageState();
