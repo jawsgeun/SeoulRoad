@@ -41,9 +41,8 @@ public class CourseDetailActivity extends AppCompatActivity{
     private RecyclerView.LayoutManager layoutManager;
     private Intent intent;
     private int courseNum; // 0 : 남산회현, 1 : 중림중천, 2 : 청파효창 3 : 서울역통합
-
+    private String imgUri;
     private static final String TAG_JSON="whtnrms";
-    private static final String TAG_INDEX = "index";
     private static final String TAG_TITLE = "title";
     private static final String TAG_CONTENT ="content";
     List<Data> a;
@@ -62,13 +61,21 @@ public class CourseDetailActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+        imgUri= getString(R.string.server_course_hdpi);
         intent = getIntent();
+        context = getApplicationContext();
+        if(context.getResources().getDisplayMetrics().densityDpi>240) {
+            imgUri= getString(R.string.server_course_xhdpi);
+            if(context.getResources().getDisplayMetrics().densityDpi>320){
+                imgUri= getString(R.string.server_course_xxhdpi);
+            }
+        }
         courseNum = intent.getIntExtra("courseNum",-1);
-        Log.e("@@@@@@@@@@@@@@@2",String.valueOf(courseNum));
+        courseNum++;
+        imgUri = imgUri+"course"+String.valueOf(courseNum)+"-";
         toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
         toolbarTitle.setText("남산회현 코스");
         backBtn = (ImageButton) findViewById(R.id.btn_toolbar_back);
-        context = getApplicationContext();
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +107,7 @@ public class CourseDetailActivity extends AppCompatActivity{
             String serverURL = param[0];
             try {
                 RequestHttpConnection rhc = new RequestHttpConnection();
-                BufferedReader br = rhc.requestCourseInfo(serverURL,String.valueOf(courseNum+1));
+                BufferedReader br = rhc.requestCourseInfo(serverURL,String.valueOf(courseNum));
                 StringBuilder sb = new StringBuilder();
                 String line;
                 while((line = br.readLine()) != null){
@@ -140,7 +147,7 @@ public class CourseDetailActivity extends AppCompatActivity{
                 data = new Data();
                 contentList = new ArrayList<>(); // 이미지, 제목 , 내용 순서
                 data.setViewType(ViewAdapter.VIEW_TYPE_COURSE);
-                contentList.add("image");
+                contentList.add(imgUri+String.valueOf(i+1)+".png");
                 contentList.add(title);
                 contentList.add(content);
                 data.setmCourseContent(contentList);
