@@ -3,10 +3,8 @@ package com.kkard.seoulroad.Recycler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,13 +24,10 @@ import com.kkard.seoulroad.ViewHolder.PagerItemHolder;
 import com.kkard.seoulroad.ViewHolder.TextItemHolder;
 import com.kkard.seoulroad.utils.Check;
 import com.kkard.seoulroad.utils.DialogView_C;
-import com.kkard.seoulroad.utils.RequestHttpConnection;
 import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,7 +148,6 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void configureMaincourseHolder(MainCourseItemHolder holder, final int position) {
         Data data = mDataList.get(position);
-
         if (data.getmImageId() != -1) {
             holder.mainCourseImage.setImageResource(data.getmImageId());
             holder.mainCourseImage.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +196,9 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final Data data = mDataList.get(position);
         if (data.getmPostContent().size() == 6) { // 아이디, 이미지, 좋아요 수, 날짜, 코멘트, 수정여부 까지 총 5개가 들어왔는지
             holder.mypostUserid.setText(data.getmPostContent().get(0));
-            holder.mypostImg.setImageResource(R.drawable.testimage_mypost); // 이미지 저장 디비 구축 후 수정
+            Picasso.with(mcontext)
+                    .load(mcontext.getString(R.string.server_image)+data.getmPostContent().get(1))
+                    .into(holder.mypostImg);
             holder.mypostLike.setText(data.getmPostContent().get(2) + "명");
             holder.mypostDate.setText(data.getmPostContent().get(3));
             holder.mypostCom.setText(data.getmPostContent().get(4));
@@ -215,7 +211,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View view) {
                     Intent intent = new Intent(mcontext, MyPostEditActivity.class);
                     intent.putExtra("userId", data.getmPostContent().get(0));
-                    intent.putExtra("img", R.drawable.testimage_mypost);
+                    intent.putExtra("img", data.getmPostContent().get(1));
                     intent.putExtra("like", data.getmPostContent().get(2) + "명");
                     intent.putExtra("date", data.getmPostContent().get(3));
                     intent.putExtra("comment", data.getmPostContent().get(4));

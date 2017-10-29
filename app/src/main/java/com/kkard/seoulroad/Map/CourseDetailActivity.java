@@ -70,11 +70,26 @@ public class CourseDetailActivity extends AppCompatActivity{
                 imgUri= getString(R.string.server_course_xxhdpi);
             }
         }
+        toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
         courseNum = intent.getIntExtra("courseNum",-1);
+        switch (courseNum){
+            case 0:
+                toolbarTitle.setText("남산회현 코스");
+                break;
+            case 1:
+                toolbarTitle.setText("중림중천 코스");
+                break;
+            case 2:
+                toolbarTitle.setText("청파효창 코스");
+                break;
+            case 3:
+                toolbarTitle.setText("서울역 통합 코스");
+                break;
+            default:
+                toolbarTitle.setText("오류");
+        }
         courseNum++;
         imgUri = imgUri+"course"+String.valueOf(courseNum)+"-";
-        toolbarTitle = (TextView)findViewById(R.id.text_toolbar);
-        toolbarTitle.setText("남산회현 코스");
         backBtn = (ImageButton) findViewById(R.id.btn_toolbar_back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +104,7 @@ public class CourseDetailActivity extends AppCompatActivity{
         adapter = new ViewAdapter(a,context);
         recyclerView.setAdapter(adapter);
         GetData task = new GetData();
-        task.execute("http://stou2.cafe24.com/php/tnrms.php");
-        Log.e("에이씽크","끝");
+        task.execute(getString(R.string.server_php)+"course.php");
 
     }
     private class GetData extends AsyncTask<String,Void,String>{ // AsyncTask<excute 인자(back 인자),onProgressUpdate인자,Backgro 리턴(Post인자)>

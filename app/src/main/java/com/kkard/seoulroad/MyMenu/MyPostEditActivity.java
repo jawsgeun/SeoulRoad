@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.utils.DialogView_C;
+import com.squareup.picasso.Picasso;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 
@@ -84,7 +85,9 @@ public class MyPostEditActivity extends AppCompatActivity {
         like.setText(intent.getStringExtra("like"));
         date.setText(intent.getStringExtra("date"));
         comment.setText(intent.getStringExtra("comment"));
-        img.setImageResource(intent.getIntExtra("img",R.drawable.abc));
+        Picasso.with(getApplicationContext())
+                .load(getString(R.string.server_image)+intent.getStringExtra("img"))
+                .into(img);
     }
     private View.OnClickListener confListener = new View.OnClickListener() {
         @Override

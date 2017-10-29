@@ -163,4 +163,26 @@ public class RequestHttpConnection {
         } catch (Exception e) {
         }
     }
+
+    public void updateLike(String url, String user_index_id, String photo_id, String created, String count) {
+        try {
+            this.url = new URL(url);
+            con = (HttpURLConnection) this.url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Accept-Charset", "UTF-8");
+            con.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
+
+            param = "user_id=" + user_index_id + "&photo_id=" + photo_id + "&created=" + created + "&count=" + count;
+            os = con.getOutputStream();
+            os.write(param.getBytes("UTF-8"));
+            os.flush();
+            os.close();
+
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        } catch (Exception e) {
+        }
+    }
+
+
+
 }
