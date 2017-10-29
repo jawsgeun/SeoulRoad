@@ -14,7 +14,7 @@ public class ApplicationBase extends Application {
         super.onCreate();
         Typekit.getInstance()
                 .add("Regular",Typekit.createFromAsset(this,"NotoSansKR-Regular-Hestia.otf"))
-                .addBold(Typekit.createFromAsset(this,"NotoSansKR-Bold-Hestia.otf"))
+                .add("Bold",Typekit.createFromAsset(this,"NotoSansKR-Bold-Hestia.otf"))
                 .add("DemiLight",Typekit.createFromAsset(this,"NotoSansKR-DemiLight-Hestia.otf"))
                 .add("Light",Typekit.createFromAsset(this,"NotoSansKR-Light-Hestia.otf"))
                 .add("Medium",Typekit.createFromAsset(this,"NotoSansKR-Medium-Hestia.otf"));

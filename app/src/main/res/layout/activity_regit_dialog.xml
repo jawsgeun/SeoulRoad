@@ -24,10 +24,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="사진 선택"
-                app:font="Regular"
-                android:textSize="25dp"
+                app:font="Bold"
+                android:textSize="20dp"
                 android:textColor="@color/colorPrimary"
-                android:layout_centerInParent="true"/>
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"/>
             <ImageView
                 android:id="@+id/camera_x_btn"
                 android:layout_width="24dp"

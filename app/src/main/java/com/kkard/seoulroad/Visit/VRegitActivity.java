@@ -4,10 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by KyungHWan on 2017-10-06.
@@ -200,6 +204,7 @@ public class VRegitActivity extends AppCompatActivity {
                 if (photoFile != null) {
                     // getUriForFile의 두 번째 인자는 Manifest provider의 authorites와 일치해야 함
                     Uri providerURI = FileProvider.getUriForFile(this, getPackageName(), photoFile);
+                    imageUri =providerURI;
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerURI);
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 }
@@ -242,6 +247,35 @@ public class VRegitActivity extends AppCompatActivity {
         sendBroadcast(mediaScanIntent);
         Toast.makeText(this,"사진이 앨범에 저장 되었음",Toast.LENGTH_SHORT).show();
     }
+    public void cropSingleImage(Uri photoUriPath){
+        Log.e("사진전용크랍","call");
+
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+
+        cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        cropIntent.setDataAndType(photoUriPath,"image/*");
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 1);
+        cropIntent.putExtra("scale", true);
+        cropIntent.putExtra("output",albumURI);
+        Context context = getApplicationContext();
+        List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(cropIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            context.grantUriPermission(packageName, photoUriPath, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        Intent i = new Intent(cropIntent);
+        ResolveInfo res = resInfoList.get(0);
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        grantUriPermission(res.activityInfo.packageName,photoUriPath,
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+
+        startActivityForResult(i,REQUEST_IMAGE_CROP);
+
+    }
     public void cropImage(){
         Log.e("cropImage","Call");
         Log.e("cropImage","photoURI : "+ photoURI + "/ albumURI : "+ albumURI);
@@ -265,12 +299,12 @@ public class VRegitActivity extends AppCompatActivity {
                 if(resultCode == Activity.RESULT_OK){
                     try{
                         Log.e("사진 찍기","OK");
-                        File f = new File(mCurrentPhotoPath);
-                        photoURI = Uri.fromFile(f);
+                        galleryAddPic();
                         File albumFile = null;
                         albumFile = createImageFile();
                         albumURI = Uri.fromFile(albumFile);
-                        cropImage();
+                        cropSingleImage(imageUri);
+
                     } catch (Exception e){
                         Log.e("사진찍기 오류",e.toString());
                     }
@@ -296,6 +330,7 @@ public class VRegitActivity extends AppCompatActivity {
             case REQUEST_IMAGE_CROP:
                 if(resultCode == Activity.RESULT_OK){
                     galleryAddPic();
+                    cameraSelect.setScaleType(ImageView.ScaleType.FIT_XY);
                     cameraSelect.setImageURI(albumURI);
                 }
                 break;

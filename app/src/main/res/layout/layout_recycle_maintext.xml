@@ -13,13 +13,13 @@
         android:background="@drawable/rounded_listview">
     <TextView
         android:id="@+id/text_title_main"
-        android:layout_width="80dp"
+        android:layout_width="93dp"
         android:layout_height="wrap_content"
-        app:font="Regular"
+        app:font="Medium"
         android:text="주요전시"
-        android:textSize="18dp"
+        android:textSize="15dp"
+        android:gravity="center"
         android:layout_gravity="center"
-        android:layout_marginStart="13dp"
         android:textColor="@color/colorPrimaryBtn"
         />
     <ImageView
@@ -32,8 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="7dp"
         android:orientation="vertical"
         android:weightSum="5"
         >

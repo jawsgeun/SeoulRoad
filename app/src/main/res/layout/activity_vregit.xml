@@ -13,12 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="16dp"
+        android:paddingTop="20dp"
         android:paddingRight="19dp"
         android:paddingLeft="19dp"
         >
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="322dp"
         android:layout_height="290dp"
         android:scaleType="center"
         android:src="@drawable/camera_ic"
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="37dp"
+                android:layout_marginBottom="40dp"
                 android:textColor="#FFFFFF"
                 app:font="Regular"
                 android:text="등 록 하 기"

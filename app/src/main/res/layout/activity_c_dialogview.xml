@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/dialog_inside"
         android:layout_width="346dp"
-        android:layout_height="377dp"
+        android:layout_height="372dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_back"
         android:layout_centerInParent="true"
@@ -25,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            app:font="Regular"
+            app:font="Medium"
             android:text="1 번째 방문자 입니다 !"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:textColor="#FFFFFF"
             android:layout_centerInParent="true"/>
             <ImageView
@@ -43,23 +43,25 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="15dp">
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="10dp">
             <ImageView
                 android:id="@+id/green_bar"
                 android:layout_width="3dp"
                 android:layout_height="13dp"
                 android:background="@color/colorPrimary"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="4dp"/>
+                android:layout_alignParentStart="true" />
             <TextView
                 android:id="@+id/dia_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:font="Regular"
                 android:layout_alignBottom="@id/green_bar"
-                android:text="kan02188@naver.com"
+                android:text="gggggggggggggggg"
                 android:textColor="@android:color/black"
-                android:textSize="10dp"
+                android:textSize="11dp"
                 android:layout_toRightOf="@id/green_bar"
                 android:layout_marginStart="7dp"/>
         <ImageView
@@ -67,7 +69,7 @@
             android:layout_width="325dp"
             android:layout_height="240dp"
             android:layout_below="@id/dia_id"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/test_pager"
             android:scaleType="fitXY"
             android:layout_centerHorizontal="true"/>
@@ -76,6 +78,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="6dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="8dp"
             android:layout_below="@id/image_dialog">
             <ImageButton
                 android:id="@+id/btn_heart"
@@ -97,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textSize="12dp"
-                app:font="Regular"
+                app:font="Bold"
                 android:text="125명"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="1dp"
@@ -108,9 +112,8 @@
                 android:id="@+id/date_tv"
                 android:text="2017.09.23"
                 app:font="Regular"
-                android:textColor="@android:color/black"
+                android:textColor="#5A5858"
                 android:textSize="10dp"
-
                 android:gravity="end"
                 />
         </LinearLayout>
@@ -122,8 +125,8 @@
             app:font="Regular"
             android:text="야경이 진짜 이뻐요 ! 꼭 가보세요 !!!"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="8dp"
             android:textColor="@android:color/black"/>
         </RelativeLayout>
     </LinearLayout>

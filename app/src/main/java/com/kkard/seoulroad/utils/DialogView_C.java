@@ -3,7 +3,6 @@ package com.kkard.seoulroad.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -246,7 +245,7 @@ public class DialogView_C extends Dialog {
 
     public void setlayout1(int type){
         mTitleView = (TextView) findViewById(R.id.dia_title);
-        mTitleView.setText(photo_index_id+"번째 방문자입니다.");
+        mTitleView.setText(photo_index_id+"번째 방문자입니다 !");
         mContentView = (TextView) findViewById(R.id.dia_content);
         mContentView.setText(content);
         mLikeCountView = (TextView) findViewById(R.id.cnt_like);

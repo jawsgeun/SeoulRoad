@@ -19,13 +19,15 @@
             android:layout_width="105dp"
             android:layout_height="40dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="126dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="11dp"
             android:scaleType="fitXY"
             android:src="@drawable/logo_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="0dp"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <ImageView
             android:id="@+id/myMenu"

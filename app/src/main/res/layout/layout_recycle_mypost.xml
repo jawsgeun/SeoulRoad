@@ -63,7 +63,7 @@
     </RelativeLayout>
     <ImageView
         android:id="@+id/mypost_img"
-        android:layout_width="wrap_content"
+        android:layout_width="320dp"
         android:layout_height="250dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/testimage_mypost"
@@ -72,7 +72,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:paddingStart="5dp">
         <ImageView
             android:layout_width="17dp"
             android:layout_height="15dp"
@@ -91,7 +92,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            app:font="Regular"
+            app:font="Bold"
+            android:textColor="@android:color/black"
             android:text="125명"/>
         <TextView
             android:id="@+id/mypost_date"
@@ -107,6 +109,7 @@
             android:id="@+id/mypost_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
             app:font="Regular"
             android:text="야경이 진짜 이뻐요 ! 꼭 가보세요 !!!"/>

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kkard.seoulroad.R;
@@ -73,10 +72,6 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         }
         TextView type_parent_tv = (TextView)convertView.findViewById(R.id.type_parent);
         TextView content_parent_tv = (TextView)convertView.findViewById(R.id.content_parent);
-        ImageView div_parent = (ImageView)convertView.findViewById(R.id.div_parent);
-        if(groupPosition == 0){
-            div_parent.setVisibility(View.INVISIBLE);
-        }
         switch (noticeParentDatas.get(groupPosition).getType()){
             case TYPE_NOTICE : //공지인 경우
                 type_parent_tv.setText("공지");

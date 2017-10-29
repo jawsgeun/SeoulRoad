@@ -11,6 +11,7 @@
         android:background="@color/colorPrimary"
         calendar:drawRoundRect="false"/>
     <android.support.v7.widget.RecyclerView
+        android:background="#FFFFFF"
         android:id="@+id/fest_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
