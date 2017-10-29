@@ -26,11 +26,10 @@ import com.kkard.seoulroad.ViewHolder.TextItemHolder;
 import com.kkard.seoulroad.utils.Check;
 import com.kkard.seoulroad.utils.DialogView_C;
 import com.kkard.seoulroad.utils.RequestHttpConnection;
-
+import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -172,9 +171,10 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void configureCourseHolder(CourseItemHolder holder, int position) {
         Data data = mDataList.get(position);
-
-        if (data.getmCourseContent().size() == 3) { //사진, 제목, 내용 까지 총 3개가 들어왔는지
-            holder.courseImage.setImageResource(R.drawable.test_pink); // 이미지 저장 디비 구축 후 수정
+        if(data.getmCourseContent().size()==3) { //사진, 제목, 내용 까지 총 3개가 들어왔는지
+            Picasso.with(mcontext)
+                    .load(data.getmCourseContent().get(0))
+                    .into(holder.courseImage);
             holder.courseTitle.setText(data.getmCourseContent().get(1));
             holder.courseContent.setText(data.getmCourseContent().get(2));
             holder.courseContent.setMovementMethod(ScrollingMovementMethod.getInstance());
