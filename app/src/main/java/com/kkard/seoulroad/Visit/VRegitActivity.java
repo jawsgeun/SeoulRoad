@@ -60,6 +60,7 @@ public class VRegitActivity extends AppCompatActivity {
     private Button registBtn;
     private EditText contentText;
 
+
     private static final int MY_PERMISSION_CAMERA = 1111;
     private static final int REQUEST_TAKE_PHOTO = 2222; //카메라 촬영으로 사진 가져오기
     private static final int REQUEST_TAKE_ALBUM = 3333; //앨범에서 사진 가져오기
@@ -82,6 +83,7 @@ public class VRegitActivity extends AppCompatActivity {
         final String user_index = pre.getString("userindex","index error");
 
         toolbalTitle.setText("방문록 쓰기");
+
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

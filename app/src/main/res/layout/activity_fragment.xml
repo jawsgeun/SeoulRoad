@@ -141,7 +141,7 @@
                     android:id="@+id/drawer_modify"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="11dp"
+                    android:paddingStart="9dp"
                     app:font="Regular"
                     android:text="비밀번호 수정"
                     android:textSize="16dp"
@@ -155,17 +155,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:orientation="horizontal"
-                android:paddingStart="3dp">
+                android:paddingStart="5dp">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
                     android:src="@drawable/logout"
                     android:layout_gravity="center_vertical"/>
                 <TextView
                     android:id="@+id/drawer_logout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="11dp"
+                    android:paddingStart="12dp"
                     app:font="Regular"
                     android:text="로그아웃"
                     android:textSize="16dp"

@@ -187,7 +187,7 @@ public class LoginActivity extends Activity {
                             startActivity(intent);
                             finish();
                         }
-                        else{ Toast.makeText(getApplicationContext(),"로그인 불가",Toast.LENGTH_SHORT).show();}
+                        else{ Toast.makeText(getApplicationContext(),"아이디 또는 비밀번호가 틀립니다.",Toast.LENGTH_SHORT).show();}
                     }
                 }.execute();
             }
@@ -268,7 +268,7 @@ public class LoginActivity extends Activity {
     }
     /////////////// 이메일 포맷 체크 ////////////////
     public static boolean checkEmail(String email){
-        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
+        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[com]+$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(email.trim());
         boolean isNormal = m.matches();

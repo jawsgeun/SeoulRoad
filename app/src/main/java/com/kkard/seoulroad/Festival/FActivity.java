@@ -36,9 +36,7 @@ public class FActivity extends Fragment implements DatePickerController {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private DayPickerView calendarView;
-
-    private String time;
-
+    List<Data> main,sub;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -48,8 +46,8 @@ public class FActivity extends Fragment implements DatePickerController {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setData();
         context = getContext();
-        time = "2017-10-28";
 
         calendarView = (DayPickerView) getView().findViewById(R.id.calendar_view);
         calendarView.setController(FActivity.this);
@@ -61,7 +59,7 @@ public class FActivity extends Fragment implements DatePickerController {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ViewAdapter(getData(),context);
+        adapter = new ViewAdapter(selectData(5),context);
         recyclerView.setAdapter(adapter);
 
     }
@@ -74,7 +72,7 @@ public class FActivity extends Fragment implements DatePickerController {
     @Override
     public void onDayOfMonthSelected(int year, int month, int day) {
         Toast.makeText(context,""+year+"년"+(month+1)+"월"+day+"일", Toast.LENGTH_SHORT).show();
-        final String time1 = ""+(month+1)+"월"+day+"일";
+        final int time = (month + day)%10;
         new AsyncTask<String,Void,Void>(){
             @Override
             protected void onProgressUpdate(Void... values) {
@@ -83,12 +81,11 @@ public class FActivity extends Fragment implements DatePickerController {
 
             @Override
             protected Void doInBackground(String... voids) {
-                time = time1;
-                adapter = new ViewAdapter(getData(),context);
+                adapter = new ViewAdapter(selectData(time),context);
                 publishProgress();
                 return null;
             }
-        }.execute(time1);
+        }.execute();
 
     }
 
@@ -96,13 +93,11 @@ public class FActivity extends Fragment implements DatePickerController {
     public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays) {
 
     }
-    private List<Data> getData() {
+    private void setData() {
 
-        List<Data> finalList = new ArrayList<>();
-
+        main = new ArrayList<>();
         Data data = new Data();
         data.setViewType(ViewAdapter.VIEW_TYPE_TEXT_MAIN);
-        // 맨위 리스트
         List<String> content = new ArrayList<>();
         content.add("대한민국 환경조경대전 '광장의 재발견'");
         content.add("김형학 화훼 작가의 '서울로 자연의 철학'");
@@ -110,27 +105,50 @@ public class FActivity extends Fragment implements DatePickerController {
         content.add("서울로 가드너의 '정원이 놀다'");
         content.add("어린이 참가작 전시");
         data.setTextList("주요전시",content);
-        finalList.add(data);
+        main.add(data);
+        data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT_MAIN);
+        content = new ArrayList<>();
+        content.add("서울로 아빠와 놀다(디자인파크개발");
+        content.add("서울로 자연색이 놀다(7인의 컬러디자이너)");
+        content.add("서울로 꽃이 놀다(송미진 박사)");
+        content.add("");
+        content.add("");
+        data.setTextList("참여전시",content);
+        main.add(data);
         // 부수적인 것
-        data = new Data();
-        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
-        data.setTextList(time,"100일의 식물이야기 산책 (개막)");
-        finalList.add(data);
-        data = new Data();
-        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
-        data.setTextList("11 : 00","100일의 꽃 그리기");
-        finalList.add(data);
-        data = new Data();
-        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
-        data.setTextList("13 : 00","100일의 인증사진");
-        finalList.add(data);
-        data = new Data();
-        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
-        data.setTextList("14 : 00","100일의 꽃 그려버리기");
-        finalList.add(data);
+        sub = new ArrayList<>();
+        sub.add(getSub("10 : 00","100일의 식물이야기 산책 (개막)"));
+        sub.add(getSub("10 : 00","100일의 식물이야기 산책"));
+        sub.add(getSub("10 : 00","100년의 역사놀이"));
+        sub.add(getSub("10 : 00","100일의 식물이야기 산책"));
+        sub.add(getSub("10 : 00","100일의 꽃 그리기"));
+        sub.add(getSub("10 : 00","서울로 가드닝 (폐막)"));
+        sub.add(getSub("11 : 00","100일의 꽃 그리기"));  //6
+        sub.add(getSub("13 : 00","100일의 인증사진"));
+        sub.add(getSub("14 : 00","100일의 꽃 그리기"));
+        sub.add(getSub("15 : 00","100일의 인증사진"));
+        sub.add(getSub("16 : 00","100년의 역사놀이")); //10
+        sub.add(getSub("16 : 00","100일의 식물이야기 산책"));
+        sub.add(getSub("16 : 00","'오늘이' 인형체험"));
+        sub.add(getSub("17 : 00","서울로 100일 잔치 및 오늘이 공연")); //13
+        sub.add(getSub("17 : 00","'오늘이' 인형체험"));
+        sub.add(getSub("19 : 00","서울로 담아가기"));
 
-
-        return finalList;
-
+    }
+    private List<Data> selectData(int time){
+        List<Data> con = new ArrayList<>();
+        con.add(main.get(time%2));
+        con.add(sub.get(time%6));
+        con.add(sub.get((time%4)+6));
+        con.add(sub.get((time%3)+10));
+        con.add(sub.get((time%3)+13));
+        return con;
+    }
+    private Data getSub(String date,String content){
+        Data data = new Data();
+        data.setViewType(ViewAdapter.VIEW_TYPE_TEXT);
+        data.setTextList(date,content);
+        return data;
     }
 }

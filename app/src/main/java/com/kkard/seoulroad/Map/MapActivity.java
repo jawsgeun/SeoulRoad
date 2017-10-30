@@ -3,18 +3,20 @@ package com.kkard.seoulroad.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kkard.seoulroad.R;
 
@@ -24,6 +26,8 @@ import com.kkard.seoulroad.R;
 
 public class MapActivity extends Fragment implements OnMapReadyCallback{
     private MapView mMap = null;
+    private LatLngBounds ADELAIDE = new LatLngBounds(
+            new LatLng(37.554575, 126.967306), new LatLng(37.557825, 126.977383));
     Button recommandBtn;
     Context context;
     @Nullable
@@ -33,7 +37,6 @@ public class MapActivity extends Fragment implements OnMapReadyCallback{
         mMap =(MapView)layout.findViewById(R.id.map);
         mMap.getMapAsync(this);
         return layout;
-
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -85,14 +88,16 @@ public class MapActivity extends Fragment implements OnMapReadyCallback{
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng SEOUL = new LatLng(37.56, 126.97);
+        LatLng SEOUL = new LatLng(37.556506, 126.972488);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(SEOUL);
-        markerOptions.title("서울");
+        markerOptions.title("서울로");
         markerOptions.snippet("수도");
         googleMap.addMarker(markerOptions);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+        googleMap.setLatLngBoundsForCameraTarget(ADELAIDE);
+
 
     }
     @Override
