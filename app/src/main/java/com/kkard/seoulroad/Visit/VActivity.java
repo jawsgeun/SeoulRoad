@@ -95,7 +95,7 @@ public class VActivity extends Fragment {
     }
 
 
-    private class GetData extends AsyncTask<String,Void,String> {
+    private class GetData extends AsyncTask<String,Void,List<String>> {
         ProgressDialog progressDialog;
         String errorString = null;
         @Override
@@ -106,9 +106,10 @@ public class VActivity extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... param) {
+        protected List<String> doInBackground(String... param) {
             String serverURL = param[0];
             try {
+                List<String> re = new ArrayList<String>();
                 RequestHttpConnection rhc = new RequestHttpConnection();
                 BufferedReader br = rhc.requestVInfo(serverURL);
                 StringBuilder sb = new StringBuilder();
@@ -116,8 +117,17 @@ public class VActivity extends Fragment {
                 while ((line = br.readLine()) != null) {
                     sb.append(line);
                 }
+                re.add(sb.toString().trim());
+                rhc = new RequestHttpConnection();
+                br = rhc.requestVInfo(getString(R.string.server_php) + "pager.php");
+                sb = new StringBuilder();
+                String liner;
+                while ((liner = br.readLine()) != null) {
+                    sb.append(liner);
+                }
+                re.add(sb.toString().trim());
                 br.close();
-                return sb.toString().trim();
+                return re;
             } catch (Exception e) {
                 errorString = e.toString();
                 return null;
@@ -125,24 +135,55 @@ public class VActivity extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(List<String> s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
             adapter = new ViewAdapter(getData(s), context);
             recyclerView.setAdapter(adapter);
         }
     }
-    private List<Data> getData(String json) { // 방문록 부분 데이터 받아오는 곳
+    private List<Data> getData(List<String> json) { // 방문록 부분 데이터 받아오는 곳 // 1 페이저 0 이미지
 
         List<Data> finalList = new ArrayList<>();
         Data data;
         List<List<String>> main;
         List<String> imageItems;
         // 페이저 부분
-//        data.setViewType(ViewAdapter.VIEW_TYPE_PAGER);
-//        finalList.add(data);
         try {
-            JSONObject jsonObject = new JSONObject(json);
+            JSONObject jsonObject = new JSONObject(json.get(1));
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+            main = new ArrayList<>();
+            data = new Data();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+                String index = item.getString(TAG_INDEX);
+                Log.e("인덱스",index);
+                String email = item.getString(TAG_EMAIL);
+                Log.e("이메일",email);
+                String image = item.getString(TAG_IMAGE);
+                Log.e("이미지",image);
+                String count = item.getString(TAG_COUNT);
+                Log.e("좋아요",count);
+                String date = item.getString(TAG_DATE);
+                Log.e("날짜",date);
+                String content = item.getString(TAG_COMMENT);
+                Log.e("코멘트",content);
+                imageItems = new ArrayList<>();
+                imageItems.add(index);
+                imageItems.add(email);
+                imageItems.add(image);
+                imageItems.add(count);
+                imageItems.add(date);
+                imageItems.add(content);
+                main.add(imageItems);
+            }
+        data.setViewType(ViewAdapter.VIEW_TYPE_PAGER);
+            data.setPagerImageList(main);
+        finalList.add(data);
+        }catch (JSONException e) {
+            Log.d("@@@@@@@@", "showResult : ", e);}
+        try {
+            JSONObject jsonObject = new JSONObject(json.get(0));
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
             for (int i = 0; i < jsonArray.length(); i++) {
                 main = new ArrayList<>();

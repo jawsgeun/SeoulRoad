@@ -241,8 +241,8 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private void configurePagerHolder(PagerItemHolder holder, int position) {
-
-        IndicatorAdapter mPageAdapter = new IndicatorAdapter(mcontext);
+        Data data = mDataList.get(position);
+        IndicatorAdapter mPageAdapter = new IndicatorAdapter(mcontext,data.getPagerImageList());
         holder.viewPager.setAdapter(mPageAdapter);
         holder.indicator.setViewPager(holder.viewPager);
 

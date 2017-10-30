@@ -413,5 +413,6 @@ public class DialogView_C extends Dialog {
     @Override
     public void onBackPressed() {
         updateLike();
+        dismiss();
     }
 }

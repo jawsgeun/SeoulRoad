@@ -26,6 +26,16 @@ public class Data implements Serializable {
     }
 
     private List<List<String>> vImageList;
+
+    public List<List<String>> getPagerImageList() {
+        return pagerImageList;
+    }
+
+    public void setPagerImageList(List<List<String>> pagerImageList) {
+        this.pagerImageList = pagerImageList;
+    }
+
+    private List<List<String>> pagerImageList;
     private List<String> mPostContent; // 아이디, 이미지, 좋아요, 날짜, 코멘트 순서
     private List<String> mCourseContent; // 사진, 제목, 내용 순서
     private int mImageId; // 코스에 넣을 이미지 id
