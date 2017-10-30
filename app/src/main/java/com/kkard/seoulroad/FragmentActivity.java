@@ -1,13 +1,16 @@
 package com.kkard.seoulroad;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -42,122 +45,146 @@ public class FragmentActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+    private Boolean isNetWork(){
+        ConnectivityManager manager = (ConnectivityManager) getSystemService (Context.CONNECTIVITY_SERVICE);
+        boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
+        boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
+        boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
 
+        if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
-        InitView();
-        pageNum = new Intent(getIntent()).getIntExtra("pageNum", 0);
+        if(!isNetWork()){
+            AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+            alert_confirm.setMessage("인터넷 연결을 확인해주세요");
+            alert_confirm.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {finish();}});
+            AlertDialog alert = alert_confirm.create();
+            alert.setIcon(R.mipmap.icon);
+            alert.setTitle("네트워크 연결 알림");
+            alert.show();}
+        else {
+            setContentView(R.layout.activity_fragment);
+            InitView();
+            pageNum = new Intent(getIntent()).getIntExtra("pageNum", 0);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        SharedPreferences pre = getSharedPreferences("UserInfo", MODE_PRIVATE);//user정보 저장 미니디비
-        userId = pre.getString("userid", "id error");
-        userName = pre.getString("username", "name error");
-        user_index = pre.getString("userindex", "index error");
+            SharedPreferences pre = getSharedPreferences("UserInfo", MODE_PRIVATE);//user정보 저장 미니디비
+            userId = pre.getString("userid", "id error");
+            userName = pre.getString("username", "name error");
+            user_index = pre.getString("userindex", "index error");
 
-        tabLayout.addTab(tabLayout.newTab().setText("방문록"));
-        tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
-        tabLayout.addTab(tabLayout.newTab().setText("식물찾기"));
-        tabLayout.addTab(tabLayout.newTab().setText("지도보기"));
+            tabLayout.addTab(tabLayout.newTab().setText("방문록"));
+            tabLayout.addTab(tabLayout.newTab().setText("공연/행사"));
+            tabLayout.addTab(tabLayout.newTab().setText("식물찾기"));
+            tabLayout.addTab(tabLayout.newTab().setText("지도보기"));
 
-        Typeface fontTypeFace = Typeface.createFromAsset(getAssets(), "NotoSansKR-Regular-Hestia.otf");
+            Typeface fontTypeFace = Typeface.createFromAsset(getAssets(), "NotoSansKR-Regular-Hestia.otf");
 
-        for (int i = 0; i < tabLayout.getChildCount(); ++i) {
-            View nextChild = tabLayout.getChildAt(i);
-            if (nextChild instanceof TextView) {
-                TextView textViewToConvert = (TextView) nextChild;
-                textViewToConvert.setTypeface(fontTypeFace);
-                textViewToConvert.setScaleY((float) 1.05);
+            for (int i = 0; i < tabLayout.getChildCount(); ++i) {
+                View nextChild = tabLayout.getChildAt(i);
+                if (nextChild instanceof TextView) {
+                    TextView textViewToConvert = (TextView) nextChild;
+                    textViewToConvert.setTypeface(fontTypeFace);
+                    textViewToConvert.setScaleY((float) 1.05);
+                }
             }
+
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+            TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+            viewPager.setAdapter(pagerAdapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            viewPager.setCurrentItem(pageNum);
+
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            Mymenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    drawer.openDrawer(Gravity.RIGHT);
+                }
+            });
+            drawerId.setText(userId);
+            drawerName.setText(userName);
+            drawerWrite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    intent = new Intent(FragmentActivity.this, MyPostActivity.class);
+                    intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            drawerLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    intent = new Intent(FragmentActivity.this, MyLikeActivity.class);
+                    intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            drawerNotice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    intent = new Intent(FragmentActivity.this, NoticeActivity.class);
+                    intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            drawerModify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    intent = new Intent(FragmentActivity.this, ModifyActivity.class);
+                    intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            drawerLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences sh = getSharedPreferences("AutoINFO", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sh.edit();
+                    editor.putString("isAuto", "false");
+                    editor.apply();
+                    startActivity(new Intent(FragmentActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            drawerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Nothing Do
+                }
+            });
         }
-
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        viewPager.setCurrentItem(pageNum);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        Mymenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(Gravity.RIGHT);
-            }
-        });
-        drawerId.setText(userId);
-        drawerName.setText(userName);
-        drawerWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(FragmentActivity.this, MyPostActivity.class);
-                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
-                startActivity(intent);
-                finish();
-            }
-        });
-        drawerLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(FragmentActivity.this, MyLikeActivity.class);
-                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
-                startActivity(intent);
-                finish();
-            }
-        });
-        drawerNotice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(FragmentActivity.this, NoticeActivity.class);
-                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
-                startActivity(intent);
-                finish();
-            }
-        });
-        drawerModify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(FragmentActivity.this, ModifyActivity.class);
-                intent.putExtra("pageNum", tabLayout.getSelectedTabPosition());
-                startActivity(intent);
-                finish();
-            }
-        });
-        drawerLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sh = getSharedPreferences("AutoINFO", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sh.edit();
-                editor.putString("isAuto", "false");
-                editor.apply();
-                startActivity(new Intent(FragmentActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-        drawerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Nothing Do
-            }
-        });
     }
 
     private void InitView() {

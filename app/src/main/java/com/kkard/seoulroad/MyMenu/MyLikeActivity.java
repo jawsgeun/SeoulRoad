@@ -2,11 +2,14 @@ package com.kkard.seoulroad.MyMenu;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -56,33 +59,61 @@ public class MyLikeActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+    private Boolean isNetWork(){
+        ConnectivityManager manager = (ConnectivityManager) getSystemService (Context.CONNECTIVITY_SERVICE);
+        boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
+        boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
+        boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+
+        if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mylike);
-        intent = getIntent();
-        miniDB = getSharedPreferences("UserInfo", MODE_PRIVATE);
-        userIndex = miniDB.getString("userindex", "유저 인덱스 오류");
-        Log.e("@@@@@@@@@@@@@@@",userIndex);
-        pageNum = intent.getIntExtra("pageNum",0);
-        InitView();
-        context = getApplicationContext();
-        toolbarTitle.setText("좋아요");
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new ViewAdapter(tmp, context);
-        recyclerView.setAdapter(adapter);
-        GetData task = new GetData();
-        task.execute(getString(R.string.server_php)+"mylike.php");
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(MyLikeActivity.this, FragmentActivity.class);
-                intent.putExtra("pageNum",pageNum);
-                startActivity(intent);
-                finish();
-            }
-        });
+        if (!isNetWork()) {
+            AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+            alert_confirm.setMessage("인터넷 연결을 확인해주세요");
+            alert_confirm.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            AlertDialog alert = alert_confirm.create();
+            alert.setIcon(R.mipmap.icon);
+            alert.setTitle("네트워크 연결 알림");
+            alert.show();
+        } else {
+            setContentView(R.layout.activity_mylike);
+            intent = getIntent();
+            miniDB = getSharedPreferences("UserInfo", MODE_PRIVATE);
+            userIndex = miniDB.getString("userindex", "유저 인덱스 오류");
+            Log.e("@@@@@@@@@@@@@@@", userIndex);
+            pageNum = intent.getIntExtra("pageNum", 0);
+            InitView();
+            context = getApplicationContext();
+            toolbarTitle.setText("좋아요");
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new ViewAdapter(tmp, context);
+            recyclerView.setAdapter(adapter);
+            GetData task = new GetData();
+            task.execute(getString(R.string.server_php) + "mylike.php");
+            backBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    intent = new Intent(MyLikeActivity.this, FragmentActivity.class);
+                    intent.putExtra("pageNum", pageNum);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
     }
     private class GetData extends AsyncTask<String,Void,String>{
         ProgressDialog progressDialog;

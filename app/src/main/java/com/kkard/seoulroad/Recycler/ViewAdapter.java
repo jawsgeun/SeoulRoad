@@ -53,7 +53,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private String myJson;
     private String imgUrl = "http://stou2.cafe24.com/image/";
     ////////
-    private  String userId;
+    private String userId;
     private String user_index;
 
     public ViewAdapter(List<Data> list, Context context) {
@@ -63,8 +63,8 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mcontext = context;
 
         SharedPreferences pre = mcontext.getSharedPreferences("UserInfo", 0);//user정보 저장 미니디비
-        userId = pre.getString("userid","id error");
-        user_index= pre.getString("userindex","index error");
+        userId = pre.getString("userid", "id error");
+        user_index = pre.getString("userindex", "index error");
     }
 
     @Override
@@ -123,22 +123,18 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 MainTextItemHolder mainTextHolder = (MainTextItemHolder) holder;
                 configureMainTextItem(mainTextHolder, position);
                 break;
-
             case VIEW_TYPE_TEXT:
                 TextItemHolder textHolder = (TextItemHolder) holder;
                 configureTextItem(textHolder, position);
                 break;
-
             case VIEW_TYPE_PAGER:
                 PagerItemHolder pagerHolder = (PagerItemHolder) holder;
                 configurePagerHolder(pagerHolder, position);
                 break;
-
             case VIEW_TYPE_IMAGE:
                 ImageItemHolder imageHolder = (ImageItemHolder) holder;
                 configureImageHolder(imageHolder, position);
                 break;
-
             case VIEW_TYPE_POST:
                 MypostItemHolder postHolder = (MypostItemHolder) holder;
                 configurePostHolder(postHolder, position);
@@ -164,9 +160,9 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void configureCourseHolder(CourseItemHolder holder, int position) {
         Data data = mDataList.get(position);
-        if(data.getmCourseContent().size()==3) { //사진, 제목, 내용 까지 총 3개가 들어왔는지
+        if (data.getmCourseContent().size() == 3) { //사진, 제목, 내용 까지 총 3개가 들어왔는지
             Picasso.with(mcontext)
-                    .load(data.getmCourseContent().get(0))
+                    .load(data.getmCourseContent().get(0)).fit()
                     .into(holder.courseImage);
             holder.courseTitle.setText(data.getmCourseContent().get(1));
             holder.courseContent.setText(data.getmCourseContent().get(2));
@@ -197,7 +193,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (data.getmPostContent().size() == 6) { // 아이디, 이미지, 좋아요 수, 날짜, 코멘트, 수정여부 까지 총 5개가 들어왔는지
             holder.mypostUserid.setText(data.getmPostContent().get(0));
             Picasso.with(mcontext)
-                    .load(mcontext.getString(R.string.server_image)+data.getmPostContent().get(1))
+                    .load(mcontext.getString(R.string.server_image) + data.getmPostContent().get(1)).fit()
                     .into(holder.mypostImg);
             holder.mypostLike.setText(data.getmPostContent().get(2) + "명");
             holder.mypostDate.setText(data.getmPostContent().get(3));
@@ -254,49 +250,57 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void configureImageHolder(ImageItemHolder holder, int position) {
         final Data data = mDataList.get(position);
+        try {
             Picasso.with(mcontext)
-                    .load(mcontext.getString(R.string.server_image)+data.getvImageList().get(0).get(2))
+                    .load(mcontext.getString(R.string.server_image) + data.getvImageList().get(0).get(2)).fit()
                     .into(holder.imageView1);
             holder.imageView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(),
-                            data.getvImageList().get(0).get(0),data.getvImageList().get(0).get(1)
-                            ,data.getvImageList().get(0).get(2),data.getvImageList().get(0).get(3)
-                            ,data.getvImageList().get(0).get(4),data.getvImageList().get(0).get(5));//앞부분 user_index_id, 뒷부분 photo_id
+                            data.getvImageList().get(0).get(0), data.getvImageList().get(0).get(1)
+                            , data.getvImageList().get(0).get(2), data.getvImageList().get(0).get(3)
+                            , data.getvImageList().get(0).get(4), data.getvImageList().get(0).get(5));//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
             });
+        }catch (Exception e){}
+        try {
             Picasso.with(mcontext)
-                    .load(mcontext.getString(R.string.server_image)+data.getvImageList().get(1).get(2))
+                    .load(mcontext.getString(R.string.server_image) + data.getvImageList().get(1).get(2)).fit()
                     .into(holder.imageView2);
             holder.imageView2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(),
-                            data.getvImageList().get(1).get(0),data.getvImageList().get(1).get(1)
-                            ,data.getvImageList().get(1).get(2),data.getvImageList().get(1).get(3)
-                            ,data.getvImageList().get(1).get(4),data.getvImageList().get(1).get(5));//앞부분 user_index_id, 뒷부분 photo_id
+                            data.getvImageList().get(1).get(0), data.getvImageList().get(1).get(1)
+                            , data.getvImageList().get(1).get(2), data.getvImageList().get(1).get(3)
+                            , data.getvImageList().get(1).get(4), data.getvImageList().get(1).get(5));//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
             });
+        } catch (Exception e) {
+        }
+        try {
             Picasso.with(mcontext)
-                    .load(mcontext.getString(R.string.server_image)+data.getvImageList().get(2).get(2))
+                    .load(mcontext.getString(R.string.server_image) + data.getvImageList().get(2).get(2)).fit()
                     .into(holder.imageView3);
             holder.imageView3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(),
-                            data.getvImageList().get(2).get(0),data.getvImageList().get(2).get(1)
-                            ,data.getvImageList().get(2).get(2),data.getvImageList().get(2).get(3)
-                            ,data.getvImageList().get(2).get(4),data.getvImageList().get(2).get(5));//앞부분 user_index_id, 뒷부분 photo_id
+                            data.getvImageList().get(2).get(0), data.getvImageList().get(2).get(1)
+                            , data.getvImageList().get(2).get(2), data.getvImageList().get(2).get(3)
+                            , data.getvImageList().get(2).get(4), data.getvImageList().get(2).get(5));//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
             });
+        } catch (Exception e) {
         }
+    }
 
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {

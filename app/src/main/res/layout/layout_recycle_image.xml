@@ -11,7 +11,6 @@
         android:layout_height="118dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        tools:src="@drawable/abc"
         tools:background="@color/colorPrimaryBtn"
         android:layout_marginEnd="3dp"/>
     <ImageView
@@ -20,7 +19,6 @@
         android:layout_height="118dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        tools:src="@drawable/abc"
         tools:background="@color/colorPrimaryBtn"
         android:layout_marginEnd="3dp"/>
     <ImageView
@@ -29,6 +27,5 @@
         android:layout_height="118dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        tools:src="@drawable/abc"
         tools:background="@color/colorPrimaryBtn"/>
 </LinearLayout>

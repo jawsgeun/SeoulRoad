@@ -2,11 +2,14 @@ package com.kkard.seoulroad.MyMenu;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -38,15 +41,43 @@ public class MyPostEditActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+    private Boolean isNetWork(){
+        ConnectivityManager manager = (ConnectivityManager) getSystemService (Context.CONNECTIVITY_SERVICE);
+        boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
+        boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
+        boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+
+        if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_my_post_edit);
-        intent = getIntent();
-        InitView();
-        lineColor = Color.parseColor("#E73A62");
-        comment.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-        SetListener();
+        if (!isNetWork()) {
+            AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+            alert_confirm.setMessage("인터넷 연결을 확인해주세요");
+            alert_confirm.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            AlertDialog alert = alert_confirm.create();
+            alert.setIcon(R.mipmap.icon);
+            alert.setTitle("네트워크 연결 알림");
+            alert.show();
+        } else {
+            setContentView(R.layout.layout_my_post_edit);
+            intent = getIntent();
+            InitView();
+            lineColor = Color.parseColor("#E73A62");
+            comment.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+            SetListener();
+        }
     }
     @Override
     public void onBackPressed() {

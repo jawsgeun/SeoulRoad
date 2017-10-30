@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -69,94 +70,116 @@ public class VRegitActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     Uri imageUri;
     Uri photoURI, albumURI;
+    private Boolean isNetWork(){
+        ConnectivityManager manager = (ConnectivityManager) getSystemService (Context.CONNECTIVITY_SERVICE);
+        boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
+        boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
+        boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
 
+        if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vregit);
-        InitView();
-        checkPermission();
+        if(!isNetWork()){
+            AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+            alert_confirm.setMessage("인터넷 연결을 확인해주세요");
+            alert_confirm.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {finish();}});
+            AlertDialog alert = alert_confirm.create();
+            alert.setIcon(R.mipmap.icon);
+            alert.setTitle("네트워크 연결 알림");
+            alert.show();}
+        else {
+            setContentView(R.layout.activity_vregit);
+            InitView();
+            checkPermission();
 
-        SharedPreferences pre = getSharedPreferences("UserInfo", MODE_PRIVATE);//user정보 저장 미니디비
-        final String  userId = pre.getString("userid","id error");
-        final String userName = pre.getString("username","name error");
-        final String user_index = pre.getString("userindex","index error");
+            SharedPreferences pre = getSharedPreferences("UserInfo", MODE_PRIVATE);//user정보 저장 미니디비
+            final String userId = pre.getString("userid", "id error");
+            final String userName = pre.getString("username", "name error");
+            final String user_index = pre.getString("userindex", "index error");
 
-        toolbalTitle.setText("방문록 쓰기");
+            toolbalTitle.setText("방문록 쓰기");
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(VRegitActivity.this,FragmentActivity.class));
-                finish();
-            }
-        });
-        cameraSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mdialog = new DialogView_C(DialogView_C.DIA_TYPE_CAMERA,v.getContext(),leftClickListener,middleClickListener,rightClickListener);
-                mdialog.show();
-            }
-        });
-        registBtn = (Button)findViewById(R.id.regit_btn);
-        registBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(contentText.length() <= 0 || contentText.length() > 20){
-                    Toast.makeText(getApplicationContext(),"20자 이내로 작성해주세요.",Toast.LENGTH_SHORT).show();
+            backBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(VRegitActivity.this, FragmentActivity.class));
+                    finish();
+                }
+            });
+            cameraSelect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mdialog = new DialogView_C(DialogView_C.DIA_TYPE_CAMERA, v.getContext(), leftClickListener, middleClickListener, rightClickListener);
+                    mdialog.show();
+                }
+            });
+            registBtn = (Button) findViewById(R.id.regit_btn);
+            registBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (contentText.length() <= 0 || contentText.length() > 20) {
+                        Toast.makeText(getApplicationContext(), "20자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show();
 
-                }else {
-                    final String content = contentText.getText().toString();
-                    if (!TextUtils.isEmpty(mCurrentPhotoPath)) {
-                        // if(true){
-                        new AsyncTask<Void, Integer, Boolean>() {
-                            ProgressDialog progressDialog;
+                    } else {
+                        final String content = contentText.getText().toString();
+                        if (!TextUtils.isEmpty(mCurrentPhotoPath)) {
+                            // if(true){
+                            new AsyncTask<Void, Integer, Boolean>() {
+                                ProgressDialog progressDialog;
 
-                            @Override
-                            protected void onPreExecute() {
-                                super.onPreExecute();
-                                progressDialog = new ProgressDialog(VRegitActivity.this);
-                                progressDialog.setMessage("기달려봐");
-                                progressDialog.show();
-                            }
-
-                            @Override
-                            protected Boolean doInBackground(Void... params) {
-                                try {
-                                    RequestHttpConnection rhc = new RequestHttpConnection();
-                                    String i_name = mCurrentPhotoPath.substring(mCurrentPhotoPath.lastIndexOf("/") + 1);
-                                    rhc.upPictureName("http://stou2.cafe24.com/php/imagenameup.php", user_index, userId , i_name, content);//userindex 받아서 넣어야함 이메일도 내용도
-                                    JSONObject jsonObject = JSONParser.uploadImage(mCurrentPhotoPath);
-                                    if (jsonObject != null)
-                                        return jsonObject.getString("result").equals("success");
-                                } catch (JSONException e) {
-                                    Log.i("TAG", "Error : " + e.getLocalizedMessage());
+                                @Override
+                                protected void onPreExecute() {
+                                    super.onPreExecute();
+                                    progressDialog = new ProgressDialog(VRegitActivity.this);
+                                    progressDialog.setMessage("잠시만 기다려 주세요");
+                                    progressDialog.show();
                                 }
-                                return false;
-                            }
 
-                            @Override
-                            protected void onPostExecute(Boolean aBoolean) {
-                                super.onPostExecute(aBoolean);
-                                if (progressDialog != null)
-                                    progressDialog.dismiss();
-                                if (aBoolean){
-                                    Toast.makeText(getApplicationContext(), "성공인듯", Toast.LENGTH_LONG).show();
+                                @Override
+                                protected Boolean doInBackground(Void... params) {
+                                    try {
+                                        RequestHttpConnection rhc = new RequestHttpConnection();
+                                        String i_name = mCurrentPhotoPath.substring(mCurrentPhotoPath.lastIndexOf("/") + 1);
+                                        rhc.upPictureName("http://stou2.cafe24.com/php/imagenameup.php", user_index, userId, i_name, content);//userindex 받아서 넣어야함 이메일도 내용도
+                                        JSONObject jsonObject = JSONParser.uploadImage(mCurrentPhotoPath);
+                                        if (jsonObject != null)
+                                            return jsonObject.getString("result").equals("success");
+                                    } catch (JSONException e) {
+                                        Log.i("TAG", "Error : " + e.getLocalizedMessage());
+                                    }
+                                    return false;
                                 }
-                                else
-                                    Toast.makeText(getApplicationContext(), "실패인듯", Toast.LENGTH_LONG).show();
-                                //imagePath = "";
-                                //imv.setVisibility(View.INVISIBLE);
 
-                                startActivity(new Intent(VRegitActivity.this, FragmentActivity.class));
-                                finish();
-                            }
-                        }.execute();
+                                @Override
+                                protected void onPostExecute(Boolean aBoolean) {
+                                    super.onPostExecute(aBoolean);
+                                    if (progressDialog != null)
+                                        progressDialog.dismiss();
+                                    if (aBoolean) {
+                                        Toast.makeText(getApplicationContext(), "사진이 등록되었습니다.", Toast.LENGTH_LONG).show();
+                                    } else
+                                        Toast.makeText(getApplicationContext(), "사진 등록을 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_LONG).show();
+                                    //imagePath = "";
+                                    //imv.setVisibility(View.INVISIBLE);
+
+                                    startActivity(new Intent(VRegitActivity.this, FragmentActivity.class));
+                                    finish();
+                                }
+                            }.execute();
+                        }
                     }
                 }
-            }
-        });
-
+            });
+        }
     }
     @Override
     public void onBackPressed() {
@@ -212,7 +235,7 @@ public class VRegitActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Toast.makeText(this, "접근 불가능 기기", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "접근이 불가능 합니다", Toast.LENGTH_SHORT).show();
             return;
         }
     }

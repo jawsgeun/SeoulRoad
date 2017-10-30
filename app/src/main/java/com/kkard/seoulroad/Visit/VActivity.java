@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,6 +50,8 @@ public class VActivity extends Fragment {
     private static final String TAG_COUNT = "count";
     private static final String TAG_DATE = "date";
     private static final String TAG_COMMENT = "content";
+
+    private SwipeRefreshLayout swl;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +71,15 @@ public class VActivity extends Fragment {
 
         adapter = new ViewAdapter(tmp,context);
         recyclerView.setAdapter(adapter);
+        swl = (SwipeRefreshLayout)getView().findViewById(R.id.swipe_layout);
+        swl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GetData task = new GetData();
+                task.execute(getString(R.string.server_php)+"v.php");
+                swl.setRefreshing(false);
+            }
+        });
         GetData task = new GetData();
         task.execute(getString(R.string.server_php)+"v.php");
 //////// 플로팅 액션 메뉴 //////////
@@ -80,8 +92,9 @@ public class VActivity extends Fragment {
 
             }
         });
-
     }
+
+
     private class GetData extends AsyncTask<String,Void,String> {
         ProgressDialog progressDialog;
         String errorString = null;
@@ -162,6 +175,7 @@ public class VActivity extends Fragment {
                 data.setViewType(ViewAdapter.VIEW_TYPE_IMAGE);
                 data.setvImageList(main);
                 finalList.add(data);
+                i=i-1;
             }
         }catch (JSONException e) {
             Log.d("@@@@@@@@", "showResult : ", e);}

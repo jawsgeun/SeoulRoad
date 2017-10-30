@@ -29,7 +29,6 @@
             android:id="@+id/course_image"
             android:layout_width="138dp"
             android:layout_height="138dp"
-            android:src="@drawable/test_blue"
             android:scaleType="fitXY"/>
         <LinearLayout
             android:layout_width="match_parent"

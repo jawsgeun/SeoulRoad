@@ -2,14 +2,17 @@ package com.kkard.seoulroad;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -68,189 +71,225 @@ public class LoginActivity extends Activity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+    private Boolean isNetWork(){
+        ConnectivityManager manager = (ConnectivityManager) getSystemService (Context.CONNECTIVITY_SERVICE);
+        boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
+        boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
+        boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
 
+        if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        sh = getSharedPreferences("AutoINFO",MODE_PRIVATE);
-        miniDB = getSharedPreferences("UserInfo",MODE_PRIVATE);
-        if(sh.getString("isAuto","false").equals("false")){
-            editor = sh.edit();
-            editor.putString("isAuto","false");
-            editor.apply();
-        }else{ // 자동 로그인 할 경우
-            userId = sh.getString("UserAutoId","None"); // 글로벌 아이디 저장
-            userPassword = sh.getString("UserAutoPass","None"); // 글로벌 비밀번호 저장
-            Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
-            intent.putExtra("pageNum",0);
-            startActivity(intent);
-            finish();
-        }
-        InitView();
-        lineColor = Color.parseColor("#FFFFFF");
-        email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-        email.setSelection(email.length());
-        pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-        userId = sh.getString("UserSaveId","None"); // 자동 저장 되어 있는 ID 가져오기
-        if(userId.equals("None")){ // 자동 저장이 되어있지 않을 경우
-            saveExist = false;
-            isSave =false;
-        }else{
-            saveExist = true;
-            saveID.setChecked(true);
-            isSave =true;
-            email.setText(userId);
-        }
-
-        backLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(email.getWindowToken(), 0);
-                imm.hideSoftInputFromWindow(pass.getWindowToken(),0);
-                return false;
-            }
-        });
-
-        joinBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegistActivity.class));
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+        if (!isNetWork()) {
+            AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+            alert_confirm.setMessage("인터넷 연결을 확인해주세요");
+            alert_confirm.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            AlertDialog alert = alert_confirm.create();
+            alert.setIcon(R.mipmap.icon);
+            alert.setTitle("네트워크 연결 알림");
+            alert.show();
+        } else {
+            setContentView(R.layout.activity_login);
+            sh = getSharedPreferences("AutoINFO", MODE_PRIVATE);
+            miniDB = getSharedPreferences("UserInfo", MODE_PRIVATE);
+            if (sh.getString("isAuto", "false").equals("false")) {
+                editor = sh.edit();
+                editor.putString("isAuto", "false");
+                editor.apply();
+            } else { // 자동 로그인 할 경우
+                userId = sh.getString("UserAutoId", "None"); // 글로벌 아이디 저장
+                userPassword = sh.getString("UserAutoPass", "None"); // 글로벌 비밀번호 저장
+                Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
+                intent.putExtra("pageNum", 0);
+                startActivity(intent);
                 finish();
             }
-        });
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AsyncTask<Void,Void,Integer>(){
+            InitView();
+            lineColor = Color.parseColor("#FFFFFF");
+            email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+            email.setSelection(email.length());
+            pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+            userId = sh.getString("UserSaveId", "None"); // 자동 저장 되어 있는 ID 가져오기
+            if (userId.equals("None")) { // 자동 저장이 되어있지 않을 경우
+                saveExist = false;
+                isSave = false;
+            } else {
+                saveExist = true;
+                saveID.setChecked(true);
+                isSave = true;
+                email.setText(userId);
+            }
 
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                        idContent = email.getText().toString().trim();
-                        passContent = pass.getText().toString().trim();
+            backLayout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(email.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(pass.getWindowToken(), 0);
+                    return false;
+                }
+            });
+
+            joinBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(LoginActivity.this, RegistActivity.class));
+                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                    finish();
+                }
+            });
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AsyncTask<Void, Void, Integer>() {
+
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            idContent = email.getText().toString().trim();
+                            passContent = pass.getText().toString().trim();
 //                        miniDB = getSharedPreferences("DB",MODE_PRIVATE);
 //                        userId = miniDB.getString("G_ID","none");
 //                        userPassword = miniDB.getString("G_PASS","none");
-                        if(idContent.getBytes().length <= 0 ){//빈값이 넘어올때의 처리
-                            Toast.makeText(getApplicationContext(), "아이디를 입력하세요.",Toast.LENGTH_SHORT).show();
-                        }else if( passContent.getBytes().length <= 0){
-                            Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.",Toast.LENGTH_SHORT).show();
-                        }else if(!checkEmail(idContent)){
-                            Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
-                        }else if(passContent.length()!=4) {
-                            Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
-                        }else{}
-                    }
-
-                    @Override
-                    protected Integer doInBackground(Void... voids) {
-                        RequestHttpConnection rhc = new RequestHttpConnection();
-                        String result =rhc.loginConfirm("http://stou2.cafe24.com/php/login.php",idContent,passContent);
-                        if(result.contains(idContent))
-                        {
-                            getuserinfo(result);
-                            editor = sh.edit();
-                            if(isAuto){
-                                editor.putString("UserAutoId",idContent);
-                                editor.putString("UserAutoPass",passContent);
-                                editor.putString("isAuto","true");
-                                editor.apply();
+                            if (idContent.getBytes().length <= 0) {//빈값이 넘어올때의 처리
+                                Toast.makeText(getApplicationContext(), "아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
+                            } else if (passContent.getBytes().length <= 0) {
+                                Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+                            } else if (!checkEmail(idContent)) {
+                                Toast.makeText(getApplicationContext(), "아이디를 이메일 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            } else if (passContent.length() != 4) {
+                                Toast.makeText(getApplicationContext(), "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
+                            } else {
                             }
-                            //  첫 저장  -> 입력
-                            if(isSave || saveExist) {                        //  isSave = true  isExist = false
-                                //  저장되어있는상태 -> 입력
-                                if (isSave) {                                   //  isSave = true  isExist = true
-                                    editor.putString("UserSaveId", idContent);     //  저장 해제 -> 삭제
-                                } else {                                        //  isSave = false   isExist = true
-                                    editor.remove("UserSaveId");                //  저장하지않음 -> 아무것도 안함
-                                }                                               //  isSave = false   isExist = false
-                                editor.apply();
+                        }
+
+                        @Override
+                        protected Integer doInBackground(Void... voids) {
+                            RequestHttpConnection rhc = new RequestHttpConnection();
+                            String result = rhc.loginConfirm("http://stou2.cafe24.com/php/login.php", idContent, passContent);
+                            if (result.contains(idContent)) {
+                                getuserinfo(result);
+                                editor = sh.edit();
+                                if (isAuto) {
+                                    editor.putString("UserAutoId", idContent);
+                                    editor.putString("UserAutoPass", passContent);
+                                    editor.putString("isAuto", "true");
+                                    editor.apply();
+                                }
+                                //  첫 저장  -> 입력
+                                if (isSave || saveExist) {                        //  isSave = true  isExist = false
+                                    //  저장되어있는상태 -> 입력
+                                    if (isSave) {                                   //  isSave = true  isExist = true
+                                        editor.putString("UserSaveId", idContent);     //  저장 해제 -> 삭제
+                                    } else {                                        //  isSave = false   isExist = true
+                                        editor.remove("UserSaveId");                //  저장하지않음 -> 아무것도 안함
+                                    }                                               //  isSave = false   isExist = false
+                                    editor.apply();
+                                }
+                                return 1;
+                            } else {
+                                return 0;
                             }
-                            return 1;
                         }
-                        else{return 0;}
-                    }
 
-                    @Override
-                    protected void onPostExecute(Integer integer) {
-                        super.onPostExecute(integer);
-                        if(integer ==1){
-                            editor = miniDB.edit();
-                            editor.putString("userindex",intentID);
-                            editor.putString("userid",intentEMAIL);
-                            editor.putString("username",intentNAME);
-                            editor.apply();
-                            Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
-                            startActivity(intent);
-                            finish();
+                        @Override
+                        protected void onPostExecute(Integer integer) {
+                            super.onPostExecute(integer);
+                            if (integer == 1) {
+                                editor = miniDB.edit();
+                                editor.putString("userindex", intentID);
+                                editor.putString("userid", intentEMAIL);
+                                editor.putString("username", intentNAME);
+                                editor.apply();
+                                Intent intent = new Intent(LoginActivity.this, FragmentActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{ Toast.makeText(getApplicationContext(),"아이디 또는 비밀번호가 틀립니다.",Toast.LENGTH_SHORT).show();}
+                    }.execute();
+                }
+            });
+            saveID.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        isSave = true;
+                    } else {
+                        isSave = false;
                     }
-                }.execute();
-            }
-        });
-        saveID.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    isSave = true;
-                }else{
-                    isSave = false;
                 }
-            }
-        });
-        autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    isAuto = true;
-                }else{
-                    isAuto = false;
+            });
+            autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        isAuto = true;
+                    } else {
+                        isAuto = false;
+                    }
                 }
-            }
-        });
+            });
 
-        email.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!checkEmail(email.getText().toString().trim())){
-                    lineColor = Color.parseColor("#E73A62");
-                    email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-                    emailError.setVisibility(View.VISIBLE);
-                }else{
-                    lineColor = Color.parseColor("#FFFFFF");
-                    email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-                    emailError.setVisibility(View.INVISIBLE);
+            email.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-        pass.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(pass.length()>4){
-                    lineColor = Color.parseColor("#E73A62");
-                    pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-                    passError.setVisibility(View.VISIBLE);
-                }else{
-                    lineColor = Color.parseColor("#FFFFFF");
-                    pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
-                    passError.setVisibility(View.INVISIBLE);
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (!checkEmail(email.getText().toString().trim())) {
+                        lineColor = Color.parseColor("#E73A62");
+                        email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                        emailError.setVisibility(View.VISIBLE);
+                    } else {
+                        lineColor = Color.parseColor("#FFFFFF");
+                        email.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                        emailError.setVisibility(View.INVISIBLE);
+                    }
                 }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+            pass.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (pass.length() > 4) {
+                        lineColor = Color.parseColor("#E73A62");
+                        pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                        passError.setVisibility(View.VISIBLE);
+                    } else {
+                        lineColor = Color.parseColor("#FFFFFF");
+                        pass.getBackground().setColorFilter(lineColor, PorterDuff.Mode.SRC_ATOP);
+                        passError.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
     }
-
     @Override
     public void onBackPressed() {
         long tempTime = System.currentTimeMillis();
