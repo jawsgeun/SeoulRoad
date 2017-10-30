@@ -144,7 +144,15 @@ public class RequestHttpConnection {
         }
         return br;
     }
-
+    public BufferedReader requestVInfo(String url) {
+        try {
+            this.url = new URL(url);
+            con = (HttpURLConnection) this.url.openConnection();
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        } catch (Exception e) {
+        }
+        return br;
+    }
     public void updateUserPass(String url, String u_email_id, String user_pass) {
         try {
             this.url = new URL(url);

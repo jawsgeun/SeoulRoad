@@ -15,6 +15,17 @@ public class Data implements Serializable {
     private List<String> mTextContent; // 메인의 내용
     private String mTextSingle; // 서브의 내용
     private List<ListImageItem> listImageItemList;
+
+
+    public List<List<String>> getvImageList() {
+        return vImageList;
+    }
+
+    public void setvImageList(List<List<String>> vImageList) {
+        this.vImageList = vImageList;
+    }
+
+    private List<List<String>> vImageList;
     private List<String> mPostContent; // 아이디, 이미지, 좋아요, 날짜, 코멘트 순서
     private List<String> mCourseContent; // 사진, 제목, 내용 순서
     private int mImageId; // 코스에 넣을 이미지 id

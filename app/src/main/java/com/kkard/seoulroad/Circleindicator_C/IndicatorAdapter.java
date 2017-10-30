@@ -47,8 +47,8 @@ public class IndicatorAdapter extends PagerAdapter {
     private View.OnClickListener mPagerListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE,v.getContext(),-1,"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리"); // 페이저 눌렀을때 다이얼로그 전달
-            mDialog.show();
+//            mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE,v.getContext(),-1,"몇번째 방문자입니다.","아이디@이메일.com","xxx개","주저리주저리"); // 페이저 눌렀을때 다이얼로그 전달
+//            mDialog.show();
         }
     };
 }

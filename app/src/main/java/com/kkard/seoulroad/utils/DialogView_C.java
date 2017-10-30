@@ -3,13 +3,11 @@ package com.kkard.seoulroad.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Rect;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,12 +20,11 @@ import android.widget.TextView;
 import com.kkard.seoulroad.R;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by KyungHWan on 2017-10-05.
@@ -41,7 +38,7 @@ public class DialogView_C extends Dialog {
     private TextView mLikeCountView;
     private ImageView mImageView;
     private ImageView mXBtn;
-    private TextView mDateView;
+    private TextView dateTv;
 
     private ImageButton mLikeButton;
     private ImageButton mMiddleButton;
@@ -51,11 +48,12 @@ public class DialogView_C extends Dialog {
     private RelativeLayout back;
     private LinearLayout inside;
 
-    private int mImage;
+    private String mImage;
     private String mTitle;
     private String mContent;
     private String mCount;
     private String mId;
+    private String mDate;
 
     private View.OnClickListener mLeftClickListener;
     private View.OnClickListener mRightClickListener;
@@ -65,28 +63,16 @@ public class DialogView_C extends Dialog {
     public final static int DIA_TYPE_CAMERA = 91;
     public final static int DIA_TYPE_MOD = 92;
     public final static int DIA_TYPE_MOD_CONF = 93;
-    public final static int DIA_TYPE_TEST = 94;
-
+    private int mcnt, pre;
     private int type;
     private boolean isClickLike = false;
-
-
-    ////
-    private String u_index_id;
-    private String u_email_id;
-    private String heart_toggle;
-    private String p_name;
-    private String count;
-    private String date;
-    private String photo_index_id;
-    private String content;
-    private String imgUrl = "http://stou2.cafe24.com/image/";
-    ///
+    private boolean isFirstTime = false;
+    private String user_index;
+    String serverURL, heart_toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
         lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         lpWindow.dimAmount = 0.8f;
@@ -99,6 +85,7 @@ public class DialogView_C extends Dialog {
                 setContent(mContent);
                 setId(mId);
                 setCount(mCount);
+                setDate(mDate);
                 setImage(mImage);
                 break;
             case DIA_TYPE_CAMERA:
@@ -114,66 +101,97 @@ public class DialogView_C extends Dialog {
                 setContentView(R.layout.layout_dialog_modify_conf);
                 setLayout(type);
                 break;
-            case DIA_TYPE_TEST:
-                setContentView(R.layout.activity_c_dialogview);
-                break;
         }
     }
 
-    public DialogView_C(int type , final Context context, final String u_index_id, final String photo_id){
+    // 이미지 클릭시 생성자
+    public DialogView_C(int type, final Context context, final String index,
+                        String email, String image, String count,
+                        String date, final String content) {
+        // Dialog 배경을 투명 처리 해준다.
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        SharedPreferences pre = getContext().getSharedPreferences("UserInfo", MODE_PRIVATE);//user정보 저장 미니디비
+        user_index = pre.getString("userindex", "index error");
+        Log.e("유저 인덱스", user_index);
         this.type = type;
-        this.u_index_id = u_index_id;
-        this.photo_index_id = photo_id;
-
-        new AsyncTask<Void,Void,String>(){
+        mImage = image;
+        mTitle = index;
+        mId = email;
+        mCount = count + "명";
+        mDate = date;
+        mContent = content;
+        new AsyncTask<Void, Void, List<String>>() {
             ProgressDialog progressDialog;
+            String errorString = null;
+
+
             @Override
             protected void onPreExecute() {
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setMessage("기달려봐");
-                progressDialog.show();
                 super.onPreExecute();
-            }
-            @Override
-            protected String doInBackground(Void... voids) {
-                RequestHttpConnection rhc = new RequestHttpConnection();
-                BufferedReader br = rhc.requestImageInfo("http://stou2.cafe24.com/php/imageinfodown.php", u_index_id, photo_id);//앞숫자가 유저인덱스아이디, 뒷숫자가 포토아이디
-                String json;
-                StringBuilder sb = new StringBuilder();
-                try {
-                    while ((json = br.readLine()) != null) {
-                        sb.append(json + "\n");
-                    }
-                }catch(IOException e){}
-                String myJson =sb.toString().trim();
-                getimageinfo(myJson);
-                return sb.toString().trim();
+                progressDialog = ProgressDialog.show(getContext(),
+                        "Please Wait", null, true, true);
             }
 
             @Override
-            protected void onPostExecute(String aVoid) {
-                super.onPostExecute(aVoid);
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                    setlayout1(94);
+            protected List<String> doInBackground(Void... param) {
+                String serverURL = context.getString(R.string.server_php) + "requestlike.php";
+                try {
+                    List<String> re= new ArrayList<String>();
+                    RequestHttpConnection rhc = new RequestHttpConnection();
+                    BufferedReader br = rhc.requestImageInfo(serverURL, user_index, index);
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    re.add(sb.toString().trim());
+                    rhc = new RequestHttpConnection();
+                    br = rhc.requestImageInfo(context.getString(R.string.server_php) + "requestcount.php", user_index, index);
+                    sb = new StringBuilder();
+                    String liner;
+                    while ((liner = br.readLine()) != null) {
+                        sb.append(liner);
+                    }
+                    re.add(sb.toString().trim());
+                    br.close();
+                    return re;
+                } catch (Exception e) {
+                    errorString = e.toString();
+                    return null;
                 }
             }
 
+            @Override
+            protected void onPostExecute(List<String> result) {
+                super.onPostExecute(result);
+                progressDialog.dismiss();
+                Log.e("좋아요 눌러봤냐", result.get(0));
+                Log.e("좋아요 몇개냐", result.get(1));
+                mCount = result.get(1);
+                if(result.get(0).equals("null")){
+                    isFirstTime = true;
+                    isClickLike = false;
+                }
+                switch (result.get(0)) {
+                    case "null":
+
+                        break;
+                    case "0":
+                        isFirstTime = false;
+                        isClickLike = false;
+                        break;
+                    case "1":
+                        isFirstTime = false;
+                        isClickLike = true;
+                        break;
+                }
+                if (isClickLike) {
+                    mLikeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.love_btn));
+                } else {
+                    mLikeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.love_btn_black));
+                }
+            }
         }.execute();
-
-    }
-
-    // 이미지 클릭시 생성자
-    public DialogView_C(int type, Context context, int image, String title, String id, String count, String content) {
-        // Dialog 배경을 투명 처리 해준다.
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-        this.type = type;
-        mImage = image;
-        mTitle = title;
-        mId = id;
-        mCount = count;
-        mContent = content;
     }
 
     // 버튼 3개 생성자
@@ -192,33 +210,13 @@ public class DialogView_C extends Dialog {
         this.mLeftClickListener = confClick;
     }
 
-    @Override
-    public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-        Rect dialogBounds = new Rect();
-        getWindow().getDecorView().getHitRect(dialogBounds);
-        if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
-            // Tapped outside so we finish the activity
-            new AsyncTask<Void,Void,Void>(){
-                @Override
-                protected Void doInBackground(Void... voids) {//좋아요 갯수랑 좋아요 눌렀는지 업데이트
-                    RequestHttpConnection rhc = new RequestHttpConnection();
-                    rhc.updateLike("http://stou2.cafe24.com/php/likeupdate.php",u_index_id,photo_index_id,heart_toggle,count);
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    dismiss();
-                }
-            }.execute();
-
-        }
-        return super.dispatchTouchEvent(ev);
+    private void setDate(String date) {
+        date = date.substring(0, 10);
+        dateTv.setText(date);
     }
 
     private void setTitle(String title) {
-        mTitleView.setText(title);
+        mTitleView.setText(title + "번째 방문자입니다 !");
     }
 
     private void setContent(String content) {
@@ -226,117 +224,24 @@ public class DialogView_C extends Dialog {
     }
 
     private void setCount(String count) {
-        mContentView.setText(count);
+        mLikeCountView.setText(count);
     }
 
     private void setId(String id) {
         mIdView.setText(id);
     }
 
-    private void setImage(int id) {
-        if (id != -1) mImageView.setImageResource(id);
+    private void setImage(String image) {
+        Picasso.with(getContext()).load(getContext().getString(R.string.server_image) + image)
+                .into(mImageView);
     }
 
     private void setClickListener(View.OnClickListener left, View.OnClickListener middle, View.OnClickListener right) {
-                mLikeButton.setOnClickListener(left);
-                mMiddleButton.setOnClickListener(middle);
-                mXBtn.setOnClickListener(right);
-        }
-
-    public void setlayout1(int type){
-        mTitleView = (TextView) findViewById(R.id.dia_title);
-        mTitleView.setText(photo_index_id+"번째 방문자입니다 !");
-        mContentView = (TextView) findViewById(R.id.dia_content);
-        mContentView.setText(content);
-        mLikeCountView = (TextView) findViewById(R.id.cnt_like);
-        mLikeCountView.setText(count+"명");
-        mIdView = (TextView) findViewById(R.id.dia_id);
-        mIdView.setText(u_email_id);
-        mImageView = (ImageView) findViewById(R.id.image_dialog);
-        Picasso.with(getContext()).load(imgUrl).into(mImageView);
-        mDateView = (TextView)findViewById(R.id.date_tv);
-        date = date.substring(0,10);
-        mDateView.setText(date);
-        mLikeButton = (ImageButton) findViewById(R.id.btn_heart);
-        if (heart_toggle.equals("1")){
-            mLikeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.love_btn));
-        }else{
-            mLikeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.love_btn_black));
-        }
-        mLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int mcnt;
-                String cnt = mLikeCountView.getText().toString();
-                cnt = cnt.substring(0, cnt.length() - 1);
-                mcnt = Integer.parseInt(cnt);
-                if (heart_toggle.equals("1")) { // 좋아요가 눌려있으면
-                    mLikeButton.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.love_btn_black));
-                    heart_toggle = "0";
-                    mcnt--;
-                    count = Integer.toString(mcnt);
-                    mLikeCountView.setText(Integer.toString(mcnt) + "명");
-                } else {
-                    mLikeButton.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.love_btn));
-                    heart_toggle = "1";
-                    mcnt++;
-                    count = Integer.toString(mcnt);
-                    mLikeCountView.setText(Integer.toString(mcnt) + "명");
-                }
-            }
-        });
-        mXBtn = (ImageView) findViewById(R.id.dia_x_btn);
-        back = (RelativeLayout) findViewById(R.id.dialog_back);
-        inside = (LinearLayout) findViewById(R.id.dialog_inside);
-        inside.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 아무것도 안함
-            }
-        });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AsyncTask<Void,Void,Void>(){//좋아요 갯수랑 좋아요 눌렀는지 업데이트
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        Log.d("heart",heart_toggle);
-                        RequestHttpConnection rhc = new RequestHttpConnection();
-                        rhc.updateLike("http://stou2.cafe24.com/php/likeupdate.php",u_index_id,photo_index_id,heart_toggle,count);
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        super.onPostExecute(aVoid);
-                        dismiss();
-                    }
-                }.execute();
-
-            }
-        });
-        mXBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AsyncTask<Void,Void,Void>(){//좋아요 갯수랑 좋아요 눌렀는지 업데이트
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        RequestHttpConnection rhc = new RequestHttpConnection();
-                        rhc.updateLike("http://stou2.cafe24.com/php/likeupdate.php",u_index_id,photo_index_id,heart_toggle,count);
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        super.onPostExecute(aVoid);
-                        dismiss();
-                    }
-                }.execute();
-
-            }
-        });
-
+        mLikeButton.setOnClickListener(left);
+        mMiddleButton.setOnClickListener(middle);
+        mXBtn.setOnClickListener(right);
     }
+
     /*
      * Layout
      */
@@ -344,6 +249,7 @@ public class DialogView_C extends Dialog {
     private void setLayout(int type) {
         switch (type) {
             case DIA_TYPE_IMAGE:
+                dateTv = (TextView) findViewById(R.id.date_tv);
                 mTitleView = (TextView) findViewById(R.id.dia_title);
                 mContentView = (TextView) findViewById(R.id.dia_content);
                 mLikeCountView = (TextView) findViewById(R.id.cnt_like);
@@ -353,10 +259,10 @@ public class DialogView_C extends Dialog {
                 mLikeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int mcnt;
                         String cnt = mLikeCountView.getText().toString();
                         cnt = cnt.substring(0, cnt.length() - 1);
                         mcnt = Integer.parseInt(cnt);
+                        pre = mcnt;
                         if (isClickLike) { // 좋아요가 눌려있으면
                             mLikeButton.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.love_btn_black));
                             isClickLike = false;
@@ -382,12 +288,14 @@ public class DialogView_C extends Dialog {
                 back.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        updateLike();
                         dismiss();
                     }
                 });
                 mXBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        updateLike();
                         dismiss();
                     }
                 });
@@ -412,9 +320,9 @@ public class DialogView_C extends Dialog {
                 });
                 break;
             case DIA_TYPE_MOD:
-                confBtn = (Button)findViewById(R.id.mod_conf);
+                confBtn = (Button) findViewById(R.id.mod_conf);
                 confBtn.setOnClickListener(mLeftClickListener);
-                cancleBtn = (Button)findViewById(R.id.mod_cancle);
+                cancleBtn = (Button) findViewById(R.id.mod_cancle);
                 cancleBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -423,45 +331,64 @@ public class DialogView_C extends Dialog {
                 });
                 break;
             case DIA_TYPE_MOD_CONF:
-                confBtn = (Button)findViewById(R.id.modconf_conf);
+                confBtn = (Button) findViewById(R.id.modconf_conf);
                 confBtn.setOnClickListener(mLeftClickListener);
                 break;
         }
     }
-    private void getimageinfo(String myJson){
-        try{
-            JSONObject jsonObject = new JSONObject(myJson);
-            JSONArray res = jsonObject.getJSONArray("result");
-            for(int i =0 ; i<res.length();i++){
-                JSONObject c = res.getJSONObject(i);
-                switch (i){
-                    case 0:
-                        heart_toggle = c.getString("created");
-                        break;
-                    case 1:
-                        u_email_id = c.getString("u_email_id");
-                        break;
-                    case 2:
-                        String p_name = c.getString("photo_name");
-                        imgUrl = imgUrl+p_name;
-                        break;
-                    case 3:
-                        count = c.getString("count");
-                        break;
-                    case 4:
-                        date = c.getString("date");
-                        break;
-                    case 5:
-                        content = c.getString("content");
-                        break;
-                    case 6:
-                        photo_index_id = c.getString("photo_id");
-                        break;
+
+    private void updateLike() {
+        Log.e("@@@@","@@@@");
+        if (isClickLike) heart_toggle = "1";
+        else heart_toggle = "0";
+        serverURL = "null";
+        if (isFirstTime && pre != mcnt) { // 테이블에 없고, 좋아요 상태가 변했을때
+            serverURL = getContext().getString(R.string.server_php) + "insertlike.php";
+            if (!isFirstTime && pre != mcnt) { //테이블에 있고, 좋아요 상태가 변했을때
+                serverURL = getContext().getString(R.string.server_php) + "likeupdate.php";
+
+                if (!serverURL.equals("null")) {
+                    new AsyncTask<String, Void, String>() {
+                        ProgressDialog progressDialog;
+                        String errorString = null;
+
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            progressDialog = ProgressDialog.show(getContext(),
+                                    "Please Wait", null, true, true);
+                        }
+
+                        @Override
+                        protected String doInBackground(String... param) {
+                            try {
+                                RequestHttpConnection rhc = new RequestHttpConnection();
+                                rhc.updateLike(param[0], user_index, mTitle, heart_toggle, String.valueOf(mcnt));
+                                Log.e(param[0], user_index + "/" + mTitle + "/" + heart_toggle + "/" + String.valueOf(mcnt));
+                                return null;
+                            } catch (Exception e) {
+                                errorString = e.toString();
+                                return null;
+                            }
+                        }
+
+                        @Override
+                        protected void onPostExecute(String s) {
+                            super.onPostExecute(s);
+                            progressDialog.dismiss();
+                        }
+                    }.execute(serverURL);
+                    serverURL = "null";
                 }
             }
 
-        }catch (JSONException e ){
-            e.printStackTrace();
+
+            }
         }
+    @Override
+    public void onBackPressed () {
+        updateLike();
+        dismiss();
     }
 }
+

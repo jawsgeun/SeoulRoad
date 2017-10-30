@@ -254,37 +254,49 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void configureImageHolder(ImageItemHolder holder, int position) {
         final Data data = mDataList.get(position);
-        if (!data.getListImageItemList().isEmpty()) {
-            holder.imageView1.setImageResource(data.getListImageItemList().get(0).getItemImage());
+            Picasso.with(mcontext)
+                    .load(mcontext.getString(R.string.server_image)+data.getvImageList().get(0).get(2))
+                    .into(holder.imageView1);
             holder.imageView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    mDialog = new DialogView_C(94, v.getContext(), user_index,"5");//앞부분 user_index_id, 뒷부분 photo_id
+                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(),
+                            data.getvImageList().get(0).get(0),data.getvImageList().get(0).get(1)
+                            ,data.getvImageList().get(0).get(2),data.getvImageList().get(0).get(3)
+                            ,data.getvImageList().get(0).get(4),data.getvImageList().get(0).get(5));//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
             });
-            holder.imageView2.setImageResource(data.getListImageItemList().get(1).getItemImage());
+            Picasso.with(mcontext)
+                    .load(mcontext.getString(R.string.server_image)+data.getvImageList().get(1).get(2))
+                    .into(holder.imageView2);
             holder.imageView2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog = new DialogView_C(94, v.getContext(), user_index,"1");//앞부분 user_index_id, 뒷부분 photo_id
+                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(),
+                            data.getvImageList().get(1).get(0),data.getvImageList().get(1).get(1)
+                            ,data.getvImageList().get(1).get(2),data.getvImageList().get(1).get(3)
+                            ,data.getvImageList().get(1).get(4),data.getvImageList().get(1).get(5));//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
             });
-            holder.imageView3.setImageResource(data.getListImageItemList().get(2).getItemImage());
+            Picasso.with(mcontext)
+                    .load(mcontext.getString(R.string.server_image)+data.getvImageList().get(2).get(2))
+                    .into(holder.imageView3);
             holder.imageView3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDialog = new DialogView_C(94, v.getContext(), user_index,"6");//앞부분 user_index_id, 뒷부분 photo_id
+                    mDialog = new DialogView_C(DialogView_C.DIA_TYPE_IMAGE, v.getContext(),
+                            data.getvImageList().get(2).get(0),data.getvImageList().get(2).get(1)
+                            ,data.getvImageList().get(2).get(2),data.getvImageList().get(2).get(3)
+                            ,data.getvImageList().get(2).get(4),data.getvImageList().get(2).get(5));//앞부분 user_index_id, 뒷부분 photo_id
                     mDialog.show();
                     mDialog.setCanceledOnTouchOutside(false);
                 }
             });
         }
-
-    }
 
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
