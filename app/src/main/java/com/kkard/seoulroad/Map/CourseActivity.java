@@ -31,10 +31,20 @@ public class CourseActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private Intent intent;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+
+    @Override
+    public void onBackPressed() {
+        intent = new Intent(CourseActivity.this, FragmentActivity.class);
+        intent.putExtra("pageNum",3);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +64,9 @@ public class CourseActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(CourseActivity.this, FragmentActivity.class));
+            intent = new Intent(CourseActivity.this, FragmentActivity.class);
+            intent.putExtra("pageNum",3);
+            startActivity(intent);
             finish();
         }
     });

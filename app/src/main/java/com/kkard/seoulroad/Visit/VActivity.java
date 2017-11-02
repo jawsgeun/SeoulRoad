@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +23,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.Recycler.Data;
 import com.kkard.seoulroad.Recycler.ViewAdapter;
+import com.kkard.seoulroad.utils.CustomProgressBar;
 import com.kkard.seoulroad.utils.RequestHttpConnection;
 
 import org.json.JSONArray;
@@ -51,6 +54,8 @@ public class VActivity extends Fragment {
     private static final String TAG_DATE = "date";
     private static final String TAG_COMMENT = "content";
 
+    CustomProgressBar cpb;
+
     private SwipeRefreshLayout swl;
     @Nullable
     @Override
@@ -62,6 +67,9 @@ public class VActivity extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
+        cpb = new CustomProgressBar(context);
+        cpb.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         fab1 = (FloatingActionButton)view.findViewById(R.id.material_design_floating_action_menu_item1);
         recyclerView = (RecyclerView)getView().findViewById(R.id.v_recycle_view);
         recyclerView.setHasFixedSize(true);
@@ -101,8 +109,9 @@ public class VActivity extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(context,
-                    "Please Wait", null, true, true);
+            cpb.show();
+//            progressDialog = ProgressDialog.show(context,
+//                    "Please Wait", null, true, true);
         }
 
         @Override
@@ -137,7 +146,8 @@ public class VActivity extends Fragment {
         @Override
         protected void onPostExecute(List<String> s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
+            cpb.dismiss();
+//            progressDialog.dismiss();
             adapter = new ViewAdapter(getData(s), context);
             recyclerView.setAdapter(adapter);
         }

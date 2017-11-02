@@ -39,6 +39,7 @@ import com.kkard.seoulroad.R;
 import com.kkard.seoulroad.utils.DialogView_C;
 import com.kkard.seoulroad.utils.JSONParser;
 import com.kkard.seoulroad.utils.RequestHttpConnection;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,6 +83,10 @@ public class VRegitActivity extends AppCompatActivity {
         }else{
             return false;
         }
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -396,7 +401,7 @@ public class VRegitActivity extends AppCompatActivity {
             case MY_PERMISSION_CAMERA:
                 for(int i = 0; i< grantResults.length;i++){
                     if(grantResults[i]<0){
-                        Toast.makeText(VRegitActivity.this,"해당 권한 활성하셈",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VRegitActivity.this,"카메라 권한을 켜주세요",Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }

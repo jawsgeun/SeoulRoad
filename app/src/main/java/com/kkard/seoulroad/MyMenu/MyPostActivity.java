@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +54,7 @@ public class MyPostActivity extends AppCompatActivity {
     private static final String TAG_DATE = "date";
     private static final String TAG_COMMENT = "comment";
     private List<Data> tmp;
+    SwipeRefreshLayout srl;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -75,6 +77,15 @@ public class MyPostActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypost);
+        srl = (SwipeRefreshLayout)findViewById(R.id.my_refresh);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GetData task = new GetData();
+                task.execute(getString(R.string.server_php)+"mypost.php");
+                srl.setRefreshing(false);
+            }
+        });
         intent = getIntent();
         miniDB = getSharedPreferences("UserInfo", MODE_PRIVATE);
         userIndex = miniDB.getString("userindex", "유저 인덱스 오류");

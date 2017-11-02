@@ -196,7 +196,7 @@ public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     .load(mcontext.getString(R.string.server_image) + data.getmPostContent().get(1)).fit()
                     .into(holder.mypostImg);
             holder.mypostLike.setText(data.getmPostContent().get(2) + "명");
-            holder.mypostDate.setText(data.getmPostContent().get(3));
+            holder.mypostDate.setText(data.getmPostContent().get(3).substring(0,10));
             holder.mypostCom.setText(data.getmPostContent().get(4));
         }
         if (data.getmPostContent().get(5).equals("수정 불가"))

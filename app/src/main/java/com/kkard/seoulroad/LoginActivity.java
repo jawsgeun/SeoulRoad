@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kkard.seoulroad.utils.CustomProgressBar;
 import com.kkard.seoulroad.utils.RequestHttpConnection;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
@@ -66,6 +68,7 @@ public class LoginActivity extends Activity {
     private String intentID;
     private String intentEMAIL;
     private String intentNAME;
+    private CustomProgressBar cpb;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -87,6 +90,9 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        cpb = new CustomProgressBar(this);
+        cpb.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (!isNetWork()) {
             AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
             alert_confirm.setMessage("인터넷 연결을 확인해주세요");
@@ -158,6 +164,7 @@ public class LoginActivity extends Activity {
                         @Override
                         protected void onPreExecute() {
                             super.onPreExecute();
+                            cpb.show();
                             idContent = email.getText().toString().trim();
                             passContent = pass.getText().toString().trim();
 //                        miniDB = getSharedPreferences("DB",MODE_PRIVATE);
@@ -219,6 +226,7 @@ public class LoginActivity extends Activity {
                             } else {
                                 Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
                             }
+                            cpb.dismiss();
                         }
                     }.execute();
                 }
@@ -307,7 +315,7 @@ public class LoginActivity extends Activity {
     }
     /////////////// 이메일 포맷 체크 ////////////////
     public static boolean checkEmail(String email){
-        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[com]+$";
+        String regex = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(email.trim());
         boolean isNormal = m.matches();

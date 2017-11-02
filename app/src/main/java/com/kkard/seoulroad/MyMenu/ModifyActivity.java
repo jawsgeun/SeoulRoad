@@ -183,7 +183,11 @@ public class ModifyActivity extends AppCompatActivity {
                             super.onPostExecute(aVoid);
                             switch (aVoid) {
                                 case 1:
-                                    Toast.makeText(getApplicationContext(), "수정되었습니다", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "비밀 번호가 수정되었습니다", Toast.LENGTH_SHORT).show();
+                                    SharedPreferences sh = getSharedPreferences("AutoINFO", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sh.edit();
+                                    editor.putString("isAuto", "false");
+                                    editor.apply();
                                     startActivity(new Intent(ModifyActivity.this, LoginActivity.class));
                                     overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                                     finish();

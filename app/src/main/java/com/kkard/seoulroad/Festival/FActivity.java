@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.kkard.seoulroad.Calendar_C.DatePickerController;
 import com.kkard.seoulroad.Calendar_C.DayPickerView;
@@ -71,7 +70,6 @@ public class FActivity extends Fragment implements DatePickerController {
 
     @Override
     public void onDayOfMonthSelected(int year, int month, int day) {
-        Toast.makeText(context,""+year+"년"+(month+1)+"월"+day+"일", Toast.LENGTH_SHORT).show();
         final int time = (month + day)%10;
         new AsyncTask<String,Void,Void>(){
             @Override
@@ -112,8 +110,8 @@ public class FActivity extends Fragment implements DatePickerController {
         content.add("서울로 아빠와 놀다(디자인파크개발");
         content.add("서울로 자연색이 놀다(7인의 컬러디자이너)");
         content.add("서울로 꽃이 놀다(송미진 박사)");
-        content.add("");
-        content.add("");
+        content.add("서울로 같이 놀다(서울로 개발팀");
+        content.add("성울로 나와 놀다(정규열 박사)");
         data.setTextList("참여전시",content);
         main.add(data);
         // 부수적인 것
